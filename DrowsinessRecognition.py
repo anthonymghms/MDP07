@@ -109,7 +109,7 @@ alarm_started = False
 while cap.isOpened():
     if state_tracker["play_alarm"] and not alarm_started:
         alarm_started = True
-        winsound.PlaySound(r'C:\alarm.wav', winsound.SND_ASYNC)
+        winsound.PlaySound(r'../Audio/alarm.wav', winsound.SND_ASYNC)
     if not state_tracker["play_alarm"]:
         winsound.PlaySound(None, winsound.SND_PURGE)
         
