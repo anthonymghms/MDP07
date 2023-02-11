@@ -2,14 +2,15 @@ import cv2
 import mediapipe as mp
 import numpy as np
 import time
+import winsound
 from mediapipe.python.solutions.drawing_utils import _normalized_to_pixel_coordinates as denormalize_coordinates
-
+  
 
 def get_mediapipe_app(
-        max_num_faces=1,
-        refine_landmarks=True,
-        min_detection_confidence=0.5,
-        min_tracking_confidence=0.5,
+    max_num_faces=1,
+    refine_landmarks=True,
+    min_detection_confidence=0.5,
+    min_tracking_confidence=0.5,
 ):
     """Initialize and return Mediapipe FaceMesh Solution Graph object"""
     face_mesh = mp.solutions.face_mesh.FaceMesh(
@@ -36,12 +37,10 @@ def get_ear(landmarks, refer_idxs, frame_width, frame_height):
     Returns:
         ear: (float) Eye aspect ratio
     """
-
     def distance(point_1, point_2):
         """Calculate l2-norm between two points"""
         dist = sum([(i - j) ** 2 for i, j in zip(point_1, point_2)]) ** 0.5
         return dist
-
     try:
         # Compute the euclidean distance between the horizontal
         coords_points = []
@@ -80,8 +79,6 @@ def plot_eye_landmarks(frame, left_lm_coordinates, right_lm_coordinates, color):
         if lm_coordinates:
             for coord in lm_coordinates:
                 cv2.circle(frame, coord, 2, color, -1)
-
-    # frame = cv2.flip(frame, 1)
     return frame
 
 
@@ -91,16 +88,16 @@ def plot_text(image, text, origin, color, font=cv2.FONT_HERSHEY_SIMPLEX, fntScal
 
 
 eye_idxs = {
-    "left": [362, 385, 387, 263, 373, 380],
-    "right": [33, 160, 158, 133, 153, 144],
-}
+            "left": [362, 385, 387, 263, 373, 380],
+            "right": [33, 160, 158, 133, 153, 144],
+        }
 state_tracker = {
-    "start_time": time.perf_counter(),
-    "drowsy_time": 0.0,  # Holds the amount of time passed with EAR < EAR_threshold
-    "color": (255, 0, 0),
-    "play_alarm": False,
-    "face_direction": "",
-}
+            "start_time": time.perf_counter(),
+            "drowsy_time": 0.0,  # Holds the amount of time passed with EAR < EAR_threshold
+            "color": (255,0,0),
+            "play_alarm": False,
+            "face_direction": "",
+        }
 thresholds = {
     "EAR_threshold": 0.18,
     "wait_time": 1.0,
@@ -108,14 +105,20 @@ thresholds = {
 
 face_mesh = get_mediapipe_app()
 cap = cv2.VideoCapture(0)
-
+alarm_started = False
 while cap.isOpened():
+    if state_tracker["play_alarm"] and not alarm_started:
+        alarm_started = True
+        winsound.PlaySound(r'C:\alarm.wav', winsound.SND_ASYNC)
+    if not state_tracker["play_alarm"]:
+        winsound.PlaySound(None, winsound.SND_PURGE)
+        
     success, image = cap.read()
     # Flip the image horizontally for a later e-view display
     # Also convert the color space from BGR to RGB
     image = cv2.cvtColor(cv2.flip(image, 1), cv2.COLOR_BGR2RGB)
     # To improve performance
-    image.flags.writeable = False
+    image.flags.writeable = False 
     # Get the result
     results = face_mesh.process(image)
     # To improve performance
@@ -123,11 +126,11 @@ while cap.isOpened():
     # Convert the color space from RGB to BGR
     image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
     img_h, img_w, _ = image.shape
-
+    
     drowsy_time_txt_pos = (10, int(img_h // 2 * 1.7))
     ALM_txt_pos = (10, int(img_h // 2 * 1.85))
     EAR_txt_pos = (500, 200)
-
+    
     face_3d = []
     face_2d = []
     if results.multi_face_landmarks:
@@ -136,12 +139,12 @@ while cap.isOpened():
             if idx == 33 or idx == 263 or idx == 1 or idx == 61 or idx == 291 or idx == 199:
                 if idx == 1:
                     nose_2d = (lm.x * img_w, lm.y * img_h)
-                x, y = int(lm.x * img_w), int(lm.y * img_h)
+                x, y = int(lm.x * img_w), int(lm.y * img_h)                    
                 # Get the 2D Coordinates
                 face_2d.append([x, y])
                 # Get the 3D Coordinates
-                face_3d.append([x, y, lm.z])
-                # Convert it to the NumPy array
+                face_3d.append([x, y, lm.z])                
+        # Convert it to the NumPy array
         face_2d = np.array(face_2d, dtype=np.float64)
         # Convert it to the NumPy array
         face_3d = np.array(face_3d, dtype=np.float64)
@@ -161,11 +164,11 @@ while cap.isOpened():
         # Get the y rotation degree
         x = angles[0] * 360
         y = angles[1] * 360
-        z = angles[2] * 360
+        z = angles[2] * 360            
         # draw face direction
         p1 = (int(nose_2d[0]), int(nose_2d[1]))
         p2 = (int(nose_2d[0] + y * 10), int(nose_2d[1] - x * 10))
-        cv2.line(image, p1, p2, (255, 0, 0), 3)
+        cv2.line(image, p1, p2, (255, 0, 0), 3)            
         # save direction(left and right can be removed no need for them)
         if x < -10:
             state_tracker["face_direction"] = "Down"
@@ -176,13 +179,13 @@ while cap.isOpened():
         elif y > 10:
             state_tracker["face_direction"] = "Right"
         else:
-            state_tracker["face_direction"] = "Forward"
-            # Add the text on the image
+            state_tracker["face_direction"] = "Forward"                          
+        # Add the text on the image
         cv2.putText(image, state_tracker["face_direction"], (20, 50), cv2.FONT_HERSHEY_SIMPLEX, 2, (0, 255, 0), 2)
         cv2.putText(image, "x: " + str(np.round(x, 2)), (500, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
         cv2.putText(image, "y: " + str(np.round(y, 2)), (500, 100), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
         cv2.putText(image, "z: " + str(np.round(z, 2)), (500, 150), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
-        # END
+        #END
         EAR, coordinates = calculate_avg_ear(landmarks, eye_idxs["left"], eye_idxs["right"], img_w, img_h)
         if EAR < thresholds["EAR_threshold"] or state_tracker["face_direction"] == "Down":
             # Increase drowsy_time to track the time period with EAR less than the threshold
@@ -190,14 +193,15 @@ while cap.isOpened():
             end_time = time.perf_counter()
             state_tracker["drowsy_time"] += end_time - state_tracker["start_time"]
             state_tracker["start_time"] = end_time
-            state_tracker["color"] = (0, 0, 255)
+            state_tracker["color"] = (0,0,255)
             if state_tracker["drowsy_time"] >= thresholds["wait_time"]:
                 state_tracker["play_alarm"] = True
                 plot_text(image, "WAKE UP!", ALM_txt_pos, state_tracker["color"])
             else:
                 state_tracker["start_time"] = time.perf_counter()
-                state_tracker["color"] = (0, 255, 0)
+                state_tracker["color"] = (0,255,0)
                 state_tracker["play_alarm"] = False
+                alarm_started = False
             EAR_txt = f"EAR: {round(EAR, 2)}"
             drowsy_time_txt = f"DROWSY: {round(state_tracker['drowsy_time'], 3)} Secs"
             plot_text(image, EAR_txt, EAR_txt_pos, state_tracker["color"])
@@ -205,17 +209,18 @@ while cap.isOpened():
         else:
             state_tracker["start_time"] = time.perf_counter()
             state_tracker["drowsy_time"] = 0.0
-            state_tracker["color"] = (0, 255, 0)
+            state_tracker["color"] = (0,255,0)
             state_tracker["play_alarm"] = False
-        # Change the eyePlot color
+            alarm_started = False
+        #Change the eyePlot color
         if state_tracker["drowsy_time"] < thresholds["wait_time"]:
-            image = plot_eye_landmarks(image, coordinates[0], coordinates[1], (0, 255, 0))
+            image = plot_eye_landmarks(image, coordinates[0], coordinates[1], (0,255,0))
         else:
-            image = plot_eye_landmarks(image, coordinates[0], coordinates[1], (0, 0, 255))
+            image = plot_eye_landmarks(image, coordinates[0], coordinates[1], (0,0,255))
 
     cv2.imshow('Drowsiness Detection', image)
     if cv2.waitKey(5) & 0xFF == ord('q'):
         break
-
+    
 cap.release()
 cv2.destroyAllWindows()
