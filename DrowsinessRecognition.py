@@ -3,6 +3,7 @@ import mediapipe as mp
 import numpy as np
 import time
 import winsound
+import os
 from mediapipe.python.solutions.drawing_utils import _normalized_to_pixel_coordinates as denormalize_coordinates
   
 
@@ -109,7 +110,7 @@ alarm_started = False
 while cap.isOpened():
     if state_tracker["play_alarm"] and not alarm_started:
         alarm_started = True
-        winsound.PlaySound(r'../Audio/alarm.wav', winsound.SND_ASYNC)
+        winsound.PlaySound(r'./Audio/alarm.wav', winsound.SND_ASYNC)
     if not state_tracker["play_alarm"]:
         winsound.PlaySound(None, winsound.SND_PURGE)
         
