@@ -1,0 +1,13 @@
+C:\Users\emman\source\repos\DriverDrowsinessDetection\DatabaseScaffolding\bin\Debug\netcoreapp3.1\DatabaseScaffolding.deps.json
+C:\Users\emman\source\repos\DriverDrowsinessDetection\DatabaseScaffolding\bin\Debug\netcoreapp3.1\DatabaseScaffolding.runtimeconfig.json
+C:\Users\emman\source\repos\DriverDrowsinessDetection\DatabaseScaffolding\bin\Debug\netcoreapp3.1\DatabaseScaffolding.runtimeconfig.dev.json
+C:\Users\emman\source\repos\DriverDrowsinessDetection\DatabaseScaffolding\bin\Debug\netcoreapp3.1\DatabaseScaffolding.dll
+C:\Users\emman\source\repos\DriverDrowsinessDetection\DatabaseScaffolding\bin\Debug\netcoreapp3.1\DatabaseScaffolding.pdb
+C:\Users\emman\source\repos\DriverDrowsinessDetection\DatabaseScaffolding\obj\Debug\netcoreapp3.1\DatabaseScaffolding.csproj.AssemblyReference.cache
+C:\Users\emman\source\repos\DriverDrowsinessDetection\DatabaseScaffolding\obj\Debug\netcoreapp3.1\DatabaseScaffolding.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\emman\source\repos\DriverDrowsinessDetection\DatabaseScaffolding\obj\Debug\netcoreapp3.1\DatabaseScaffolding.AssemblyInfoInputs.cache
+C:\Users\emman\source\repos\DriverDrowsinessDetection\DatabaseScaffolding\obj\Debug\netcoreapp3.1\DatabaseScaffolding.AssemblyInfo.cs
+C:\Users\emman\source\repos\DriverDrowsinessDetection\DatabaseScaffolding\obj\Debug\netcoreapp3.1\DatabaseScaffolding.csproj.CoreCompileInputs.cache
+C:\Users\emman\source\repos\DriverDrowsinessDetection\DatabaseScaffolding\obj\Debug\netcoreapp3.1\DatabaseScaffolding.dll
+C:\Users\emman\source\repos\DriverDrowsinessDetection\DatabaseScaffolding\obj\Debug\netcoreapp3.1\DatabaseScaffolding.pdb
+C:\Users\emman\source\repos\DriverDrowsinessDetection\DatabaseScaffolding\obj\Debug\netcoreapp3.1\DatabaseScaffolding.genruntimeconfig.cache
