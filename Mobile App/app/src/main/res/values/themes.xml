@@ -34,7 +34,7 @@
 
     <style name="TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">
         <item name="android:textColorHint">@color/grey</item>
-        <item name="hintTextColor">@color/grey_light</item>
+        <item name="hintTextColor">@color/grey</item>
         <item name="android:backgroundTint">@color/grey_light</item>
         <item name="startIconTint">@color/primary_color</item>
         <item name="boxStrokeWidth">0dp</item>

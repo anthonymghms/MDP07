@@ -21,5 +21,8 @@
     <string name="home_title">Hello World!</string>
     <string name="home_sub_title">Welcome home</string>
     <string name="btn_logout">Logout</string>
+    <string name="register_last_name">Your last name</string>
+    <string name="register_first_name">Your first name</string>
+    <string name="register_phone">Your phone number</string>
 
 </resources>
