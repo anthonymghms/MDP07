@@ -24,5 +24,7 @@
     <string name="register_last_name">Your last name</string>
     <string name="register_first_name">Your first name</string>
     <string name="register_phone">Your phone number</string>
+    <string name="home_stop_camera">Stop Camera</string>
+    <string name="home_start_camera">Start Camera</string>
 
 </resources>

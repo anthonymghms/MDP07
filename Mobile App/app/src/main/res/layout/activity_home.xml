@@ -9,21 +9,33 @@
     android:padding="20dp"
     android:gravity="center"
     >
-    <TextView
-        android:id="@+id/home_title"
+    <androidx.camera.view.PreviewView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:id="@+id/previewView"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        />
+
+    <androidx.appcompat.widget.AppCompatButton
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/home_title"
-        android:textAlignment="center"
-        style="@style/Title"/>
-    <TextView
-        android:id="@+id/home_sub_title"
+        android:text="@string/home_start_camera"
+        android:id="@+id/home_btn_start"
+        style="@style/ButtonGreen"
+        android:layout_marginTop="15dp"
+        />
+
+    <androidx.appcompat.widget.AppCompatButton
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/home_sub_title"
-        android:textStyle="bold"
-        android:textAlignment="center"
-        style="@style/SubTitle"/>
+        android:text="@string/home_stop_camera"
+        android:id="@+id/home_btn_stop"
+        style="@style/ButtonGreen"
+        android:layout_marginTop="15dp"
+        />
+
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_logout"
