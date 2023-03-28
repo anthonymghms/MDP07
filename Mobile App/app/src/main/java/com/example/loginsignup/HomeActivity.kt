@@ -9,6 +9,7 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.widget.AppCompatButton
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
@@ -18,26 +19,22 @@ import com.example.loginsignup.databinding.ActivityRegisterBinding
 import java.util.concurrent.Executor
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
+import kotlin.properties.Delegates
 
 
 class HomeActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityHomeBinding
     private lateinit var cameraExecutor: ExecutorService
-
+    private var started:Boolean = false
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        binding.previewView.visibility = View.GONE
         cameraExecutor = Executors.newSingleThreadExecutor()
         requestPermission()
-
-        binding.homeBtnStop.setOnClickListener {
-            stopCamera()
-        }
 
         binding.btnLogout.setOnClickListener {
             startActivity(Intent(this, LoginActivity::class.java))
@@ -45,16 +42,26 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun requestPermission() {
-        binding.homeBtnStart.setOnClickListener {
-            requestCameraPermissionIfMissing { granted ->
-                if (granted)
-                    startCamera()
-                else
-                    Toast.makeText(this,"Please Allow The Permission",Toast.LENGTH_SHORT).show()
+        val homeBtn = findViewById<AppCompatButton>(R.id.home_btn)
+        homeBtn.setOnClickListener {
+            if (!started) {
+                requestCameraPermissionIfMissing { granted ->
+                    if (granted)
+                        startCamera()
+                    else
+                        Toast.makeText(this, "Please Allow The Permission", Toast.LENGTH_SHORT).show()
 
+                }
+                binding.previewView.visibility = View.VISIBLE
+                started = true
+                homeBtn.setText(R.string.home_stop_camera)
+            } else {
+                stopCamera()
+                started = false
+                homeBtn.setText(R.string.home_start_camera)
             }
-        }
 
+        }
     }
 
     private fun requestCameraPermissionIfMissing(onResult: ((Boolean) -> Unit)) {
