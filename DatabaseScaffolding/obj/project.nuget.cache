@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "A8HG8evPWY99QX/1EsBOOCPBdemi+TFQ3GzD36GVFjMwyyYZOFO6raxYC3NojR8N7jZwO9rcwpeoIh2EsZJuzQ==",
+  "dgSpecHash": "WRC9urarojsmi+DAJ2S62wGsZWZ3CEQwf1jaZOU+0Mc4vzdLX/mVUS8Hi50TVjRIqN1pidMq5fH9YOFnnBDfhg==",
   "success": true,
-  "projectFilePath": "C:\\Users\\emman\\source\\repos\\DriverDrowsinessDetection\\DatabaseScaffolding\\DatabaseScaffolding.csproj",
+  "projectFilePath": "C:\\Users\\emman\\source\\repos\\DriverDrowsinessDetection\\DatabaseScaffolding\\DatabaseMigration.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\emman\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\emman\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512",

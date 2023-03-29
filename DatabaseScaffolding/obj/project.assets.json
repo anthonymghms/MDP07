@@ -5805,9 +5805,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\emman\\source\\repos\\DriverDrowsinessDetection\\DatabaseScaffolding\\DatabaseScaffolding.csproj",
-      "projectName": "DatabaseScaffolding",
-      "projectPath": "C:\\Users\\emman\\source\\repos\\DriverDrowsinessDetection\\DatabaseScaffolding\\DatabaseScaffolding.csproj",
+      "projectUniqueName": "C:\\Users\\emman\\source\\repos\\DriverDrowsinessDetection\\DatabaseScaffolding\\DatabaseMigration.csproj",
+      "projectName": "DatabaseMigration",
+      "projectPath": "C:\\Users\\emman\\source\\repos\\DriverDrowsinessDetection\\DatabaseScaffolding\\DatabaseMigration.csproj",
       "packagesPath": "C:\\Users\\emman\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\emman\\source\\repos\\DriverDrowsinessDetection\\DatabaseScaffolding\\obj\\",
       "projectStyle": "PackageReference",

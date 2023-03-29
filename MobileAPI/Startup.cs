@@ -11,7 +11,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using DatabaseScaffolding.Model;
+using DatabaseMigration;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using ServiceLayer.EmailService;
+using Common;
+using DatabaseMigration.Model;
 
 namespace MobileAPI
 {
@@ -28,9 +33,32 @@ namespace MobileAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
+            //For Db
             var connectionString = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<DrowsinessDetectionContext>(options=>options.UseSqlServer(connectionString));
-            //services.AddScoped<ApiKeyAuthFilter>();
+            services.AddScoped<DrowsinessDetectionContext>();
+
+            // For identity
+            services.AddIdentity<AppUser, IdentityRole>(options => options.User.RequireUniqueEmail = true)
+                .AddEntityFrameworkStores<DrowsinessDetectionContext>()
+                .AddDefaultTokenProviders();
+
+            // For JWT
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            });
+
+            // For Required email
+            services.Configure<IdentityOptions>(opts => opts.SignIn.RequireConfirmedEmail = true);
+
+            //For email config
+            var emailConfig = Configuration.GetSection("EmailConfiguration").Get<EmailConfiguration>();
+            services.AddSingleton(emailConfig);
+            services.AddScoped<IEmailService, EmailService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

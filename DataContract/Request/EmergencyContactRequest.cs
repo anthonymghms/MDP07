@@ -1,19 +1,15 @@
 ﻿using System;
-using DatabaseScaffolding.Model;
+using System.Collections.Generic;
 
 namespace DataContract.Request
 {
     public class EmergencyContactRequest
     {
         public Guid EmergencyContactId { get; set; }
-        public Guid UserId { get; set; }
-        public string Name { get; set; }
-        public string PhoneNumber { get; set; }
-        public bool IsUser { get; set; }
+        public Guid EmergencyContactUserId { get; set; }
+        public DateTime CreationDate { get; set; }
+        public DateTime LastModifiedDate { get; set; }
         public bool IsDisabled { get; set; }
         public bool IsDeleted { get; set; }
-        public DateTime RegistrationDate { get; set; }
-
-        public virtual User User { get; set; }
     }
 }
