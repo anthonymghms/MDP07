@@ -1,1 +1,0 @@
-﻿Scaffold-DbContext "Server=LAPTOP-LH78ERH3;Database=DrowsinessDetection;Trusted_Connection=True;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Model
