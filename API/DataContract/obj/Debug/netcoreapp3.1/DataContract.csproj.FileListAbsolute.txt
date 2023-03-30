@@ -1,0 +1,10 @@
+C:\Users\emman\source\repos\DriverDrowsinessDetection\DataContract\bin\Debug\netcoreapp3.1\DataContract.deps.json
+C:\Users\emman\source\repos\DriverDrowsinessDetection\DataContract\bin\Debug\netcoreapp3.1\DataContract.dll
+C:\Users\emman\source\repos\DriverDrowsinessDetection\DataContract\bin\Debug\netcoreapp3.1\DataContract.pdb
+C:\Users\emman\source\repos\DriverDrowsinessDetection\DataContract\obj\Debug\netcoreapp3.1\DataContract.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\emman\source\repos\DriverDrowsinessDetection\DataContract\obj\Debug\netcoreapp3.1\DataContract.AssemblyInfoInputs.cache
+C:\Users\emman\source\repos\DriverDrowsinessDetection\DataContract\obj\Debug\netcoreapp3.1\DataContract.AssemblyInfo.cs
+C:\Users\emman\source\repos\DriverDrowsinessDetection\DataContract\obj\Debug\netcoreapp3.1\DataContract.csproj.CoreCompileInputs.cache
+C:\Users\emman\source\repos\DriverDrowsinessDetection\DataContract\obj\Debug\netcoreapp3.1\DataContract.dll
+C:\Users\emman\source\repos\DriverDrowsinessDetection\DataContract\obj\Debug\netcoreapp3.1\DataContract.pdb
+C:\Users\emman\source\repos\DriverDrowsinessDetection\DataContract\obj\Debug\netcoreapp3.1\DataContract.csproj.AssemblyReference.cache

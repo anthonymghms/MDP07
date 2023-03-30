@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+https://go.microsoft.com/fwlink/?LinkID=208121. 
+-->
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <_PublishTargetUrl>C:\inetpub\DriverDrowsiness.API</_PublishTargetUrl>
+    <History>True|2023-03-25T15:59:31.4793758Z;True|2023-03-25T17:32:29.6483392+02:00;True|2023-03-25T16:06:53.1933284+02:00;True|2023-03-25T15:03:16.4105433+02:00;False|2023-03-25T15:02:44.4853958+02:00;True|2023-03-25T14:29:23.5290844+02:00;</History>
+  </PropertyGroup>
+</Project>
