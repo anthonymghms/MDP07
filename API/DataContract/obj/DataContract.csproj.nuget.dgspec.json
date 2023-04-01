@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\emman\\source\\repos\\DriverDrowsinessDetection\\DataContract\\DataContract.csproj": {}
+    "C:\\Users\\emman\\OneDrive\\Documents\\Visual Studio 2019\\MDP07\\API\\DataContract\\DataContract.csproj": {}
   },
   "projects": {
-    "C:\\Users\\emman\\source\\repos\\DriverDrowsinessDetection\\DataContract\\DataContract.csproj": {
+    "C:\\Users\\emman\\OneDrive\\Documents\\Visual Studio 2019\\MDP07\\API\\DataContract\\DataContract.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\emman\\source\\repos\\DriverDrowsinessDetection\\DataContract\\DataContract.csproj",
+        "projectUniqueName": "C:\\Users\\emman\\OneDrive\\Documents\\Visual Studio 2019\\MDP07\\API\\DataContract\\DataContract.csproj",
         "projectName": "DataContract",
-        "projectPath": "C:\\Users\\emman\\source\\repos\\DriverDrowsinessDetection\\DataContract\\DataContract.csproj",
+        "projectPath": "C:\\Users\\emman\\OneDrive\\Documents\\Visual Studio 2019\\MDP07\\API\\DataContract\\DataContract.csproj",
         "packagesPath": "C:\\Users\\emman\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\emman\\source\\repos\\DriverDrowsinessDetection\\DataContract\\obj\\",
+        "outputPath": "C:\\Users\\emman\\OneDrive\\Documents\\Visual Studio 2019\\MDP07\\API\\DataContract\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
