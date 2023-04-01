@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "8jbVutIgDDtjrYQRcWFaTueK4OaI46tU7L7XGddHDWhih6mXql/GIMtkBpksSbGTnrCxbmJ+wa5cvWUQng+77w==",
+  "dgSpecHash": "cpqS+sV3Z0c5MEbLP+rgi1y1Hfx66D/aPpFg9EG6JRwcOkWpG0ymhq6ZOfinxEmaqrcjZTW/PEg3SOlRFlA9jg==",
   "success": true,
-  "projectFilePath": "C:\\Users\\emman\\OneDrive\\Documents\\Visual Studio 2019\\MDP07\\API\\Common\\Common.csproj",
+  "projectFilePath": "C:\\Users\\emman\\source\\repos\\DriverDrowsinessDetection\\Common\\Common.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\emman\\.nuget\\packages\\mimekit\\3.6.1\\mimekit.3.6.1.nupkg.sha512",
     "C:\\Users\\emman\\.nuget\\packages\\portable.bouncycastle\\1.9.0\\portable.bouncycastle.1.9.0.nupkg.sha512",

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "uz+nnKbq6u7P6td3t1oasMuKU6MZMRxBMxrvfKXVSUoZ/6JoJCXmf2an7MKX2MmfE5yf3MPzhTQKmDKjmyGd5w==",
+  "dgSpecHash": "GN8MrIJ7Av9HgWwAG05q16rT0DcD12rap9HLKQHefDS8UKZuJ0pAIoLBRIWuMHMGsOOg+0GrVASirhQyVemYfQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\emman\\OneDrive\\Documents\\Visual Studio 2019\\MDP07\\API\\DataContract\\DataContract.csproj",
+  "projectFilePath": "C:\\Users\\emman\\source\\repos\\DriverDrowsinessDetection\\DataContract\\DataContract.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

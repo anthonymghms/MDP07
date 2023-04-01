@@ -456,11 +456,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\emman\\OneDrive\\Documents\\Visual Studio 2019\\MDP07\\API\\Common\\Common.csproj",
+      "projectUniqueName": "C:\\Users\\emman\\source\\repos\\DriverDrowsinessDetection\\Common\\Common.csproj",
       "projectName": "Common",
-      "projectPath": "C:\\Users\\emman\\OneDrive\\Documents\\Visual Studio 2019\\MDP07\\API\\Common\\Common.csproj",
+      "projectPath": "C:\\Users\\emman\\source\\repos\\DriverDrowsinessDetection\\Common\\Common.csproj",
       "packagesPath": "C:\\Users\\emman\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\emman\\OneDrive\\Documents\\Visual Studio 2019\\MDP07\\API\\Common\\obj\\",
+      "outputPath": "C:\\Users\\emman\\source\\repos\\DriverDrowsinessDetection\\Common\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
