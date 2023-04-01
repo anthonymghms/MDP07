@@ -9941,11 +9941,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\emman\\source\\repos\\DriverDrowsinessDetection\\MobileAPI\\MobileAPI.csproj",
+      "projectUniqueName": "C:\\Users\\emman\\OneDrive\\Documents\\Visual Studio 2019\\MDP07\\API\\MobileAPI\\MobileAPI.csproj",
       "projectName": "MobileAPI",
-      "projectPath": "C:\\Users\\emman\\source\\repos\\DriverDrowsinessDetection\\MobileAPI\\MobileAPI.csproj",
+      "projectPath": "C:\\Users\\emman\\OneDrive\\Documents\\Visual Studio 2019\\MDP07\\API\\MobileAPI\\MobileAPI.csproj",
       "packagesPath": "C:\\Users\\emman\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\emman\\source\\repos\\DriverDrowsinessDetection\\MobileAPI\\obj\\",
+      "outputPath": "C:\\Users\\emman\\OneDrive\\Documents\\Visual Studio 2019\\MDP07\\API\\MobileAPI\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
@@ -9968,17 +9968,17 @@
         "netcoreapp3.1": {
           "targetAlias": "netcoreapp3.1",
           "projectReferences": {
-            "C:\\Users\\emman\\source\\repos\\DriverDrowsinessDetection\\Common\\Common.csproj": {
-              "projectPath": "C:\\Users\\emman\\source\\repos\\DriverDrowsinessDetection\\Common\\Common.csproj"
+            "C:\\Users\\emman\\OneDrive\\Documents\\Visual Studio 2019\\MDP07\\API\\Common\\Common.csproj": {
+              "projectPath": "C:\\Users\\emman\\OneDrive\\Documents\\Visual Studio 2019\\MDP07\\API\\Common\\Common.csproj"
             },
-            "C:\\Users\\emman\\source\\repos\\DriverDrowsinessDetection\\DatabaseMigration\\DatabaseMigration.csproj": {
-              "projectPath": "C:\\Users\\emman\\source\\repos\\DriverDrowsinessDetection\\DatabaseMigration\\DatabaseMigration.csproj"
+            "C:\\Users\\emman\\OneDrive\\Documents\\Visual Studio 2019\\MDP07\\API\\DatabaseMigration\\DatabaseMigration.csproj": {
+              "projectPath": "C:\\Users\\emman\\OneDrive\\Documents\\Visual Studio 2019\\MDP07\\API\\DatabaseMigration\\DatabaseMigration.csproj"
             },
-            "C:\\Users\\emman\\source\\repos\\DriverDrowsinessDetection\\DataContract\\DataContract.csproj": {
-              "projectPath": "C:\\Users\\emman\\source\\repos\\DriverDrowsinessDetection\\DataContract\\DataContract.csproj"
+            "C:\\Users\\emman\\OneDrive\\Documents\\Visual Studio 2019\\MDP07\\API\\DataContract\\DataContract.csproj": {
+              "projectPath": "C:\\Users\\emman\\OneDrive\\Documents\\Visual Studio 2019\\MDP07\\API\\DataContract\\DataContract.csproj"
             },
-            "C:\\Users\\emman\\source\\repos\\DriverDrowsinessDetection\\ServiceLayer\\ServiceLayer.csproj": {
-              "projectPath": "C:\\Users\\emman\\source\\repos\\DriverDrowsinessDetection\\ServiceLayer\\ServiceLayer.csproj"
+            "C:\\Users\\emman\\OneDrive\\Documents\\Visual Studio 2019\\MDP07\\API\\ServiceLayer\\ServiceLayer.csproj": {
+              "projectPath": "C:\\Users\\emman\\OneDrive\\Documents\\Visual Studio 2019\\MDP07\\API\\ServiceLayer\\ServiceLayer.csproj"
             }
           }
         }
