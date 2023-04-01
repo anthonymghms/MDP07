@@ -26,5 +26,10 @@
     <string name="register_phone">Your phone number</string>
     <string name="home_stop_camera">Stop Camera</string>
     <string name="home_start_camera">Start Camera</string>
+    <string name="check_your_email">Check Your Email</string>
+    <string name="email_paragraph">To confirm your email address, we have sent you an email on %s with a link to verify your account.\n\nAfter it\'s confirmed, press the button below.</string>
+    <string name="verify_email">Confirmed</string>
+    <string name="resend_email">Resend Email</string>
+    <string name="chooser_title">Choose your email app</string>
 
 </resources>
