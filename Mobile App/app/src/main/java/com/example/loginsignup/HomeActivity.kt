@@ -39,6 +39,9 @@ class HomeActivity : AppCompatActivity() {
         binding.btnLogout.setOnClickListener {
             startActivity(Intent(this, LoginActivity::class.java))
         }
+        binding.btnMap.setOnClickListener {
+            startActivity(Intent(this, MapViewActivity::class.java))
+        }
     }
 
     private fun requestPermission() {
