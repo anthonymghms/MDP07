@@ -20,3 +20,16 @@ C:\Users\antho\Desktop\MDP07\API\DatabaseMigration\obj\Debug\netcoreapp3.1\Datab
 C:\Users\antho\Desktop\MDP07\API\DatabaseMigration\obj\Debug\netcoreapp3.1\DatabaseMigration.AssemblyInfo.cs
 C:\Users\antho\Desktop\MDP07\API\DatabaseMigration\obj\Debug\netcoreapp3.1\DatabaseMigration.dll
 C:\Users\antho\Desktop\MDP07\API\DatabaseMigration\obj\Debug\netcoreapp3.1\DatabaseMigration.pdb
+C:\Users\emman\OneDrive\Desktop\MDP07\API\DatabaseMigration\bin\Debug\netcoreapp3.1\DatabaseMigration.deps.json
+C:\Users\emman\OneDrive\Desktop\MDP07\API\DatabaseMigration\bin\Debug\netcoreapp3.1\DatabaseMigration.runtimeconfig.json
+C:\Users\emman\OneDrive\Desktop\MDP07\API\DatabaseMigration\bin\Debug\netcoreapp3.1\DatabaseMigration.runtimeconfig.dev.json
+C:\Users\emman\OneDrive\Desktop\MDP07\API\DatabaseMigration\bin\Debug\netcoreapp3.1\DatabaseMigration.dll
+C:\Users\emman\OneDrive\Desktop\MDP07\API\DatabaseMigration\bin\Debug\netcoreapp3.1\DatabaseMigration.pdb
+C:\Users\emman\OneDrive\Desktop\MDP07\API\DatabaseMigration\obj\Debug\netcoreapp3.1\DatabaseMigration.csproj.AssemblyReference.cache
+C:\Users\emman\OneDrive\Desktop\MDP07\API\DatabaseMigration\obj\Debug\netcoreapp3.1\DatabaseMigration.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\emman\OneDrive\Desktop\MDP07\API\DatabaseMigration\obj\Debug\netcoreapp3.1\DatabaseMigration.AssemblyInfoInputs.cache
+C:\Users\emman\OneDrive\Desktop\MDP07\API\DatabaseMigration\obj\Debug\netcoreapp3.1\DatabaseMigration.AssemblyInfo.cs
+C:\Users\emman\OneDrive\Desktop\MDP07\API\DatabaseMigration\obj\Debug\netcoreapp3.1\DatabaseMigration.csproj.CoreCompileInputs.cache
+C:\Users\emman\OneDrive\Desktop\MDP07\API\DatabaseMigration\obj\Debug\netcoreapp3.1\DatabaseMigration.dll
+C:\Users\emman\OneDrive\Desktop\MDP07\API\DatabaseMigration\obj\Debug\netcoreapp3.1\DatabaseMigration.pdb
+C:\Users\emman\OneDrive\Desktop\MDP07\API\DatabaseMigration\obj\Debug\netcoreapp3.1\DatabaseMigration.genruntimeconfig.cache

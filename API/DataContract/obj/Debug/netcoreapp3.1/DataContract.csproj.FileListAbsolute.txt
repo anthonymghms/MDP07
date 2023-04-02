@@ -16,3 +16,13 @@ C:\Users\antho\Desktop\MDP07\API\DataContract\obj\Debug\netcoreapp3.1\DataContra
 C:\Users\antho\Desktop\MDP07\API\DataContract\obj\Debug\netcoreapp3.1\DataContract.AssemblyInfo.cs
 C:\Users\antho\Desktop\MDP07\API\DataContract\obj\Debug\netcoreapp3.1\DataContract.dll
 C:\Users\antho\Desktop\MDP07\API\DataContract\obj\Debug\netcoreapp3.1\DataContract.pdb
+C:\Users\emman\OneDrive\Desktop\MDP07\API\DataContract\bin\Debug\netcoreapp3.1\DataContract.deps.json
+C:\Users\emman\OneDrive\Desktop\MDP07\API\DataContract\bin\Debug\netcoreapp3.1\DataContract.dll
+C:\Users\emman\OneDrive\Desktop\MDP07\API\DataContract\bin\Debug\netcoreapp3.1\DataContract.pdb
+C:\Users\emman\OneDrive\Desktop\MDP07\API\DataContract\obj\Debug\netcoreapp3.1\DataContract.csproj.AssemblyReference.cache
+C:\Users\emman\OneDrive\Desktop\MDP07\API\DataContract\obj\Debug\netcoreapp3.1\DataContract.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\emman\OneDrive\Desktop\MDP07\API\DataContract\obj\Debug\netcoreapp3.1\DataContract.AssemblyInfoInputs.cache
+C:\Users\emman\OneDrive\Desktop\MDP07\API\DataContract\obj\Debug\netcoreapp3.1\DataContract.AssemblyInfo.cs
+C:\Users\emman\OneDrive\Desktop\MDP07\API\DataContract\obj\Debug\netcoreapp3.1\DataContract.csproj.CoreCompileInputs.cache
+C:\Users\emman\OneDrive\Desktop\MDP07\API\DataContract\obj\Debug\netcoreapp3.1\DataContract.dll
+C:\Users\emman\OneDrive\Desktop\MDP07\API\DataContract\obj\Debug\netcoreapp3.1\DataContract.pdb
