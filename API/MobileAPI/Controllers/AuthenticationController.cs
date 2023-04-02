@@ -15,6 +15,8 @@ using Common;
 using ServiceLayer.EmailService;
 using ServiceLayer.Authentication;
 using DatabaseMigration.Model;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace User.Management.API.Controllers
 {
@@ -69,7 +71,7 @@ namespace User.Management.API.Controllers
                     if (!result.Succeeded)
                     {
                         return StatusCode(StatusCodes.Status500InternalServerError,
-                            new Response { Status = "Error", Message = "User failed to create" });
+                            new Response { Status = "Error", Message = result.ToString() });
                     }
                     //Add role to the user....
 
@@ -150,13 +152,6 @@ namespace User.Management.API.Controllers
                 return StatusCode(StatusCodes.Status423Locked,
                  new Response { Status = "Error", Message = $"Your account {user.UserName} is currently locked please wait {user.LockoutEnd - DateTime.Now}" });
             }
-            if (user.AccessFailedCount >= Int32.Parse(_configuration["Limit:MaxWrongPasswordAttempts"]))
-            {
-                await _userManager.SetLockoutEnabledAsync(user, true);
-                await _userManager.SetLockoutEndDateAsync(user, DateTime.Now.AddMinutes(Int32.Parse(_configuration["Limit:MaxWrongPasswordAttempts"])));
-                return StatusCode(StatusCodes.Status423Locked,
-                 new Response { Status = "Error", Message = $"Your account {user.UserName} has been locked please wait {_configuration["Limit:MaxWrongPasswordAttempts"]}" });
-            }
             if (user.TwoFactorEnabled)
             {
                 await _signInManager.SignOutAsync();
@@ -171,6 +166,7 @@ namespace User.Management.API.Controllers
             }
             if (user != null && await _userManager.CheckPasswordAsync(user, request.Password))
             {
+                user.AccessFailedCount = 0;
                 var authClaims = new List<Claim>
                 {
                     new Claim(ClaimTypes.Name, user.UserName),
@@ -185,6 +181,7 @@ namespace User.Management.API.Controllers
 
                 var jwtToken = GetToken(authClaims);
 
+                await _userManager.UpdateAsync(user);
                 return Ok(new
                 {
                     token = new JwtSecurityTokenHandler().WriteToken(jwtToken),
@@ -193,6 +190,13 @@ namespace User.Management.API.Controllers
                 //returning the token...
 
             }
+            if (user.AccessFailedCount >= Int32.Parse(_configuration["Limit:MaxWrongPasswordAttemptsToLock"]))
+            {
+                await _userManager.SetLockoutEnabledAsync(user, true);
+                await _userManager.SetLockoutEndDateAsync(user, DateTime.Now.AddMinutes(Int32.Parse(_configuration["Limit:LockTime"])));
+                return StatusCode(StatusCodes.Status423Locked,
+                 new Response { Status = "Error", Message = $"Your account {user.UserName} has been locked please wait {_configuration["Limit:LockTime"]}" });
+            }
             user.AccessFailedCount += 1;
             await _userManager.UpdateAsync(user);
             return Unauthorized();
@@ -200,6 +204,7 @@ namespace User.Management.API.Controllers
 
         [ApiKeyAuthFilter]
         [HttpPost("Login-2FA")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "User")]
         public async Task<IActionResult> LoginWithOTP(string code, string username)
         {
             var user = await _userManager.FindByNameAsync(username);
@@ -233,6 +238,13 @@ namespace User.Management.API.Controllers
             return StatusCode(StatusCodes.Status404NotFound,
                 new Response { Status = "Success", Message = $"Invalid Code" });
         }
+
+        [HttpGet("Test")]
+        public string test()
+        {
+            return "Success";
+        }
+
 
         private JwtSecurityToken GetToken(List<Claim> authClaims)
         {

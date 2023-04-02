@@ -32,5 +32,5 @@
     <string name="resend_email">Resend Email</string>
     <string name="chooser_title">Choose your email app</string>
     <string name="open_map">Open Map</string>
-
+    <string name="API_KEY">4EBD8459736F407D9697AED213DBDAF6</string>
 </resources>
