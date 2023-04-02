@@ -1,27 +1,21 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\emman\\source\\repos\\DriverDrowsinessDetection\\MobileAPI\\MobileAPI.csproj": {}
+    "C:\\Users\\antho\\Desktop\\MDP07\\API\\MobileAPI\\MobileAPI.csproj": {}
   },
   "projects": {
-    "C:\\Users\\emman\\source\\repos\\DriverDrowsinessDetection\\Common\\Common.csproj": {
+    "C:\\Users\\antho\\Desktop\\MDP07\\API\\Common\\Common.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\emman\\source\\repos\\DriverDrowsinessDetection\\Common\\Common.csproj",
+        "projectUniqueName": "C:\\Users\\antho\\Desktop\\MDP07\\API\\Common\\Common.csproj",
         "projectName": "Common",
-        "projectPath": "C:\\Users\\emman\\source\\repos\\DriverDrowsinessDetection\\Common\\Common.csproj",
-        "packagesPath": "C:\\Users\\emman\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\emman\\source\\repos\\DriverDrowsinessDetection\\Common\\obj\\",
+        "projectPath": "C:\\Users\\antho\\Desktop\\MDP07\\API\\Common\\Common.csproj",
+        "packagesPath": "C:\\Users\\antho\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\antho\\Desktop\\MDP07\\API\\Common\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
-          "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
-        ],
         "configFilePaths": [
-          "C:\\Users\\emman\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+          "C:\\Users\\antho\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "netcoreapp3.1"
@@ -32,7 +26,6 @@
         },
         "frameworks": {
           "netcoreapp3.1": {
-            "targetAlias": "netcoreapp3.1",
             "projectReferences": {}
           }
         },
@@ -44,7 +37,6 @@
       },
       "frameworks": {
         "netcoreapp3.1": {
-          "targetAlias": "netcoreapp3.1",
           "dependencies": {
             "MimeKit": {
               "target": "Package",
@@ -66,28 +58,22 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.406\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.100\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\emman\\source\\repos\\DriverDrowsinessDetection\\DatabaseMigration\\DatabaseMigration.csproj": {
+    "C:\\Users\\antho\\Desktop\\MDP07\\API\\DatabaseMigration\\DatabaseMigration.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\emman\\source\\repos\\DriverDrowsinessDetection\\DatabaseMigration\\DatabaseMigration.csproj",
+        "projectUniqueName": "C:\\Users\\antho\\Desktop\\MDP07\\API\\DatabaseMigration\\DatabaseMigration.csproj",
         "projectName": "DatabaseMigration",
-        "projectPath": "C:\\Users\\emman\\source\\repos\\DriverDrowsinessDetection\\DatabaseMigration\\DatabaseMigration.csproj",
-        "packagesPath": "C:\\Users\\emman\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\emman\\source\\repos\\DriverDrowsinessDetection\\DatabaseMigration\\obj\\",
+        "projectPath": "C:\\Users\\antho\\Desktop\\MDP07\\API\\DatabaseMigration\\DatabaseMigration.csproj",
+        "packagesPath": "C:\\Users\\antho\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\antho\\Desktop\\MDP07\\API\\DatabaseMigration\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
-          "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
-        ],
         "configFilePaths": [
-          "C:\\Users\\emman\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+          "C:\\Users\\antho\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "netcoreapp3.1"
@@ -98,7 +84,6 @@
         },
         "frameworks": {
           "netcoreapp3.1": {
-            "targetAlias": "netcoreapp3.1",
             "projectReferences": {}
           }
         },
@@ -110,7 +95,6 @@
       },
       "frameworks": {
         "netcoreapp3.1": {
-          "targetAlias": "netcoreapp3.1",
           "dependencies": {
             "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
               "target": "Package",
@@ -146,28 +130,22 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.406\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.100\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\emman\\source\\repos\\DriverDrowsinessDetection\\DataContract\\DataContract.csproj": {
+    "C:\\Users\\antho\\Desktop\\MDP07\\API\\DataContract\\DataContract.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\emman\\source\\repos\\DriverDrowsinessDetection\\DataContract\\DataContract.csproj",
+        "projectUniqueName": "C:\\Users\\antho\\Desktop\\MDP07\\API\\DataContract\\DataContract.csproj",
         "projectName": "DataContract",
-        "projectPath": "C:\\Users\\emman\\source\\repos\\DriverDrowsinessDetection\\DataContract\\DataContract.csproj",
-        "packagesPath": "C:\\Users\\emman\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\emman\\source\\repos\\DriverDrowsinessDetection\\DataContract\\obj\\",
+        "projectPath": "C:\\Users\\antho\\Desktop\\MDP07\\API\\DataContract\\DataContract.csproj",
+        "packagesPath": "C:\\Users\\antho\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\antho\\Desktop\\MDP07\\API\\DataContract\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
-          "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
-        ],
         "configFilePaths": [
-          "C:\\Users\\emman\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+          "C:\\Users\\antho\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "netcoreapp3.1"
@@ -178,7 +156,6 @@
         },
         "frameworks": {
           "netcoreapp3.1": {
-            "targetAlias": "netcoreapp3.1",
             "projectReferences": {}
           }
         },
@@ -190,7 +167,6 @@
       },
       "frameworks": {
         "netcoreapp3.1": {
-          "targetAlias": "netcoreapp3.1",
           "imports": [
             "net461",
             "net462",
@@ -206,28 +182,22 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.406\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.100\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\emman\\source\\repos\\DriverDrowsinessDetection\\MobileAPI\\MobileAPI.csproj": {
+    "C:\\Users\\antho\\Desktop\\MDP07\\API\\MobileAPI\\MobileAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\emman\\source\\repos\\DriverDrowsinessDetection\\MobileAPI\\MobileAPI.csproj",
+        "projectUniqueName": "C:\\Users\\antho\\Desktop\\MDP07\\API\\MobileAPI\\MobileAPI.csproj",
         "projectName": "MobileAPI",
-        "projectPath": "C:\\Users\\emman\\source\\repos\\DriverDrowsinessDetection\\MobileAPI\\MobileAPI.csproj",
-        "packagesPath": "C:\\Users\\emman\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\emman\\source\\repos\\DriverDrowsinessDetection\\MobileAPI\\obj\\",
+        "projectPath": "C:\\Users\\antho\\Desktop\\MDP07\\API\\MobileAPI\\MobileAPI.csproj",
+        "packagesPath": "C:\\Users\\antho\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\antho\\Desktop\\MDP07\\API\\MobileAPI\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
-          "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
-        ],
         "configFilePaths": [
-          "C:\\Users\\emman\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+          "C:\\Users\\antho\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "netcoreapp3.1"
@@ -238,19 +208,18 @@
         },
         "frameworks": {
           "netcoreapp3.1": {
-            "targetAlias": "netcoreapp3.1",
             "projectReferences": {
-              "C:\\Users\\emman\\source\\repos\\DriverDrowsinessDetection\\Common\\Common.csproj": {
-                "projectPath": "C:\\Users\\emman\\source\\repos\\DriverDrowsinessDetection\\Common\\Common.csproj"
+              "C:\\Users\\antho\\Desktop\\MDP07\\API\\Common\\Common.csproj": {
+                "projectPath": "C:\\Users\\antho\\Desktop\\MDP07\\API\\Common\\Common.csproj"
               },
-              "C:\\Users\\emman\\source\\repos\\DriverDrowsinessDetection\\DatabaseMigration\\DatabaseMigration.csproj": {
-                "projectPath": "C:\\Users\\emman\\source\\repos\\DriverDrowsinessDetection\\DatabaseMigration\\DatabaseMigration.csproj"
+              "C:\\Users\\antho\\Desktop\\MDP07\\API\\DatabaseMigration\\DatabaseMigration.csproj": {
+                "projectPath": "C:\\Users\\antho\\Desktop\\MDP07\\API\\DatabaseMigration\\DatabaseMigration.csproj"
               },
-              "C:\\Users\\emman\\source\\repos\\DriverDrowsinessDetection\\DataContract\\DataContract.csproj": {
-                "projectPath": "C:\\Users\\emman\\source\\repos\\DriverDrowsinessDetection\\DataContract\\DataContract.csproj"
+              "C:\\Users\\antho\\Desktop\\MDP07\\API\\DataContract\\DataContract.csproj": {
+                "projectPath": "C:\\Users\\antho\\Desktop\\MDP07\\API\\DataContract\\DataContract.csproj"
               },
-              "C:\\Users\\emman\\source\\repos\\DriverDrowsinessDetection\\ServiceLayer\\ServiceLayer.csproj": {
-                "projectPath": "C:\\Users\\emman\\source\\repos\\DriverDrowsinessDetection\\ServiceLayer\\ServiceLayer.csproj"
+              "C:\\Users\\antho\\Desktop\\MDP07\\API\\ServiceLayer\\ServiceLayer.csproj": {
+                "projectPath": "C:\\Users\\antho\\Desktop\\MDP07\\API\\ServiceLayer\\ServiceLayer.csproj"
               }
             }
           }
@@ -263,7 +232,6 @@
       },
       "frameworks": {
         "netcoreapp3.1": {
-          "targetAlias": "netcoreapp3.1",
           "dependencies": {
             "Microsoft.AspNetCore.Authentication.JwtBearer": {
               "target": "Package",
@@ -298,28 +266,22 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.406\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.100\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\emman\\source\\repos\\DriverDrowsinessDetection\\ServiceLayer\\ServiceLayer.csproj": {
+    "C:\\Users\\antho\\Desktop\\MDP07\\API\\ServiceLayer\\ServiceLayer.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\emman\\source\\repos\\DriverDrowsinessDetection\\ServiceLayer\\ServiceLayer.csproj",
+        "projectUniqueName": "C:\\Users\\antho\\Desktop\\MDP07\\API\\ServiceLayer\\ServiceLayer.csproj",
         "projectName": "ServiceLayer",
-        "projectPath": "C:\\Users\\emman\\source\\repos\\DriverDrowsinessDetection\\ServiceLayer\\ServiceLayer.csproj",
-        "packagesPath": "C:\\Users\\emman\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\emman\\source\\repos\\DriverDrowsinessDetection\\ServiceLayer\\obj\\",
+        "projectPath": "C:\\Users\\antho\\Desktop\\MDP07\\API\\ServiceLayer\\ServiceLayer.csproj",
+        "packagesPath": "C:\\Users\\antho\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\antho\\Desktop\\MDP07\\API\\ServiceLayer\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
-          "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
-        ],
         "configFilePaths": [
-          "C:\\Users\\emman\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+          "C:\\Users\\antho\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "netcoreapp3.1"
@@ -330,10 +292,9 @@
         },
         "frameworks": {
           "netcoreapp3.1": {
-            "targetAlias": "netcoreapp3.1",
             "projectReferences": {
-              "C:\\Users\\emman\\source\\repos\\DriverDrowsinessDetection\\Common\\Common.csproj": {
-                "projectPath": "C:\\Users\\emman\\source\\repos\\DriverDrowsinessDetection\\Common\\Common.csproj"
+              "C:\\Users\\antho\\Desktop\\MDP07\\API\\Common\\Common.csproj": {
+                "projectPath": "C:\\Users\\antho\\Desktop\\MDP07\\API\\Common\\Common.csproj"
               }
             }
           }
@@ -346,7 +307,6 @@
       },
       "frameworks": {
         "netcoreapp3.1": {
-          "targetAlias": "netcoreapp3.1",
           "dependencies": {
             "MailKit": {
               "target": "Package",
@@ -376,7 +336,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.406\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.100\\RuntimeIdentifierGraph.json"
         }
       }
     }
