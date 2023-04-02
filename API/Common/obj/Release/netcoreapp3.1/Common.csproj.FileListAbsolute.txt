@@ -1,0 +1,10 @@
+C:\Users\emman\OneDrive\Desktop\MDP07\API\Common\bin\Release\netcoreapp3.1\Common.deps.json
+C:\Users\emman\OneDrive\Desktop\MDP07\API\Common\bin\Release\netcoreapp3.1\Common.dll
+C:\Users\emman\OneDrive\Desktop\MDP07\API\Common\bin\Release\netcoreapp3.1\Common.pdb
+C:\Users\emman\OneDrive\Desktop\MDP07\API\Common\obj\Release\netcoreapp3.1\Common.csproj.AssemblyReference.cache
+C:\Users\emman\OneDrive\Desktop\MDP07\API\Common\obj\Release\netcoreapp3.1\Common.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\emman\OneDrive\Desktop\MDP07\API\Common\obj\Release\netcoreapp3.1\Common.AssemblyInfoInputs.cache
+C:\Users\emman\OneDrive\Desktop\MDP07\API\Common\obj\Release\netcoreapp3.1\Common.AssemblyInfo.cs
+C:\Users\emman\OneDrive\Desktop\MDP07\API\Common\obj\Release\netcoreapp3.1\Common.csproj.CoreCompileInputs.cache
+C:\Users\emman\OneDrive\Desktop\MDP07\API\Common\obj\Release\netcoreapp3.1\Common.dll
+C:\Users\emman\OneDrive\Desktop\MDP07\API\Common\obj\Release\netcoreapp3.1\Common.pdb
