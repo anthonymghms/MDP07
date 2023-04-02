@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace DataContract.Response
+namespace Common
 {
     public class Response
     {

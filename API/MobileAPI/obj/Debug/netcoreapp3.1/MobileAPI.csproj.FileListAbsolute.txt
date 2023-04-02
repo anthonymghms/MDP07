@@ -200,9 +200,9 @@ C:\Users\antho\Desktop\MDP07\API\MobileAPI\obj\Debug\netcoreapp3.1\MobileAPI.Raz
 C:\Users\antho\Desktop\MDP07\API\MobileAPI\obj\Debug\netcoreapp3.1\MobileAPI.csproj.CopyComplete
 C:\Users\antho\Desktop\MDP07\API\MobileAPI\obj\Debug\netcoreapp3.1\MobileAPI.dll
 C:\Users\antho\Desktop\MDP07\API\MobileAPI\obj\Debug\netcoreapp3.1\MobileAPI.pdb
+C:\Users\emman\OneDrive\Desktop\MDP07\API\MobileAPI\bin\Debug\netcoreapp3.1\web.config
 C:\Users\emman\OneDrive\Desktop\MDP07\API\MobileAPI\bin\Debug\netcoreapp3.1\appsettings.Development.json
 C:\Users\emman\OneDrive\Desktop\MDP07\API\MobileAPI\bin\Debug\netcoreapp3.1\appsettings.json
-C:\Users\emman\OneDrive\Desktop\MDP07\API\MobileAPI\bin\Debug\netcoreapp3.1\web.config
 C:\Users\emman\OneDrive\Desktop\MDP07\API\MobileAPI\bin\Debug\netcoreapp3.1\MobileAPI.exe
 C:\Users\emman\OneDrive\Desktop\MDP07\API\MobileAPI\bin\Debug\netcoreapp3.1\MobileAPI.deps.json
 C:\Users\emman\OneDrive\Desktop\MDP07\API\MobileAPI\bin\Debug\netcoreapp3.1\MobileAPI.runtimeconfig.json
