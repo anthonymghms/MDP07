@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Common;
+using System;
 using System.Text;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -7,16 +8,14 @@ using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Extensions.Configuration;
 using DataContract.Request;
-using DataContract.Response;
-using Common;
 using ServiceLayer.EmailService;
 using ServiceLayer.Authentication;
 using DatabaseMigration.Model;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace User.Management.API.Controllers
 {
@@ -41,6 +40,8 @@ namespace User.Management.API.Controllers
             _configuration = configuration;
         }
 
+        #region Endpoints
+
         [ApiKeyAuthFilter]
         [HttpPost("Register")]
         public async Task<IActionResult> Register([FromBody] RegisterUserRequest request, string role)
@@ -61,7 +62,9 @@ namespace User.Management.API.Controllers
                 Email = request.Email,
                 SecurityStamp = Guid.NewGuid().ToString(),
                 UserName = request.Username,
-                TwoFactorEnabled = false
+                TwoFactorEnabled = false,
+                CreationDate = DateTime.Now,
+                LastModifiedDate = DateTime.Now,
             };
             if (await _roleManager.RoleExistsAsync(role))
             {
@@ -74,7 +77,6 @@ namespace User.Management.API.Controllers
                             new Response { Status = "Error", Message = result.ToString() });
                     }
                     //Add role to the user....
-
                     await _userManager.AddToRoleAsync(user, role);
 
                     //Add Token to Verify the email....
@@ -100,27 +102,6 @@ namespace User.Management.API.Controllers
                         new Response { Status = "Error", Message = "This role does not exist." });
             }
 
-
-        }
-        
-        [ApiKeyAuthFilter]
-        [HttpPost("Delete")]
-        public async Task<IActionResult> DeleteUser([FromBody] RegisterUserRequest request)
-        {
-            var user = await _userManager.FindByEmailAsync(request.Email);
-            if (user != null)
-            {
-                var result = await _userManager.DeleteAsync(user);
-                if (!result.Succeeded)
-                {
-                    return StatusCode(StatusCodes.Status500InternalServerError,
-                        new Response { Status = "Error", Message = "Failed to delete user" });
-                }
-                return StatusCode(StatusCodes.Status200OK,
-                new Response { Status = "Success", Message = "User deleted" });
-            }
-            return StatusCode(StatusCodes.Status403Forbidden,
-                new Response { Status = "Error", Message = "User does not exist!" });
 
         }
 
@@ -149,8 +130,9 @@ namespace User.Management.API.Controllers
             var user = await _userManager.FindByNameAsync(request.Username);
             if (await _userManager.IsLockedOutAsync(user))
             {
+                TimeSpan span = (user.LockoutEnd - DateTime.Now).Value;
                 return StatusCode(StatusCodes.Status423Locked,
-                 new Response { Status = "Error", Message = $"Your account {user.UserName} is currently locked please wait {user.LockoutEnd - DateTime.Now}" });
+                 new Response { Status = "Error", Message = $"Your account {user.UserName} is currently locked please wait {span.Minutes} minutes and {span.Seconds} seconds" });
             }
             if (user.TwoFactorEnabled)
             {
@@ -170,6 +152,7 @@ namespace User.Management.API.Controllers
                 var authClaims = new List<Claim>
                 {
                     new Claim(ClaimTypes.Name, user.UserName),
+                    new Claim(ClaimTypes.Email, user.Email),
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 };
                 var userRoles = await _userManager.GetRolesAsync(user);
@@ -177,7 +160,7 @@ namespace User.Management.API.Controllers
                 {
                     authClaims.Add(new Claim(ClaimTypes.Role, role));
                 }
-
+                
 
                 var jwtToken = GetToken(authClaims);
 
@@ -195,7 +178,7 @@ namespace User.Management.API.Controllers
                 await _userManager.SetLockoutEnabledAsync(user, true);
                 await _userManager.SetLockoutEndDateAsync(user, DateTime.Now.AddMinutes(Int32.Parse(_configuration["Limit:LockTime"])));
                 return StatusCode(StatusCodes.Status423Locked,
-                 new Response { Status = "Error", Message = $"Your account {user.UserName} has been locked please wait {_configuration["Limit:LockTime"]}" });
+                 new Response { Status = "Error", Message = $"Your account {user.UserName} has been locked please wait {_configuration["Limit:LockTime"]} minutes" });
             }
             user.AccessFailedCount += 1;
             await _userManager.UpdateAsync(user);
@@ -204,7 +187,6 @@ namespace User.Management.API.Controllers
 
         [ApiKeyAuthFilter]
         [HttpPost("Login-2FA")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "User")]
         public async Task<IActionResult> LoginWithOTP(string code, string username)
         {
             var user = await _userManager.FindByNameAsync(username);
@@ -239,12 +221,27 @@ namespace User.Management.API.Controllers
                 new Response { Status = "Success", Message = $"Invalid Code" });
         }
 
+        #endregion
+
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "User")]
+        [HttpGet("AuthorizeTest")]
+        public string AuthorizeTest()
+        {
+            var identity = HttpContext.User.Identity;
+            if (identity.IsAuthenticated)
+            {
+                return $"Hello, {identity.Name}!";
+            }
+            else
+            {
+                return "Not authenticated.";
+            }
+        }
         [HttpGet("Test")]
-        public string test()
+        public string Test()
         {
             return "Success";
         }
-
 
         private JwtSecurityToken GetToken(List<Claim> authClaims)
         {
