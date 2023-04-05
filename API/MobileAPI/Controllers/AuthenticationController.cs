@@ -16,10 +16,14 @@ using DataContract.Request;
 using ServiceLayer.EmailService;
 using ServiceLayer.Authentication;
 using DatabaseMigration.Model;
+using Microsoft.AspNetCore.Cors;
 
 namespace User.Management.API.Controllers
+
+
 {
-    [Route("api/auth/")]
+    [EnableCors("AllowAll")]
+    [Route("/api/auth")]
     [ApiController]
     public class AuthenticationController : ControllerBase
     {
@@ -126,6 +130,8 @@ namespace User.Management.API.Controllers
         [HttpPost("Login")]
         public async Task<IActionResult> Login([FromBody] LoginUserRequest request)
         {
+            return StatusCode(StatusCodes.Status200OK,
+ new Response { Status = "Success", Message ="miaw" });
             // Could do the Lockout through time or through time.........
             var user = await _userManager.FindByNameAsync(request.Username);
             if (await _userManager.IsLockedOutAsync(user))
@@ -237,7 +243,8 @@ namespace User.Management.API.Controllers
                 return "Not authenticated.";
             }
         }
-        [HttpGet("Test")]
+
+        [HttpPost("Test")]
         public string Test()
         {
             return "Success";

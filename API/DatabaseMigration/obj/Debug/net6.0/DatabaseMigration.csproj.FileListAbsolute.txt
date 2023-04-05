@@ -1,0 +1,14 @@
+C:\Users\antho\Desktop\MDP07\API\DatabaseMigration\bin\Debug\net6.0\DatabaseMigration.deps.json
+C:\Users\antho\Desktop\MDP07\API\DatabaseMigration\bin\Debug\net6.0\DatabaseMigration.runtimeconfig.json
+C:\Users\antho\Desktop\MDP07\API\DatabaseMigration\bin\Debug\net6.0\DatabaseMigration.dll
+C:\Users\antho\Desktop\MDP07\API\DatabaseMigration\bin\Debug\net6.0\DatabaseMigration.pdb
+C:\Users\antho\Desktop\MDP07\API\DatabaseMigration\obj\Debug\net6.0\DatabaseMigration.csproj.AssemblyReference.cache
+C:\Users\antho\Desktop\MDP07\API\DatabaseMigration\obj\Debug\net6.0\DatabaseMigration.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\antho\Desktop\MDP07\API\DatabaseMigration\obj\Debug\net6.0\DatabaseMigration.AssemblyInfoInputs.cache
+C:\Users\antho\Desktop\MDP07\API\DatabaseMigration\obj\Debug\net6.0\DatabaseMigration.AssemblyInfo.cs
+C:\Users\antho\Desktop\MDP07\API\DatabaseMigration\obj\Debug\net6.0\DatabaseMigration.csproj.CoreCompileInputs.cache
+C:\Users\antho\Desktop\MDP07\API\DatabaseMigration\obj\Debug\net6.0\DatabaseMigration.dll
+C:\Users\antho\Desktop\MDP07\API\DatabaseMigration\obj\Debug\net6.0\refint\DatabaseMigration.dll
+C:\Users\antho\Desktop\MDP07\API\DatabaseMigration\obj\Debug\net6.0\DatabaseMigration.pdb
+C:\Users\antho\Desktop\MDP07\API\DatabaseMigration\obj\Debug\net6.0\DatabaseMigration.genruntimeconfig.cache
+C:\Users\antho\Desktop\MDP07\API\DatabaseMigration\obj\Debug\net6.0\ref\DatabaseMigration.dll

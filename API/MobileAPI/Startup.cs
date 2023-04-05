@@ -19,7 +19,8 @@ using Common;
 using DatabaseMigration.Model;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-
+using System.Reflection;
+using Microsoft.OpenApi.Models;
 namespace MobileAPI
 {
     public class Startup
@@ -34,6 +35,8 @@ namespace MobileAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSwaggerGen(x => x.SwaggerDoc("v1", new OpenApiInfo { Title = "RoadGuard", Version = "v1" }));
+
             services.AddControllers();
 
             //For Db
@@ -67,6 +70,7 @@ namespace MobileAPI
                 };
             });
 
+
             // For Required email
             services.Configure<IdentityOptions>(opts => opts.SignIn.RequireConfirmedEmail = true);
 
@@ -74,28 +78,41 @@ namespace MobileAPI
             var emailConfig = Configuration.GetSection("EmailConfiguration").Get<EmailConfiguration>();
             services.AddSingleton(emailConfig);
             services.AddScoped<IEmailService, EmailService>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                
             }
 
             app.UseHttpsRedirection();
 
-            app.UseRouting();
-
             app.UseAuthentication();
 
+            app.UseRouting();
+
             app.UseAuthorization();
+
+            app.UseCors(builder =>
+            {
+                builder.AllowAnyOrigin()
+                       .AllowAnyMethod()
+                       .AllowAnyHeader();
+            });
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
+
+
+            app.UseDeveloperExceptionPage();
         }
     }
 }
