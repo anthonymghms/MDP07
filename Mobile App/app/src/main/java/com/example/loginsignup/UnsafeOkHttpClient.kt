@@ -7,9 +7,13 @@ import java.security.cert.X509Certificate
 import javax.net.ssl.SSLContext
 import javax.net.ssl.TrustManager
 import javax.net.ssl.X509TrustManager
+import android.content.Intent
+import android.content.res.Resources
+import androidx.appcompat.app.AppCompatActivity
+import org.json.JSONObject
 
 
-class HTTPRequest {
+class HTTPRequest : AppCompatActivity() {
 
     val privateClient: OkHttpClient = unSafeOkHttpClient().build()
 
@@ -54,25 +58,27 @@ class HTTPRequest {
         })
     }
 
-    fun post(url: String, jsonBody: String,apiKey: String) {
+    fun post(url: String, jsonBody: String, callback: ResponseCallback) {
         val body: RequestBody = RequestBody.create(
-            MediaType.parse("application/json"), jsonBody
+            MediaType.parse("application/json; charset=utf-8"), jsonBody
         )
+
         val request = Request.Builder()
-            .header("X-Api-Key", apiKey)
+            .addHeader("X-Api-Key", "4EBD8459736F407D9697AED213DBDAF6")
             .url(url)
             .post(body)
             .build()
-        println(body)
 
-        privateClient.newCall(request).enqueue(object : Callback {
+        val client = OkHttpClient()
 
+        client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
-                e.printStackTrace()
+                callback.onFailure(e)
             }
 
-            override fun onResponse(call: Call, response: Response) =
-                println(response.body()?.string())
+            override fun onResponse(call: Call, response: Response) {
+                response.body()?.string()?.let { callback.onSuccess(it) }
+            }
         })
     }
 }

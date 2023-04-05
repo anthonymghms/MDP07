@@ -50,14 +50,20 @@ namespace User.Management.API.Controllers
         [HttpPost("Register")]
         public async Task<IActionResult> Register([FromBody] RegisterUserRequest request, string role)
         {
-            //Check User Exist 
-            var userExist = await _userManager.FindByEmailAsync(request.Email);
-            if (userExist != null)
+            //Check User Exist
+            try
             {
-                return StatusCode(StatusCodes.Status403Forbidden,
-                    new Response { Status = "Error", Message = "User already exists!" });
+                var userExist = await _userManager.FindByEmailAsync(request.Email);
+                if (userExist != null)
+                {
+                    return StatusCode(StatusCodes.Status403Forbidden,
+                        new Response { Status = "Error", Message = "User already exists!" });
+                }
+            } catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                        new Response { Status = "Error", Message = ex.Message });
             }
-
             //Add the User in the database
             AppUser user = new AppUser
             {
@@ -130,8 +136,6 @@ namespace User.Management.API.Controllers
         [HttpPost("Login")]
         public async Task<IActionResult> Login([FromBody] LoginUserRequest request)
         {
-            return StatusCode(StatusCodes.Status200OK,
- new Response { Status = "Success", Message ="miaw" });
             // Could do the Lockout through time or through time.........
             var user = await _userManager.FindByNameAsync(request.Username);
             if (await _userManager.IsLockedOutAsync(user))
@@ -188,7 +192,8 @@ namespace User.Management.API.Controllers
             }
             user.AccessFailedCount += 1;
             await _userManager.UpdateAsync(user);
-            return Unauthorized();
+            return StatusCode(StatusCodes.Status401Unauthorized,
+                 new Response { Status = "Error", Message = $"Wrong username or password" });
         }
 
         [ApiKeyAuthFilter]

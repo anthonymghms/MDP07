@@ -33,4 +33,6 @@
     <string name="chooser_title">Choose your email app</string>
     <string name="open_map">Open Map</string>
     <string name="API_KEY">4EBD8459736F407D9697AED213DBDAF6</string>
+    <string name="website_url">https://roadguard.azurewebsites.net</string>
+    <string name="tv_login_error" />
 </resources>
