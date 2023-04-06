@@ -1,14 +1,9 @@
-package com.example.loginsignup
+package com.example.roadguard
 
-import android.content.ActivityNotFoundException
-import android.content.ComponentName
-import android.content.Intent
-import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.TextView
-import android.widget.Toast
-import com.example.loginsignup.databinding.ActivityEmailVerificationBinding
+import com.example.roadguard.databinding.ActivityEmailVerificationBinding
 
 class EmailVerificationActivity : AppCompatActivity() {
 

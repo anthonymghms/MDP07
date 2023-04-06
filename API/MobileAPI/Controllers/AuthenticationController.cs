@@ -17,6 +17,7 @@ using ServiceLayer.EmailService;
 using ServiceLayer.Authentication;
 using DatabaseMigration.Model;
 using Microsoft.AspNetCore.Cors;
+using DatabaseMigration;
 
 namespace User.Management.API.Controllers
 
@@ -115,6 +116,27 @@ namespace User.Management.API.Controllers
 
         }
 
+        [ApiKeyAuthFilter]
+        [HttpGet("SendConfirmationEmail")]
+        public async Task<IActionResult> SendConfirmationEmail(string email)
+        {
+            try
+            {
+                var user = await _userManager.FindByEmailAsync(email);
+                var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                var confirmationLink = Url.Action(nameof(ConfirmEmail), "Authentication", new { token, email = user.Email }, Request.Scheme);
+                var message = new Message(new string[] { user.Email! }, "Confirmation email link", confirmationLink!);
+                _emailService.SendEmail(message);
+                return StatusCode(StatusCodes.Status200OK,
+                    new Response { Status = "Success", Message = $"Email sent to \'{user.Email}\' successfully" });
+            }
+            catch
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                        new Response { Status = "Error", Message = "An error has occured" });
+            }
+        }
+
         [HttpGet("ConfirmEmail")]
         public async Task<IActionResult> ConfirmEmail(string token, string email)
         {
@@ -138,6 +160,11 @@ namespace User.Management.API.Controllers
         {
             // Could do the Lockout through time or through time.........
             var user = await _userManager.FindByNameAsync(request.Username);
+            if (!await _userManager.IsEmailConfirmedAsync(user))
+            {
+                return StatusCode(StatusCodes.Status401Unauthorized,
+                 new Response { Status = "Error", Message = $"Please confirm your email by clicking the link sent to {HalfHiddenEmail(user.Email)}" });
+            }
             if (await _userManager.IsLockedOutAsync(user))
             {
                 TimeSpan span = (user.LockoutEnd - DateTime.Now).Value;
@@ -234,6 +261,37 @@ namespace User.Management.API.Controllers
 
         #endregion
 
+        #region Private Methods
+
+        private JwtSecurityToken GetToken(List<Claim> authClaims)
+        {
+            var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"]));
+
+            var token = new JwtSecurityToken(
+                issuer: _configuration["JWT:ValidIssuer"],
+                audience: _configuration["JWT:ValidAudience"],
+                expires: DateTime.Now.AddDays(2),
+                claims: authClaims,
+                signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
+                );
+
+            return token;
+        }
+
+        private string HalfHiddenEmail(string email)
+        {
+            int atIndex = email.IndexOf('@');
+            int hiddenChars = atIndex / 2;
+
+            string hiddenEmail = new string('*', 2) + email.Substring(hiddenChars);
+
+            return hiddenEmail;
+        }
+
+        #endregion
+
+        #region Tests
+
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "User")]
         [HttpGet("AuthorizeTest")]
         public string AuthorizeTest()
@@ -255,20 +313,7 @@ namespace User.Management.API.Controllers
             return "Success";
         }
 
-        private JwtSecurityToken GetToken(List<Claim> authClaims)
-        {
-            var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"]));
-
-            var token = new JwtSecurityToken(
-                issuer: _configuration["JWT:ValidIssuer"],
-                audience: _configuration["JWT:ValidAudience"],
-                expires: DateTime.Now.AddDays(2),
-                claims: authClaims,
-                signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
-                );
-
-            return token;
-        }
+        #endregion
 
 
     }

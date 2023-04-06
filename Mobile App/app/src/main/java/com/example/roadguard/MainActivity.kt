@@ -1,9 +1,9 @@
-package com.example.loginsignup
+package com.example.roadguard
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.example.loginsignup.databinding.ActivityMainBinding
+import com.example.roadguard.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 

@@ -1,4 +1,4 @@
-package com.example.loginsignup
+package com.example.roadguard
 
 import okhttp3.*
 import java.io.IOException
@@ -55,7 +55,7 @@ class HTTPRequest : AppCompatActivity() {
         })
     }
 
-    fun post(url: String, jsonBody: String, callback: ResponseCallback, queryParams: Map<String, String>?) {
+    fun post(url: String, jsonBody: String, callback: ResponseCallback, queryParams: Map<String, String>? = null) {
         val body: RequestBody = RequestBody.create(
             MediaType.parse("application/json; charset=utf-8"), jsonBody
         )
@@ -72,7 +72,7 @@ class HTTPRequest : AppCompatActivity() {
 
         val request = Request.Builder()
             .addHeader("X-Api-Key", "4EBD8459736F407D9697AED213DBDAF6")
-            .url(url)
+            .url(httpUrlBuilder?.build()!!)
             .post(body)
             .build()
 

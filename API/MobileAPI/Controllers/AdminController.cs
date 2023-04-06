@@ -11,6 +11,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Common;
+using DatabaseMigration;
+using Microsoft.EntityFrameworkCore;
 
 namespace MobileAPI.Controllers
 {
@@ -23,16 +25,19 @@ namespace MobileAPI.Controllers
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IEmailService _emailService;
         private readonly IConfiguration _configuration;
+        private readonly DrowsinessDetectionContext _drowsinessDetectionContext;
 
         public AdminController(UserManager<AppUser> userManager,
             RoleManager<IdentityRole> roleManager, IEmailService emailService,
-            SignInManager<AppUser> signInManager, IConfiguration configuration)
+            SignInManager<AppUser> signInManager, IConfiguration configuration,
+            DrowsinessDetectionContext drowsinessDetectionContext)
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _signInManager = signInManager;
             _emailService = emailService;
             _configuration = configuration;
+            _drowsinessDetectionContext = drowsinessDetectionContext;
         }
         [ApiKeyAuthFilter]
         [HttpPost("DeleteUser")]
@@ -53,6 +58,22 @@ namespace MobileAPI.Controllers
             return StatusCode(StatusCodes.Status403Forbidden,
                 new Response { Status = "Error", Message = "User does not exist!" });
 
+        }
+        [ApiKeyAuthFilter]
+        [HttpPost("PurgeAllUsers")]
+        public IActionResult PurgeAllUsers()
+        {
+            var users = _drowsinessDetectionContext.Users;
+            _drowsinessDetectionContext.RemoveRange(users);
+            _drowsinessDetectionContext.SaveChanges();
+            return StatusCode(StatusCodes.Status200OK,
+                new Response { Status = "Success", Message = "Users purged Successfully" });
+        }
+        [HttpGet("Test")]
+        public IActionResult Test()
+        {
+            return StatusCode(StatusCodes.Status200OK,
+                new Response { Status = "Success", Message = "Admin API working" });
         }
     }
 }

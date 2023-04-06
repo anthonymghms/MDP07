@@ -1,12 +1,12 @@
-package com.example.loginsignup
+package com.example.roadguard
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.TextView
-import com.example.loginsignup.databinding.ActivityRegisterBinding
+import com.example.roadguard.databinding.ActivityRegisterBinding
 import org.json.JSONObject
-import com.example.loginsignup.HTTPRequest as HTTPRequest
+import com.example.roadguard.HTTPRequest as HTTPRequest
 
 
 class RegisterActivity : AppCompatActivity(), ResponseCallback {

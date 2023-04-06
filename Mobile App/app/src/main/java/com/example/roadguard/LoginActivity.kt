@@ -1,10 +1,10 @@
-package com.example.loginsignup
+package com.example.roadguard
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.TextView
-import com.example.loginsignup.databinding.ActivityLoginBinding
+import com.example.roadguard.databinding.ActivityLoginBinding
 import org.json.JSONObject
 
 class LoginActivity : AppCompatActivity(), ResponseCallback {
@@ -25,7 +25,7 @@ class LoginActivity : AppCompatActivity(), ResponseCallback {
             val username = binding.etEmail.text.toString()
             val password = binding.etPassword.text.toString()
             val jsonLoginRequest = "{\"username\":\"$username\",\"password\":\"$password\"}"
-            client.post("https://roadguard.azurewebsites.net/api/auth/login",jsonLoginRequest, this, null)
+            client.post("https://roadguard.azurewebsites.net/api/auth/login",jsonLoginRequest, this)
         }
 
 
@@ -42,8 +42,9 @@ class LoginActivity : AppCompatActivity(), ResponseCallback {
                     runOnUiThread {
                         tvError.visibility = android.view.View.GONE
                     }
+                    val token = jsonObject.getString(it)
+                    SharedPrefsHelper.saveToken(this, token)
                     val intent = Intent(this, HomeActivity::class.java)
-                    intent.putExtra("token", jsonObject.getString(it))
                     startActivity(intent)
                 }
                 "message" -> {

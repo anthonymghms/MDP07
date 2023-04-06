@@ -1,4 +1,4 @@
-package com.example.loginsignup
+package com.example.roadguard
 
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -14,12 +14,9 @@ import androidx.camera.core.CameraSelector
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
-import com.example.loginsignup.databinding.ActivityHomeBinding
-import com.example.loginsignup.databinding.ActivityRegisterBinding
-import java.util.concurrent.Executor
+import com.example.roadguard.databinding.ActivityHomeBinding
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
-import kotlin.properties.Delegates
 
 
 class HomeActivity : AppCompatActivity() {
