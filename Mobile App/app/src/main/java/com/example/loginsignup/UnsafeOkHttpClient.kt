@@ -7,10 +7,7 @@ import java.security.cert.X509Certificate
 import javax.net.ssl.SSLContext
 import javax.net.ssl.TrustManager
 import javax.net.ssl.X509TrustManager
-import android.content.Intent
-import android.content.res.Resources
 import androidx.appcompat.app.AppCompatActivity
-import org.json.JSONObject
 
 
 class HTTPRequest : AppCompatActivity() {
@@ -58,10 +55,20 @@ class HTTPRequest : AppCompatActivity() {
         })
     }
 
-    fun post(url: String, jsonBody: String, callback: ResponseCallback) {
+    fun post(url: String, jsonBody: String, callback: ResponseCallback, queryParams: Map<String, String>?) {
         val body: RequestBody = RequestBody.create(
             MediaType.parse("application/json; charset=utf-8"), jsonBody
         )
+
+        val httpUrlBuilder = HttpUrl.parse(url)?.newBuilder()
+
+        if (httpUrlBuilder != null) {
+            if (queryParams != null) {
+                for (param in queryParams) {
+                    httpUrlBuilder.addQueryParameter(param.key, param.value)
+                }
+            }
+        }
 
         val request = Request.Builder()
             .addHeader("X-Api-Key", "4EBD8459736F407D9697AED213DBDAF6")

@@ -4,9 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.TextView
-import android.widget.Toast
 import com.example.loginsignup.databinding.ActivityLoginBinding
-import kotlinx.coroutines.delay
 import org.json.JSONObject
 
 class LoginActivity : AppCompatActivity(), ResponseCallback {
@@ -27,7 +25,7 @@ class LoginActivity : AppCompatActivity(), ResponseCallback {
             val username = binding.etEmail.text.toString()
             val password = binding.etPassword.text.toString()
             val jsonLoginRequest = "{\"username\":\"$username\",\"password\":\"$password\"}"
-            client.post("https://roadguard.azurewebsites.net/api/auth/login",jsonLoginRequest, this)
+            client.post("https://roadguard.azurewebsites.net/api/auth/login",jsonLoginRequest, this, null)
         }
 
 
