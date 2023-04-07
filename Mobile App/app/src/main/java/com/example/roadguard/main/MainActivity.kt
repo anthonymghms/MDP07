@@ -3,7 +3,6 @@ package com.example.roadguard.main
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.example.roadguard.SettingsActivity
 import com.example.roadguard.authentication.LoginActivity
 import com.example.roadguard.authentication.RegisterActivity
 import com.example.roadguard.databinding.ActivityMainBinding

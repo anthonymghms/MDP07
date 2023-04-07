@@ -28,7 +28,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:fontFamily="@font/montserrat"
-        android:lineHeight="20sp"
+        app:lineHeight="20sp"
         android:text="@string/started_sub_title"
         android:textColor="@color/white"
         android:textSize="14sp"
