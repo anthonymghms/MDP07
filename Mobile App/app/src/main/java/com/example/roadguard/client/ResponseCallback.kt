@@ -1,4 +1,4 @@
-package com.example.roadguard
+package com.example.roadguard.client
 
 interface ResponseCallback {
     fun onSuccess(response: String)

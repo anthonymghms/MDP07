@@ -1,4 +1,4 @@
-package com.example.roadguard
+package com.example.roadguard.client
 
 import okhttp3.*
 import java.io.IOException

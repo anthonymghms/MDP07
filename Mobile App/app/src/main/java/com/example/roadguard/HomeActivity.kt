@@ -14,6 +14,7 @@ import androidx.camera.core.CameraSelector
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
+import com.example.roadguard.authentication.LoginActivity
 import com.example.roadguard.databinding.ActivityHomeBinding
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors

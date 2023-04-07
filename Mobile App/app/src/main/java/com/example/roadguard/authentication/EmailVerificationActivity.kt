@@ -1,8 +1,9 @@
-package com.example.roadguard
+package com.example.roadguard.authentication
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.TextView
+import com.example.roadguard.R
 import com.example.roadguard.databinding.ActivityEmailVerificationBinding
 
 class EmailVerificationActivity : AppCompatActivity() {

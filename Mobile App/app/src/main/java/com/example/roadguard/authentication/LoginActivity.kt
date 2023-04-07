@@ -1,9 +1,13 @@
-package com.example.roadguard
+package com.example.roadguard.authentication
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.TextView
+import com.example.roadguard.*
+import com.example.roadguard.client.HTTPRequest
+import com.example.roadguard.client.ResponseCallback
+import com.example.roadguard.sharedPrefs.SharedPrefsHelper
 import com.example.roadguard.databinding.ActivityLoginBinding
 import org.json.JSONObject
 
@@ -30,7 +34,7 @@ class LoginActivity : AppCompatActivity(), ResponseCallback {
 
 
         binding.tvHaventAccount.setOnClickListener {
-            startActivity(Intent(this,RegisterActivity::class.java))
+            startActivity(Intent(this, RegisterActivity::class.java))
         }
     }
 

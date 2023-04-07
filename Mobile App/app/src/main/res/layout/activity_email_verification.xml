@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".EmailVerificationActivity">
+    tools:context=".authentication.EmailVerificationActivity">
 
 
     <ImageView
@@ -48,7 +48,7 @@
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_verify"
-        style="@style/ButtonGreen"
+        style="@style/ButtonAdaptive"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/verify_email"
