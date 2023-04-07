@@ -36,4 +36,5 @@
     <string name="website_url">https://roadguard.azurewebsites.net</string>
     <string name="tv_login_error" />
     <string name="tv_register_error" />
+    <string name="btn_settings">Settings</string>
 </resources>
