@@ -158,7 +158,6 @@ namespace User.Management.API.Controllers
         [HttpPost("Login")]
         public async Task<IActionResult> Login([FromBody] LoginUserRequest request)
         {
-            // Could do the Lockout through time or through time.........
             var user = await _userManager.FindByNameAsync(request.Username);
             if (user != null && await _userManager.IsLockedOutAsync(user))
             {
@@ -182,6 +181,7 @@ namespace User.Management.API.Controllers
             {
                 if (!await _userManager.IsEmailConfirmedAsync(user))
                 {
+                    _ = await SendConfirmationEmail(user.Email);
                     return StatusCode(StatusCodes.Status401Unauthorized,
                      new Response { Status = "Error", Message = $"Please confirm your email by clicking the link sent to {HalfHiddenEmail(user.Email)}" });
                 }
