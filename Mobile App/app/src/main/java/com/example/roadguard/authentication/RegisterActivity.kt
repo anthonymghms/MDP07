@@ -36,13 +36,13 @@ class RegisterActivity : AppCompatActivity(), ResponseCallback {
         tvError.visibility = android.view.View.GONE
 
         binding.btnRegister.setOnClickListener {
-            emailAddress = binding.etEmail.text.toString()
-            password = binding.etPassword.text.toString()
-            confirmPassword = binding.etConfirmPassword.text.toString()
-            firstName = binding.etFirstName.text.toString()
-            lastName = binding.etLastName.text.toString()
-            phoneNumber = binding.etPhone.text.toString()
-            username = binding.etUsername.text.toString()
+            emailAddress = binding.etEmail.text.toString().trim()
+            password = binding.etPassword.text.toString().trim()
+            confirmPassword = binding.etConfirmPassword.text.toString().trim()
+            firstName = binding.etFirstName.text.toString().trim()
+            lastName = binding.etLastName.text.toString().trim()
+            phoneNumber = binding.etPhone.text.toString().trim()
+            username = binding.etUsername.text.toString().trim()
             when {
                 password != confirmPassword -> {
                     tvError.visibility = android.view.View.VISIBLE

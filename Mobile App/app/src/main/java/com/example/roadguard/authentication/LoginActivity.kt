@@ -26,8 +26,8 @@ class LoginActivity : AppCompatActivity(), ResponseCallback {
         tvError.visibility = android.view.View.GONE
 
         binding.btnLogin.setOnClickListener {
-            val username = binding.etEmail.text.toString()
-            val password = binding.etPassword.text.toString()
+            val username = binding.etEmail.text.toString().trim()
+            val password = binding.etPassword.text.toString().trim()
             val jsonLoginRequest = "{\"username\":\"$username\",\"password\":\"$password\"}"
             client.post("https://roadguard.azurewebsites.net/api/auth/login",jsonLoginRequest, this)
         }

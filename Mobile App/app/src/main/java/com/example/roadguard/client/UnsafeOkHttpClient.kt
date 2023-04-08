@@ -1,5 +1,6 @@
 package com.example.roadguard.client
 
+import android.util.Log
 import okhttp3.*
 import java.io.IOException
 import java.security.SecureRandom
@@ -60,32 +61,41 @@ class HTTPRequest : AppCompatActivity() {
             MediaType.parse("application/json; charset=utf-8"), jsonBody
         )
 
-        val httpUrlBuilder = HttpUrl.parse(url)?.newBuilder()
+        val httpUrl = HttpUrl.parse(url)
 
-        if (httpUrlBuilder != null) {
+        if (httpUrl != null) {
+            val httpUrlBuilder = httpUrl.newBuilder()
+
             if (queryParams != null) {
                 for (param in queryParams) {
                     httpUrlBuilder.addQueryParameter(param.key, param.value)
                 }
             }
+
+            val request = Request.Builder()
+                .addHeader("X-Api-Key", "4EBD8459736F407D9697AED213DBDAF6")
+                .url(httpUrlBuilder.build())
+                .post(body)
+                .build()
+
+            val client = OkHttpClient()
+
+            client.newCall(request).enqueue(object : Callback {
+                override fun onFailure(call: Call, e: IOException) {
+                    callback.onFailure(e)
+                }
+
+                override fun onResponse(call: Call, response: Response) {
+                    if (response.isSuccessful) {
+                        response.body()?.string()?.let { callback.onSuccess(it) }
+                    } else {
+                        callback.onFailure(IOException("Unexpected response code: ${response.code()}"))
+                    }
+                }
+            })
+        } else {
+            Log.e("PostFunction", "Invalid URL: $url")
         }
-
-        val request = Request.Builder()
-            .addHeader("X-Api-Key", "4EBD8459736F407D9697AED213DBDAF6")
-            .url(httpUrlBuilder?.build()!!)
-            .post(body)
-            .build()
-
-        val client = OkHttpClient()
-
-        client.newCall(request).enqueue(object : Callback {
-            override fun onFailure(call: Call, e: IOException) {
-                callback.onFailure(e)
-            }
-
-            override fun onResponse(call: Call, response: Response) {
-                response.body()?.string()?.let { callback.onSuccess(it) }
-            }
-        })
     }
+
 }
