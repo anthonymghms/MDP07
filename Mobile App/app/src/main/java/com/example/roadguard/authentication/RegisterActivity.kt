@@ -77,6 +77,7 @@ class RegisterActivity : AppCompatActivity(), ResponseCallback {
                             }
                             val intent = Intent(this, EmailVerificationActivity::class.java)
                             intent.putExtra("email", emailAddress)
+                            intent.putExtra("username", username)
                             startActivity(intent)
                         }
                     }

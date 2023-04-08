@@ -42,19 +42,40 @@ class HTTPRequest : AppCompatActivity() {
         }
     }
 
-    fun get(url: String) {
-        val request = Request.Builder()
-            .url(url)
-            .build()
+    fun get(url: String, queryParams: Map<String, String>? = null , callback: ResponseCallback) {
+        val httpUrl = HttpUrl.parse(url)
 
-        privateClient.newCall(request).enqueue(object : Callback {
-            override fun onFailure(call: Call, e: IOException) {
-                e.printStackTrace()
+        if (httpUrl != null) {
+            val httpUrlBuilder = httpUrl.newBuilder()
+
+            if (queryParams != null) {
+                for (param in queryParams) {
+                    httpUrlBuilder.addQueryParameter(param.key, param.value)
+                }
             }
 
-            override fun onResponse(call: Call, response: Response) = println(response.body()?.string())
-        })
+            val request = Request.Builder()
+                .addHeader("X-Api-Key", "4EBD8459736F407D9697AED213DBDAF6")
+                .url(httpUrlBuilder.build())
+                .build()
+
+            privateClient.newCall(request).enqueue(object : Callback {
+                override fun onFailure(call: Call, e: IOException) {
+                    e.printStackTrace()
+                }
+
+                override fun onResponse(call: Call, response: Response) {
+                    if (response.isSuccessful || response.code() == 423 || response.code() == 401 || response.code() == 403) {
+                        response.body()?.string()?.let { callback.onSuccess(it) }
+                    } else {
+                        callback.onFailure(IOException("Unexpected response code: ${response.code()}"))
+                    }
+                }            })
+        } else {
+            Log.e("GetFunction", "Invalid URL: $url")
+        }
     }
+
 
     fun post(url: String, jsonBody: String, callback: ResponseCallback, queryParams: Map<String, String>? = null) {
         val body: RequestBody = RequestBody.create(
@@ -86,7 +107,7 @@ class HTTPRequest : AppCompatActivity() {
                 }
 
                 override fun onResponse(call: Call, response: Response) {
-                    if (response.isSuccessful) {
+                    if (response.isSuccessful || response.code() == 423 || response.code() == 401 || response.code() == 403) {
                         response.body()?.string()?.let { callback.onSuccess(it) }
                     } else {
                         callback.onFailure(IOException("Unexpected response code: ${response.code()}"))
