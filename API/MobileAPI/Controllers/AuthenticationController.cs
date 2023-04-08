@@ -160,18 +160,13 @@ namespace User.Management.API.Controllers
         {
             // Could do the Lockout through time or through time.........
             var user = await _userManager.FindByNameAsync(request.Username);
-            if (!await _userManager.IsEmailConfirmedAsync(user))
-            {
-                return StatusCode(StatusCodes.Status401Unauthorized,
-                 new Response { Status = "Error", Message = $"Please confirm your email by clicking the link sent to {HalfHiddenEmail(user.Email)}" });
-            }
-            if (await _userManager.IsLockedOutAsync(user))
+            if (user != null && await _userManager.IsLockedOutAsync(user))
             {
                 TimeSpan span = (user.LockoutEnd - DateTime.Now).Value;
                 return StatusCode(StatusCodes.Status423Locked,
                  new Response { Status = "Error", Message = $"Your account {user.UserName} is currently locked please wait {span.Minutes} minutes and {span.Seconds} seconds" });
             }
-            if (user.TwoFactorEnabled)
+            if (user != null && user.TwoFactorEnabled)
             {
                 await _signInManager.SignOutAsync();
                 await _signInManager.PasswordSignInAsync(user, request.Password, false, true);
@@ -185,6 +180,11 @@ namespace User.Management.API.Controllers
             }
             if (user != null && await _userManager.CheckPasswordAsync(user, request.Password))
             {
+                if (!await _userManager.IsEmailConfirmedAsync(user))
+                {
+                    return StatusCode(StatusCodes.Status401Unauthorized,
+                     new Response { Status = "Error", Message = $"Please confirm your email by clicking the link sent to {HalfHiddenEmail(user.Email)}" });
+                }
                 user.AccessFailedCount = 0;
                 var authClaims = new List<Claim>
                 {
@@ -210,15 +210,18 @@ namespace User.Management.API.Controllers
                 //returning the token...
 
             }
-            if (user.AccessFailedCount >= Int32.Parse(_configuration["Limit:MaxWrongPasswordAttemptsToLock"]))
+            if (user != null && user.AccessFailedCount >= Int32.Parse(_configuration["Limit:MaxWrongPasswordAttemptsToLock"]))
             {
                 await _userManager.SetLockoutEnabledAsync(user, true);
                 await _userManager.SetLockoutEndDateAsync(user, DateTime.Now.AddMinutes(Int32.Parse(_configuration["Limit:LockTime"])));
                 return StatusCode(StatusCodes.Status423Locked,
                  new Response { Status = "Error", Message = $"Your account {user.UserName} has been locked please wait {_configuration["Limit:LockTime"]} minutes" });
             }
-            user.AccessFailedCount += 1;
-            await _userManager.UpdateAsync(user);
+            if (user != null)
+            {
+                user.AccessFailedCount += 1;
+                await _userManager.UpdateAsync(user);
+            }
             return StatusCode(StatusCodes.Status401Unauthorized,
                  new Response { Status = "Error", Message = $"Wrong username or password" });
         }
