@@ -118,11 +118,11 @@ namespace User.Management.API.Controllers
 
         [ApiKeyAuthFilter]
         [HttpGet("SendConfirmationEmail")]
-        public async Task<IActionResult> SendConfirmationEmail(string email)
+        public async Task<IActionResult> SendConfirmationEmail(string username)
         {
             try
             {
-                var user = await _userManager.FindByEmailAsync(email);
+                var user = await _userManager.FindByNameAsync(username);
                 var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                 var confirmationLink = Url.Action(nameof(ConfirmEmail), "Authentication", new { token, email = user.Email }, Request.Scheme);
                 var message = new Message(new string[] { user.Email! }, "Confirmation email link", confirmationLink!);
@@ -181,7 +181,7 @@ namespace User.Management.API.Controllers
             {
                 if (!await _userManager.IsEmailConfirmedAsync(user))
                 {
-                    _ = await SendConfirmationEmail(user.Email);
+                    _ = await SendConfirmationEmail(user.UserName);
                     return StatusCode(StatusCodes.Status401Unauthorized,
                      new Response { Status = "Error", Message = $"Please confirm your email by clicking the link sent to {HalfHiddenEmail(user.Email)}" });
                 }
