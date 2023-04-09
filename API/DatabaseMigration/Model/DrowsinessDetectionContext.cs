@@ -18,8 +18,22 @@ namespace DatabaseMigration
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<EmergencyContact>()
-                .HasKey(ec => ec.EmergencyContactId);
+                .HasKey(ec => ec.Id);
             builder.Entity<EmergencyContact>()
+                .HasOne(e => e.User)
+                .WithMany()
+                .HasForeignKey(e => e.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+            builder.Entity<UserConfig>()
+                .HasKey(ec => ec.Id);
+            builder.Entity<UserConfig>()
+                .HasOne(e => e.User)
+                .WithMany()
+                .HasForeignKey(e => e.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+            builder.Entity<UserAlert>()
+                .HasKey(ec => ec.Id);
+            builder.Entity<UserAlert>()
                 .HasOne(e => e.User)
                 .WithMany()
                 .HasForeignKey(e => e.UserId)
