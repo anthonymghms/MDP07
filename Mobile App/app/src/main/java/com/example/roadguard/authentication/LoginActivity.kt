@@ -38,7 +38,7 @@ class LoginActivity : AppCompatActivity(), ResponseCallback {
             val username = binding.etEmail.text.toString().trim()
             val password = binding.etPassword.text.toString().trim()
             val jsonLoginRequest = "{\"username\":\"$username\",\"password\":\"$password\"}"
-            client.post("https://roadguard.azurewebsites.net/api/auth/login",jsonLoginRequest, this)
+            client.post(this,"https://roadguard.azurewebsites.net/api/auth/login",jsonLoginRequest, this)
         }
 
 
@@ -106,7 +106,7 @@ class LoginActivity : AppCompatActivity(), ResponseCallback {
         token?.let { queryParams["token"] = it }
         email?.let { queryParams["email"] = it }
 
-        client.get(url, queryParams, this)
+        client.get(this,url, queryParams, this)
     }
 
     override fun onFailure(error: Throwable) {
