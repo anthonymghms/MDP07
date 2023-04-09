@@ -27,7 +27,7 @@
     <string name="home_stop_camera">Stop Camera</string>
     <string name="home_start_camera">Start Camera</string>
     <string name="check_your_email">Check Your Email</string>
-    <string name="email_paragraph">To confirm your email address, we have sent you an email on %s with a link to verify your account.\n\nAfter it\'s confirmed, press the button below.</string>
+    <string name="email_paragraph">To confirm your email address, we have sent you an email on %s with a link to verify your account.</string>
     <string name="verify_email">Confirmed</string>
     <string name="resend_email">Resend Email</string>
     <string name="chooser_title">Choose your email app</string>
@@ -37,4 +37,9 @@
     <string name="tv_login_error" />
     <string name="tv_register_error" />
     <string name="btn_settings">Settings</string>
+    <string name="email_resend_success">Email sent successfully</string>
+    <string name="tv_otp_title">Enter your OTP\n(One-Time Password)</string>
+    <string name="btn_submit">Submit</string>
+    <string name="btn_resend_otp">Resend OTP</string>
+    <string name="tv_otp_error" />
 </resources>

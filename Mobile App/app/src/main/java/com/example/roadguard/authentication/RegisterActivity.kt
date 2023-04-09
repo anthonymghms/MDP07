@@ -50,7 +50,7 @@ class RegisterActivity : AppCompatActivity(), ResponseCallback {
                 }
                 else -> {
                     val jsonRegisterRequest = "{\"FirstName\":\"$firstName\",\"LastName\":\"$lastName\",\"Username\":\"$username\",\"Password\":\"$password\",\"PhoneNumber\":\"$phoneNumber\",\"Email\":\"$emailAddress\"}"
-                    client.post("https://roadguard.azurewebsites.net/api/auth/register", jsonRegisterRequest, this, mapOf("role" to "User"))
+                    client.post(this,"https://roadguard.azurewebsites.net/api/auth/register", jsonRegisterRequest, this, mapOf("role" to "User"))
                 }
             }
         }
@@ -77,6 +77,7 @@ class RegisterActivity : AppCompatActivity(), ResponseCallback {
                             }
                             val intent = Intent(this, EmailVerificationActivity::class.java)
                             intent.putExtra("email", emailAddress)
+                            intent.putExtra("username", username)
                             startActivity(intent)
                         }
                     }

@@ -1,9 +1,11 @@
 package com.example.roadguard.authentication
 
 import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.TextView
+import android.widget.Toast
 import com.example.roadguard.*
 import com.example.roadguard.client.HTTPRequest
 import com.example.roadguard.client.ResponseCallback
@@ -16,11 +18,18 @@ class LoginActivity : AppCompatActivity(), ResponseCallback {
     private lateinit var binding: ActivityLoginBinding
     private var client: HTTPRequest = HTTPRequest()
     private lateinit var tvError: TextView
+    private var uri: Uri? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        uri = intent.data;
+
+        if (uri!=null) {
+            confirmEmail(uri!!)
+        }
 
         tvError = findViewById(R.id.tv_email_error)
         tvError.visibility = android.view.View.GONE
@@ -29,7 +38,7 @@ class LoginActivity : AppCompatActivity(), ResponseCallback {
             val username = binding.etEmail.text.toString().trim()
             val password = binding.etPassword.text.toString().trim()
             val jsonLoginRequest = "{\"username\":\"$username\",\"password\":\"$password\"}"
-            client.post("https://roadguard.azurewebsites.net/api/auth/login",jsonLoginRequest, this)
+            client.post(this,"https://roadguard.azurewebsites.net/api/auth/login",jsonLoginRequest, this)
         }
 
 
@@ -52,9 +61,25 @@ class LoginActivity : AppCompatActivity(), ResponseCallback {
                     startActivity(intent)
                 }
                 "message" -> {
-                    runOnUiThread {
-                        tvError.visibility = android.view.View.VISIBLE
-                        tvError.text = jsonObject.getString(it)
+                    if (jsonObject.getString(it).startsWith("Please confirm your email", false)) {
+                        runOnUiThread {
+                            val intent = Intent(this, EmailVerificationActivity::class.java)
+                            intent.putExtra("email",jsonObject.getString(it).split(" ")[10])
+                            intent.putExtra("username", binding.etEmail.text.toString().trim())
+                            startActivity(intent)
+                        }
+                    } else if (jsonObject.getString(it).startsWith("Email",false)) {
+                        runOnUiThread {
+                            tvError.visibility = android.view.View.VISIBLE
+                            tvError.text = jsonObject.getString(it)
+                            tvError.setTextColor(getColor(R.color.green))
+                        }
+                    } else if (jsonObject.getString(it).startsWith("We have sent an OTP to your Email",false)) {
+                        runOnUiThread {
+                            val intent = Intent(this, OtpActivity::class.java)
+                            intent.putExtra("username", binding.etEmail.text.toString().trim())
+                            startActivity(intent)
+                        }
                     }
                 }
                 "errors" -> {
@@ -73,7 +98,20 @@ class LoginActivity : AppCompatActivity(), ResponseCallback {
         }
     }
 
+    private fun confirmEmail(uri: Uri) {
+        val token = uri.getQueryParameter("token")
+        val email = uri.getQueryParameter("email")
+        val url = "https://roadguard.azurewebsites.net/api/auth/ConfirmEmail"
+        val queryParams = mutableMapOf<String, String>()
+        token?.let { queryParams["token"] = it }
+        email?.let { queryParams["email"] = it }
+
+        client.get(this,url, queryParams, this)
+    }
+
     override fun onFailure(error: Throwable) {
         error.printStackTrace()
     }
+
+
 }

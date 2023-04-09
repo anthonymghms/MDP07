@@ -126,11 +126,11 @@ namespace User.Management.API.Controllers
 
         [ApiKeyAuthFilter]
         [HttpGet("SendConfirmationEmail")]
-        public async Task<IActionResult> SendConfirmationEmail(string email)
+        public async Task<IActionResult> SendConfirmationEmail(string username)
         {
             try
             {
-                var user = await _userManager.FindByEmailAsync(email);
+                var user = await _userManager.FindByNameAsync(username);
                 var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                 var confirmationLink = Url.Action(nameof(ConfirmEmail), "Authentication", new { token, email = user.Email }, Request.Scheme);
                 var message = new Message(new string[] { user.Email! }, "Confirmation email link", confirmationLink!);
@@ -166,7 +166,6 @@ namespace User.Management.API.Controllers
         [HttpPost("Login")]
         public async Task<IActionResult> Login([FromBody] LoginUserRequest request)
         {
-            // Could do the Lockout through time or through time.........
             var user = await _userManager.FindByNameAsync(request.Username);
             if (user != null && await _userManager.CheckPasswordAsync(user, request.Password))
             {
@@ -218,15 +217,18 @@ namespace User.Management.API.Controllers
                 //returning the token...
 
             }
-            if (user.AccessFailedCount >= Int32.Parse(_configuration["Limit:MaxWrongPasswordAttemptsToLock"]))
+            if (user != null && user.AccessFailedCount >= Int32.Parse(_configuration["Limit:MaxWrongPasswordAttemptsToLock"]))
             {
                 await _userManager.SetLockoutEnabledAsync(user, true);
                 await _userManager.SetLockoutEndDateAsync(user, DateTime.Now.AddMinutes(Int32.Parse(_configuration["Limit:LockTime"])));
                 return StatusCode(StatusCodes.Status423Locked,
                  new Response { Status = "Error", Message = $"Your account {user.UserName} has been locked please wait {_configuration["Limit:LockTime"]} minutes" });
             }
-            user.AccessFailedCount += 1;
-            await _userManager.UpdateAsync(user);
+            if (user != null)
+            {
+                user.AccessFailedCount += 1;
+                await _userManager.UpdateAsync(user);
+            }
             return StatusCode(StatusCodes.Status401Unauthorized,
                  new Response { Status = "Error", Message = $"Wrong username or password" });
         }

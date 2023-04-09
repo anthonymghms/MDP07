@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="24dp">
+
+    <ImageView
+        android:id="@+id/dialog_icon"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_gravity="center_horizontal"
+        android:src="@drawable/ic_vpn_key" />
+
+    <TextView
+        android:id="@+id/dialog_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="16dp"
+        android:text="Enable Two-Factor Authentication"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
+
+    <TextView
+        android:id="@+id/dialog_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Two-Factor Authentication adds an extra layer of security to your account by requiring a one-time password (OTP) in addition to your regular password during login. This helps protect your account even if your password is compromised. Do you want to enable Two-Factor Authentication?"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
+
+</LinearLayout>

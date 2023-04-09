@@ -49,14 +49,4 @@
         app:key="location_sharing"
         app:title="Location Sharing" />
 
-    <Preference
-        app:title="Privacy"
-        app:layout="@layout/divider_preference" />
-    <SwitchPreferenceCompat
-        app:key="data_sharing"
-        app:title="Data Sharing" />
-    <Preference
-        app:key="data_deletion"
-        app:title="Delete Stored Data"
-        app:summary="Delete all stored data from the app and the server" />
 </androidx.preference.PreferenceScreen>
