@@ -9,12 +9,14 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.AppCompatButton
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import com.example.roadguard.authentication.LoginActivity
+import com.example.roadguard.authentication.OtpActivity
 import com.example.roadguard.databinding.ActivityHomeBinding
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
@@ -25,6 +27,9 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityHomeBinding
     private lateinit var cameraExecutor: ExecutorService
     private var started:Boolean = false
+    private fun userHasChosenTwoFactorAuth(): Boolean = false
+
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,11 +39,18 @@ class HomeActivity : AppCompatActivity() {
         cameraExecutor = Executors.newSingleThreadExecutor()
         requestPermission()
 
+        if (!userHasChosenTwoFactorAuth()) {
+            showTwoFactorAuthDialog()
+        }
+
         binding.btnLogout.setOnClickListener {
             startActivity(Intent(this, LoginActivity::class.java))
         }
         binding.btnMap.setOnClickListener {
             startActivity(Intent(this, MapViewActivity::class.java))
+        }
+        binding.btnOtp.setOnClickListener {
+            startActivity(Intent(this, OtpActivity::class.java))
         }
     }
 
@@ -106,7 +118,27 @@ class HomeActivity : AppCompatActivity() {
 
     }
 
-    fun buildPreviewUseCase(): Preview {
+    private fun buildPreviewUseCase(): Preview {
         return Preview.Builder().build().also {it.setSurfaceProvider(binding.previewView.surfaceProvider) }
     }
+
+    private fun showTwoFactorAuthDialog() {
+        val builder = AlertDialog.Builder(this, R.style.AlertDialogCustom)
+        val inflater = layoutInflater
+        val dialogView = inflater.inflate(R.layout.dialog_two_factor_auth, null)
+
+        builder.setView(dialogView)
+        builder.setPositiveButton("Enable") { dialog, _ ->
+            dialog.dismiss()
+        }
+
+        builder.setNegativeButton("No, thank you") { dialog, _ ->
+            dialog.dismiss()
+        }
+
+        val alertDialog = builder.create()
+        alertDialog.show()
+    }
+
+
 }

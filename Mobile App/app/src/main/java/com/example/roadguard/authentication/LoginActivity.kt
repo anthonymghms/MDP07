@@ -28,7 +28,6 @@ class LoginActivity : AppCompatActivity(), ResponseCallback {
         uri = intent.data;
 
         if (uri!=null) {
-            val path = uri!!.path;
             confirmEmail(uri!!)
         }
 
@@ -62,10 +61,6 @@ class LoginActivity : AppCompatActivity(), ResponseCallback {
                     startActivity(intent)
                 }
                 "message" -> {
-                    runOnUiThread {
-                        tvError.visibility = android.view.View.VISIBLE
-                        tvError.text = jsonObject.getString(it)
-                    }
                     if (jsonObject.getString(it).startsWith("Please confirm your email", false)) {
                         runOnUiThread {
                             val intent = Intent(this, EmailVerificationActivity::class.java)
@@ -75,7 +70,15 @@ class LoginActivity : AppCompatActivity(), ResponseCallback {
                         }
                     } else if (jsonObject.getString(it).startsWith("Email",false)) {
                         runOnUiThread {
+                            tvError.visibility = android.view.View.VISIBLE
+                            tvError.text = jsonObject.getString(it)
                             tvError.setTextColor(getColor(R.color.green))
+                        }
+                    } else if (jsonObject.getString(it).startsWith("We have sent an OTP to your Email",false)) {
+                        runOnUiThread {
+                            val intent = Intent(this, OtpActivity::class.java)
+                            intent.putExtra("username", binding.etEmail.text.toString().trim())
+                            startActivity(intent)
                         }
                     }
                 }
