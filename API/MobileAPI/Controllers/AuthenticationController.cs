@@ -17,7 +17,6 @@ using ServiceLayer.EmailService;
 using ServiceLayer.Authentication;
 using DatabaseMigration.Model;
 using Microsoft.AspNetCore.Cors;
-using DatabaseMigration;
 
 namespace User.Management.API.Controllers
 
@@ -28,11 +27,17 @@ namespace User.Management.API.Controllers
     [ApiController]
     public class AuthenticationController : ControllerBase
     {
+        #region Attributes
+
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IEmailService _emailService;
         private readonly IConfiguration _configuration;
+
+        #endregion
+
+        #region Constructors
 
         public AuthenticationController(UserManager<AppUser> userManager,
             RoleManager<IdentityRole> roleManager, IEmailService emailService,
@@ -44,6 +49,8 @@ namespace User.Management.API.Controllers
             _emailService = emailService;
             _configuration = configuration;
         }
+        
+        #endregion
 
         #region Endpoints
 
@@ -73,6 +80,7 @@ namespace User.Management.API.Controllers
                 Email = request.Email,
                 SecurityStamp = Guid.NewGuid().ToString(),
                 UserName = request.Username,
+                PhoneNumber = request.PhoneNumber,
                 TwoFactorEnabled = false,
                 CreationDate = DateTime.Now,
                 LastModifiedDate = DateTime.Now,
@@ -104,7 +112,7 @@ namespace User.Management.API.Controllers
 
 
                 return StatusCode(StatusCodes.Status200OK,
-                    new Response { Status = "Success", Message = $"User created & Email Sent to {user.Email} SuccessFully" });
+                    new Response { Status = "Success", Message = $"User created & Email sent to {user.Email} Successfully" });
 
             }
             else
@@ -128,9 +136,9 @@ namespace User.Management.API.Controllers
                 var message = new Message(new string[] { user.Email! }, "Confirmation email link", confirmationLink!);
                 _emailService.SendEmail(message);
                 return StatusCode(StatusCodes.Status200OK,
-                    new Response { Status = "Success", Message = $"Email sent to \'{user.Email}\' successfully" });
+                    new Response { Status = "Success", Message = $"Email sent to \'{HalfHiddenEmail(user.Email)}\' successfully" });
             }
-            catch
+            catch  
             {
                 return StatusCode(StatusCodes.Status500InternalServerError,
                         new Response { Status = "Error", Message = "An error has occured" });
@@ -159,31 +167,30 @@ namespace User.Management.API.Controllers
         public async Task<IActionResult> Login([FromBody] LoginUserRequest request)
         {
             var user = await _userManager.FindByNameAsync(request.Username);
-            if (user != null && await _userManager.IsLockedOutAsync(user))
-            {
-                TimeSpan span = (user.LockoutEnd - DateTime.Now).Value;
-                return StatusCode(StatusCodes.Status423Locked,
-                 new Response { Status = "Error", Message = $"Your account {user.UserName} is currently locked please wait {span.Minutes} minutes and {span.Seconds} seconds" });
-            }
-            if (user != null && user.TwoFactorEnabled)
-            {
-                await _signInManager.SignOutAsync();
-                await _signInManager.PasswordSignInAsync(user, request.Password, false, true);
-                var token = await _userManager.GenerateTwoFactorTokenAsync(user, "Email");
-
-                var message = new Message(new string[] { user.Email! }, "OTP Confirmation", token);
-                _emailService.SendEmail(message);
-
-                return StatusCode(StatusCodes.Status200OK,
-                 new Response { Status = "Success", Message = $"We have sent an OTP to your Email {user.Email}" });
-            }
             if (user != null && await _userManager.CheckPasswordAsync(user, request.Password))
             {
                 if (!await _userManager.IsEmailConfirmedAsync(user))
                 {
-                    _ = await SendConfirmationEmail(user.UserName);
                     return StatusCode(StatusCodes.Status401Unauthorized,
                      new Response { Status = "Error", Message = $"Please confirm your email by clicking the link sent to {HalfHiddenEmail(user.Email)}" });
+                }
+                if (await _userManager.IsLockedOutAsync(user))
+                {
+                    TimeSpan span = (user.LockoutEnd - DateTime.Now).Value;
+                    return StatusCode(StatusCodes.Status423Locked,
+                     new Response { Status = "Error", Message = $"Your account {user.UserName} is currently locked please wait {span.Minutes} minutes and {span.Seconds} seconds" });
+                }
+                if (user.TwoFactorEnabled)
+                {
+                    await _signInManager.SignOutAsync();
+                    await _signInManager.PasswordSignInAsync(user, request.Password, false, true);
+                    var token = await _userManager.GenerateTwoFactorTokenAsync(user, "Email");
+
+                    var message = new Message(new string[] { user.Email! }, "OTP Confirmation", token);
+                    _emailService.SendEmail(message);
+
+                    return StatusCode(StatusCodes.Status200OK,
+                     new Response { Status = "Success", Message = $"We have sent an OTP to your Email {user.Email}" });
                 }
                 user.AccessFailedCount = 0;
                 var authClaims = new List<Claim>
@@ -231,16 +238,16 @@ namespace User.Management.API.Controllers
         public async Task<IActionResult> LoginWithOTP(string code, string username)
         {
             var user = await _userManager.FindByNameAsync(username);
-            var signIn = await _signInManager.TwoFactorSignInAsync("Email", code, false, false);
+            var signIn = await _signInManager.TwoFactorSignInAsync(TokenOptions.DefaultEmailProvider, code, false, false);
             if (signIn.Succeeded)
             {
                 if (user != null)
                 {
                     var authClaims = new List<Claim>
-                {
-                    new Claim(ClaimTypes.Name, user.UserName),
-                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                };
+                    {
+                        new Claim(ClaimTypes.Name, user.UserName),
+                        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                    };
                     var userRoles = await _userManager.GetRolesAsync(user);
                     foreach (var role in userRoles)
                     {
@@ -254,8 +261,6 @@ namespace User.Management.API.Controllers
                         token = new JwtSecurityTokenHandler().WriteToken(jwtToken),
                         expiration = jwtToken.ValidTo
                     });
-                    //returning the token...
-
                 }
             }
             return StatusCode(StatusCodes.Status404NotFound,
@@ -317,7 +322,5 @@ namespace User.Management.API.Controllers
         }
 
         #endregion
-
-
     }
 }
