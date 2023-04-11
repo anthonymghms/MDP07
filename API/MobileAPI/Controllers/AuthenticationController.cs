@@ -183,8 +183,8 @@ namespace User.Management.API.Controllers
                 if (user.TwoFactorEnabled)
                 {
                     await _signInManager.SignOutAsync();
-                    await _signInManager.PasswordSignInAsync(user, request.Password, false, true);
-                    var token = await _userManager.GenerateTwoFactorTokenAsync(user, "Email");
+                    await _signInManager.PasswordSignInAsync(user, request.Password, false, false);
+                    var token = await _userManager.GenerateUserTokenAsync(user, "CustomEmailTokenProvider", "EmailConfirmation");
 
                     var message = new Message(new string[] { user.Email! }, "OTP Confirmation", token);
                     _emailService.SendEmail(message);
@@ -235,36 +235,49 @@ namespace User.Management.API.Controllers
 
         [ApiKeyAuthFilter]
         [HttpPost("Login-2FA")]
-        public async Task<IActionResult> LoginWithOTP(string code, string username)
+        public async Task<IActionResult> LoginWithOTP([FromBody] OtpRequest request)
         {
-            var user = await _userManager.FindByNameAsync(username);
-            var signIn = await _signInManager.TwoFactorSignInAsync(TokenOptions.DefaultEmailProvider, code, false, false);
-            if (signIn.Succeeded)
+            try
             {
-                if (user != null)
+                var user = await _userManager.FindByNameAsync(request.username);
+                if (user == null)
                 {
-                    var authClaims = new List<Claim>
+                    return StatusCode(StatusCodes.Status404NotFound,
+                       new Response { Status = "Not Found", Message = "There is no such user" });
+                }
+                var signIn = await _signInManager.TwoFactorSignInAsync("CustomEmailTokenProvider", request.otp, true, true);
+                if (signIn.Succeeded)
+                {
+                    if (user != null)
+                    {
+                        var authClaims = new List<Claim>
                     {
                         new Claim(ClaimTypes.Name, user.UserName),
                         new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                     };
-                    var userRoles = await _userManager.GetRolesAsync(user);
-                    foreach (var role in userRoles)
-                    {
-                        authClaims.Add(new Claim(ClaimTypes.Role, role));
+                        var userRoles = await _userManager.GetRolesAsync(user);
+                        foreach (var role in userRoles)
+                        {
+                            authClaims.Add(new Claim(ClaimTypes.Role, role));
+                        }
+
+                        var jwtToken = GetToken(authClaims);
+
+                        return Ok(new
+                        {
+                            token = new JwtSecurityTokenHandler().WriteToken(jwtToken),
+                            expiration = jwtToken.ValidTo
+                        });
                     }
-
-                    var jwtToken = GetToken(authClaims);
-
-                    return Ok(new
-                    {
-                        token = new JwtSecurityTokenHandler().WriteToken(jwtToken),
-                        expiration = jwtToken.ValidTo
-                    });
                 }
+                return StatusCode(StatusCodes.Status401Unauthorized,
+                new Response { Status = "Error", Message = $"Invalid Code, you sent user:{request.username} and code:{request.otp}" });
+            } 
+            catch (Exception e)
+            {
+                return StatusCode(StatusCodes.Status401Unauthorized,
+                new Response { Status = "Error", Message = $"{e.Message}" });
             }
-            return StatusCode(StatusCodes.Status404NotFound,
-                new Response { Status = "Success", Message = $"Invalid Code" });
         }
 
         #endregion

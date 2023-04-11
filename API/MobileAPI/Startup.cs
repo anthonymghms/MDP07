@@ -21,6 +21,8 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.Reflection;
 using Microsoft.OpenApi.Models;
+using MobileAPI.Auth;
+
 namespace MobileAPI
 {
     public class Startup
@@ -47,7 +49,9 @@ namespace MobileAPI
             // For identity
             services.AddIdentity<AppUser, IdentityRole>(options => options.User.RequireUniqueEmail = true)
                 .AddEntityFrameworkStores<DrowsinessDetectionContext>()
-                .AddDefaultTokenProviders();
+                .AddDefaultTokenProviders()
+                .AddTokenProvider("CustomEmailTokenProvider", typeof(CustomEmailTokenProvider));
+
 
             // For JWT
             services.AddAuthentication(options =>
@@ -79,10 +83,16 @@ namespace MobileAPI
             services.AddSingleton(emailConfig);
             services.AddScoped<IEmailService, EmailService>();
 
+            services.AddDistributedMemoryCache(); // Register the distributed cache implementation
+            services.AddDataProtection(); // Register the data protection services
+            services.AddTransient<IUserTwoFactorTokenProvider<AppUser>, CustomEmailTokenProvider>();
+
+            services.AddLogging();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
 
             if (env.IsDevelopment())
@@ -92,6 +102,12 @@ namespace MobileAPI
             }
 
             app.UseHttpsRedirection();
+
+            app.Use(async (context, next) =>
+            {
+                context.RequestServices.GetRequiredService<IUserTwoFactorTokenProvider<AppUser>>(); // This should trigger the instantiation of the CustomEmailTokenProvider.
+                await next.Invoke();
+            });
 
             app.UseAuthentication();
 
@@ -113,6 +129,13 @@ namespace MobileAPI
 
 
             app.UseDeveloperExceptionPage();
+
+        }
+
+        public void ConfigureLogging(ILoggingBuilder logging)
+        {
+            logging.AddConsole();
+            logging.AddDebug();
         }
     }
 }
