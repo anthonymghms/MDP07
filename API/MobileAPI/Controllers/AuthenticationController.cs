@@ -221,7 +221,7 @@ namespace User.Management.API.Controllers
                     var token = await _userManager.GenerateTwoFactorTokenAsync(user, TokenOptions.DefaultEmailProvider);
 
                     var message = new Message(new string[] { user.Email! }, "OTP Confirmation", token);
-                    //_emailService.SendEmail(message);
+                    _emailService.SendEmail(message);
 
                     return StatusCode(StatusCodes.Status200OK,
                      new Response { Status = "Success", Message = /*$"We have sent an OTP to your Email {user.Email}"*/message.Content });
