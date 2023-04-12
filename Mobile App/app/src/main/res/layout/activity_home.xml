@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/home_activity"
     tools:context=".HomeActivity">
 
     <!-- Drowsiness Alert View -->
@@ -56,72 +57,12 @@
 
     </LinearLayout>
 
-    <!-- Slide-up Menu Arrow -->
-    <ImageView
-        android:id="@+id/slide_up_arrow"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:src="@drawable/baseline_keyboard_arrow_down_24"
-        app:layout_anchor="@+id/slide_up_menu_container"
-        app:layout_anchorGravity="top|center_horizontal" />
-
-    <!-- Slide-up Menu Container -->
-    <LinearLayout
-        android:id="@+id/slide_up_menu_container"
+    <include
+        layout="@layout/slide_up_menu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
-        app:behavior_peekHeight="0dp"
-        android:gravity="bottom">
+        android:layout_gravity="bottom"
+        />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp">
-
-            <Button
-                android:id="@+id/settings_button"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:backgroundTint="@color/primary_color"
-                android:text="Settings"
-                android:textColor="@color/white" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="16dp"
-                android:background="@color/primary_color" />
-
-            <Button
-                android:id="@+id/emergency_contacts_button"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:backgroundTint="@color/primary_color"
-                android:text="Emergency Contacts"
-                android:textColor="@color/white" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="16dp"
-                android:background="@color/primary_color" />
-
-            <Button
-                android:id="@+id/main_screen_button"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:backgroundTint="@color/primary_color"
-                android:text="Main Screen"
-                android:textColor="@color/white" />
-
-        </LinearLayout>
-    </LinearLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

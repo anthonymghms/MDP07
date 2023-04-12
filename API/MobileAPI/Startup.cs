@@ -51,6 +51,8 @@ namespace MobileAPI
                 .AddEntityFrameworkStores<DrowsinessDetectionContext>()
                 .AddDefaultTokenProviders()
                 .AddTokenProvider("CustomEmailTokenProvider", typeof(CustomEmailTokenProvider));
+            
+            services.Configure<DataProtectionTokenProviderOptions>(options => options.TokenLifespan = TimeSpan.FromDays(1));
 
 
             // For JWT
@@ -102,12 +104,6 @@ namespace MobileAPI
             }
 
             app.UseHttpsRedirection();
-
-            app.Use(async (context, next) =>
-            {
-                context.RequestServices.GetRequiredService<IUserTwoFactorTokenProvider<AppUser>>(); // This should trigger the instantiation of the CustomEmailTokenProvider.
-                await next.Invoke();
-            });
 
             app.UseAuthentication();
 

@@ -184,13 +184,13 @@ namespace User.Management.API.Controllers
                 {
                     await _signInManager.SignOutAsync();
                     await _signInManager.PasswordSignInAsync(user, request.Password, false, false);
-                    var token = await _userManager.GenerateUserTokenAsync(user, "CustomEmailTokenProvider", "EmailConfirmation");
+                    var token = await _userManager.GenerateUserTokenAsync(user, TokenOptions.DefaultEmailProvider, "EmailConfirmation");
 
                     var message = new Message(new string[] { user.Email! }, "OTP Confirmation", token);
-                    _emailService.SendEmail(message);
+                    //_emailService.SendEmail(message);
 
                     return StatusCode(StatusCodes.Status200OK,
-                     new Response { Status = "Success", Message = $"We have sent an OTP to your Email {user.Email}" });
+                     new Response { Status = "Success", Message = $"We have sent an OTP to your Email {user.Email} {message.Content}" });
                 }
                 user.AccessFailedCount = 0;
                 var authClaims = new List<Claim>
@@ -245,7 +245,7 @@ namespace User.Management.API.Controllers
                     return StatusCode(StatusCodes.Status404NotFound,
                        new Response { Status = "Not Found", Message = "There is no such user" });
                 }
-                var signIn = await _signInManager.TwoFactorSignInAsync("CustomEmailTokenProvider", request.otp, true, true);
+                var signIn = await _signInManager.TwoFactorSignInAsync(TokenOptions.DefaultEmailProvider, request.otp, true, true);
                 if (signIn.Succeeded)
                 {
                     if (user != null)

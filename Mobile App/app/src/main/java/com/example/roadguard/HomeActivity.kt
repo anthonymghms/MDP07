@@ -1,52 +1,25 @@
 package com.example.roadguard
 
-
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
-import android.widget.LinearLayout
-import com.google.android.material.bottomsheet.BottomSheetBehavior
 import androidx.appcompat.app.AlertDialog
 import com.example.roadguard.databinding.ActivityHomeBinding
 
-class HomeActivity : AppCompatActivity() {
+class HomeActivity : BaseActivity() {
 
-    private lateinit var bottomSheetBehavior: BottomSheetBehavior<LinearLayout>
     private lateinit var binding: ActivityHomeBinding
     private fun userHasChosenTwoFactorAuth(): Boolean = false
+    private var twoFactorAuthDialog: AlertDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        initSlideUpMenu()
+        setOutsideTouchListener(R.id.home_activity)
         if (!userHasChosenTwoFactorAuth()) {
             showTwoFactorAuthDialog()
         }
-
-        bottomSheetBehavior = BottomSheetBehavior.from(binding.slideUpMenuContainer)
-        bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-        bottomSheetBehavior.peekHeight = 0
-
-        binding.slideUpArrow.setOnClickListener {
-            if (bottomSheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED) {
-                bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
-            } else {
-                bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-            }
-        }
-
-        bottomSheetBehavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
-            override fun onStateChanged(bottomSheet: View, newState: Int) {
-            }
-
-            override fun onSlide(bottomSheet: View, slideOffset: Float) {
-                binding.slideUpArrow.rotation = slideOffset * 180
-            }
-        })
-
     }
-
 
     private fun showTwoFactorAuthDialog() {
         val builder = AlertDialog.Builder(this, R.style.AlertDialogCustom)
@@ -62,9 +35,12 @@ class HomeActivity : AppCompatActivity() {
             dialog.dismiss()
         }
 
-        val alertDialog = builder.create()
-        alertDialog.show()
+        twoFactorAuthDialog = builder.create()
+        twoFactorAuthDialog?.show()
     }
 
-
+    override fun onDestroy() {
+        twoFactorAuthDialog?.dismiss()
+        super.onDestroy()
+    }
 }

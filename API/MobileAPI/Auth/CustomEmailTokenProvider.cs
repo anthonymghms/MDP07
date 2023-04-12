@@ -40,10 +40,10 @@ namespace MobileAPI.Auth
             return Task.FromResult(otp);
         }
 
-        public async Task<bool> ValidateAsync(string purpose, string token, UserManager<AppUser> manager, AppUser user)
+        public Task<bool> ValidateAsync(string purpose, string token, UserManager<AppUser> manager, AppUser user)
         {
             _logger.LogInformation($"Token: {token}, User ID: {user.UserName}");
-            return true;
+            return Task.FromResult(true);
         }
 
         public Task<bool> CanGenerateTwoFactorTokenAsync(UserManager<AppUser> manager, AppUser user)
