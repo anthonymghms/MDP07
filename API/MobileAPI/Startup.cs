@@ -84,7 +84,6 @@ namespace MobileAPI
 
             services.AddDistributedMemoryCache(); // Register the distributed cache implementation
             services.AddDataProtection(); // Register the data protection services
-            services.AddTransient<IUserTwoFactorTokenProvider<AppUser>, CustomEmailTokenProvider>();
 
             services.AddLogging();
 
