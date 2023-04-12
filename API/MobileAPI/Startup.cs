@@ -49,11 +49,8 @@ namespace MobileAPI
             // For identity
             services.AddIdentity<AppUser, IdentityRole>(options => options.User.RequireUniqueEmail = true)
                 .AddEntityFrameworkStores<DrowsinessDetectionContext>()
-                .AddDefaultTokenProviders()
-                .AddTokenProvider("CustomEmailTokenProvider", typeof(CustomEmailTokenProvider));
-            
-            services.Configure<DataProtectionTokenProviderOptions>(options => options.TokenLifespan = TimeSpan.FromDays(1));
-
+                .AddDefaultTokenProviders();
+            services.Configure<DataProtectionTokenProviderOptions>(x => x.TokenLifespan = TimeSpan.FromDays(1));
 
             // For JWT
             services.AddAuthentication(options =>

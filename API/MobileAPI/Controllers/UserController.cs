@@ -36,6 +36,7 @@ namespace MobileAPI.Controllers
             {
                 var username = HttpContext.User.Identity.Name;
                 var user = await _userManager.FindByNameAsync(username);
+                if(user == null) return StatusCode(StatusCodes.Status404NotFound, new Response { Status = "Error", Message = "User not found" });
                 user.TwoFactorEnabled = enableTwoFactorAuth;
                 await _userManager.UpdateAsync(user);
                 return StatusCode(StatusCodes.Status200OK, new Response { Status = "Success", Message = enableTwoFactorAuth ? "Two-Factor Auth was enabled" : "Two-Factor Auth was disabled" });
@@ -45,6 +46,39 @@ namespace MobileAPI.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = ex.Message });
             }
 
+        }
+
+        [HttpPost("UpdateSettings")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "User")]
+        public async Task<IActionResult> UpdateSettings([FromBody] UserSettingsRequest request)
+        {
+            try
+            {
+                var username = HttpContext.User.Identity.Name;
+                var user = await _userManager.FindByNameAsync(username);
+                if(user == null) return StatusCode(StatusCodes.Status404NotFound, new Response { Status = "Error", Message = "User not found" });
+                user.UserConfig = new UserConfig
+                {
+                    UserId = user.Id,
+                    User = user,
+                    AlertType = request.AlertType,
+                    AlertVolume = request.AlertVolume,
+                    LocationSharing = request.LocationSharing,
+                    DarkMode = request.DarkMode,
+                    NotificationsEnabled = request.NotificationsEnabled,
+                    TwoFactorAuthEnabled = request.TwoFactorAuthEnabled,
+                    Username = request.Username,
+                    FirstName = request.FirstName,
+                    LastName = request.LastName,
+                    PhoneNumber = request.PhoneNumber,
+                    Email = request.Email
+                };
+                return StatusCode(StatusCodes.Status200OK, new Response { Status = "Success", Message = "Settings updated successfully" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = ex.Message });
+            }
         }
         //[HttpPost("AddEmergencyContact/{Id}")]
         //public IActionResult AddEmergencyContact([FromRoute] Guid Id, [FromBody] EmergencyContactRequest request)
