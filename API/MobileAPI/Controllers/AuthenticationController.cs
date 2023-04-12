@@ -81,9 +81,10 @@ namespace User.Management.API.Controllers
                 SecurityStamp = Guid.NewGuid().ToString(),
                 UserName = request.Username,
                 PhoneNumber = request.PhoneNumber,
-                TwoFactorEnabled = false,
+                TwoFactorEnabled = true,
                 CreationDate = DateTime.Now,
                 LastModifiedDate = DateTime.Now,
+                EmailConfirmed = true
             };
             if (await _roleManager.RoleExistsAsync(role))
             {
@@ -102,7 +103,7 @@ namespace User.Management.API.Controllers
                     var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     var confirmationLink = Url.Action(nameof(ConfirmEmail), "Authentication", new { token, email = user.Email }, Request.Scheme);
                     var message = new Message(new string[] { user.Email! }, "Confirmation email link", confirmationLink!);
-                    _emailService.SendEmail(message);
+                    //_emailService.SendEmail(message);
                 }
                 catch (Exception e)
                 {
@@ -144,7 +145,40 @@ namespace User.Management.API.Controllers
                         new Response { Status = "Error", Message = "An error has occured" });
             }
         }
-
+        
+        [ApiKeyAuthFilter]
+        [HttpPost("ForgotPassword")]
+        public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordRequest request)
+        {
+            // handle the forgot password request
+            try
+            {
+                var user = await _userManager.FindByNameAsync(request.Username);
+                var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+                var resetPasswordLink = Url.Action(nameof(ResetPassword), "Authentication", new { token, email = user.Email}, Request.Scheme);
+                var message = new Message(new string[] { user.Email! }, "Reset password link", resetPasswordLink!);
+                _emailService.SendEmail(message);
+                return StatusCode(StatusCodes.Status200OK,
+                    new Response { Status = "Success", Message = $"Email sent to \'{HalfHiddenEmail(user.Email)}\' successfully" });
+            }
+            catch(Exception e)
+            {
+                return StatusCode(StatusCodes.Status100Continue, new Response { Status = "Error", Message= e.Message });
+            }
+        }
+        
+        [HttpGet("ResetPassword")]
+        public async Task<IActionResult> ResetPassword(string token, string email)
+        {
+            try
+            {
+                var user = await _userManager.FindByEmailAsync(email);
+            }
+            catch { }
+            return StatusCode(StatusCodes.Status200OK,
+                        new Response());
+        }
+        
         [HttpGet("ConfirmEmail")]
         public async Task<IActionResult> ConfirmEmail(string token, string email)
         {
@@ -184,13 +218,13 @@ namespace User.Management.API.Controllers
                 {
                     await _signInManager.SignOutAsync();
                     await _signInManager.PasswordSignInAsync(user, request.Password, false, true);
-                    var token = await _userManager.GenerateTwoFactorTokenAsync(user, "Email");
+                    var token = await _userManager.GenerateTwoFactorTokenAsync(user, TokenOptions.DefaultEmailProvider);
 
                     var message = new Message(new string[] { user.Email! }, "OTP Confirmation", token);
-                    _emailService.SendEmail(message);
+                    //_emailService.SendEmail(message);
 
                     return StatusCode(StatusCodes.Status200OK,
-                     new Response { Status = "Success", Message = $"We have sent an OTP to your Email {user.Email}" });
+                     new Response { Status = "Success", Message = /*$"We have sent an OTP to your Email {user.Email}"*/message.Content });
                 }
                 user.AccessFailedCount = 0;
                 var authClaims = new List<Claim>
@@ -264,7 +298,7 @@ namespace User.Management.API.Controllers
                 }
             }
             return StatusCode(StatusCodes.Status404NotFound,
-                new Response { Status = "Success", Message = $"Invalid Code" });
+                new Response { Status = "Error", Message = $"Invalid Code" });
         }
 
         #endregion

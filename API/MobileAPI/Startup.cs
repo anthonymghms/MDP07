@@ -48,6 +48,7 @@ namespace MobileAPI
             services.AddIdentity<AppUser, IdentityRole>(options => options.User.RequireUniqueEmail = true)
                 .AddEntityFrameworkStores<DrowsinessDetectionContext>()
                 .AddDefaultTokenProviders();
+            services.Configure<DataProtectionTokenProviderOptions>(x => x.TokenLifespan = TimeSpan.FromDays(1));
 
             // For JWT
             services.AddAuthentication(options =>
@@ -69,7 +70,6 @@ namespace MobileAPI
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JWT:Secret"]))
                 };
             });
-
 
             // For Required email
             services.Configure<IdentityOptions>(opts => opts.SignIn.RequireConfirmedEmail = true);

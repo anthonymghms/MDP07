@@ -4,12 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DatabaseMigration.Model
+namespace DataContract.Request
 {
-    public partial class UserConfig
+    public class UserSettingsRequest
     {
-        public Guid Id { get; set; }
-        public string UserId { get; set; }
         public string Username { get; set; }
         public string Email { get; set; }
         public string PhoneNumber { get; set; }
@@ -21,7 +19,5 @@ namespace DatabaseMigration.Model
         public bool TwoFactorAuthEnabled { get; set; }
         public float AlertVolume { get; set; }
         public string AlertType { get; set; }
-
-        public virtual AppUser User { get; set; }
     }
 }
