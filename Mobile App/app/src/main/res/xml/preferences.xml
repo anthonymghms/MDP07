@@ -49,4 +49,5 @@
         app:key="location_sharing"
         app:title="Location Sharing" />
 
+
 </androidx.preference.PreferenceScreen>

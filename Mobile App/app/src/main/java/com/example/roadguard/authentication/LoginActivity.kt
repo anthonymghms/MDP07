@@ -4,6 +4,7 @@ import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.TextView
 import android.widget.Toast
 import com.example.roadguard.*
@@ -49,6 +50,7 @@ class LoginActivity : AppCompatActivity(), ResponseCallback {
 
     override fun onSuccess(response: String) {
         val jsonObject = JSONObject(response)
+        Log.d("LoginActivity", jsonObject.toString())
         jsonObject.keys().forEach {
             when (it) {
                 "token" -> {
@@ -61,24 +63,35 @@ class LoginActivity : AppCompatActivity(), ResponseCallback {
                     startActivity(intent)
                 }
                 "message" -> {
-                    if (jsonObject.getString(it).startsWith("Please confirm your email", false)) {
-                        runOnUiThread {
-                            val intent = Intent(this, EmailVerificationActivity::class.java)
-                            intent.putExtra("email",jsonObject.getString(it).split(" ")[10])
-                            intent.putExtra("username", binding.etEmail.text.toString().trim())
-                            startActivity(intent)
+                    when {
+                        jsonObject.getString(it).startsWith("Please confirm your email", false) -> {
+                            runOnUiThread {
+                                val intent = Intent(this, EmailVerificationActivity::class.java)
+                                intent.putExtra("email",jsonObject.getString(it).split(" ")[10])
+                                intent.putExtra("username", binding.etEmail.text.toString().trim())
+                                startActivity(intent)
+                            }
                         }
-                    } else if (jsonObject.getString(it).startsWith("Email",false)) {
-                        runOnUiThread {
-                            tvError.visibility = android.view.View.VISIBLE
-                            tvError.text = jsonObject.getString(it)
-                            tvError.setTextColor(getColor(R.color.green))
+                        jsonObject.getString(it).startsWith("Email",false) -> {
+                            runOnUiThread {
+                                tvError.visibility = android.view.View.VISIBLE
+                                tvError.text = jsonObject.getString(it)
+                                tvError.setTextColor(getColor(R.color.green))
+                            }
                         }
-                    } else if (jsonObject.getString(it).startsWith("We have sent an OTP to your Email",false)) {
-                        runOnUiThread {
-                            val intent = Intent(this, OtpActivity::class.java)
-                            intent.putExtra("username", binding.etEmail.text.toString().trim())
-                            startActivity(intent)
+                        jsonObject.getString(it).startsWith("We have sent an OTP to your Email",false) -> {
+                            runOnUiThread {
+                                val intent = Intent(this, OtpActivity::class.java)
+                                intent.putExtra("username", binding.etEmail.text.toString().trim())
+                                startActivity(intent)
+                            }
+                        }
+                        else -> {
+                            runOnUiThread {
+                                tvError.visibility = android.view.View.VISIBLE
+                                tvError.text = jsonObject.getString(it)
+                                tvError.setTextColor(getColor(R.color.red))
+                            }
                         }
                     }
                 }

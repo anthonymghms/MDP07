@@ -136,11 +136,13 @@ class HTTPRequest : AppCompatActivity() {
 
             val request = Request.Builder()
                 .addHeader("X-Api-Key", "4EBD8459736F407D9697AED213DBDAF6")
+                .addHeader("Content-Type", "application/json")
                 .url(httpUrlBuilder.build())
                 .post(body)
                 .build()
 
             val client = OkHttpClient()
+            Log.d("PostFunction", "URL: ${httpUrlBuilder.build()}")
 
             client.newCall(request).enqueue(object : Callback {
                 override fun onFailure(call: Call, e: IOException) {
@@ -149,18 +151,21 @@ class HTTPRequest : AppCompatActivity() {
                 }
 
                 override fun onResponse(call: Call, response: Response) {
-                    if (response.isSuccessful || response.code() == 423 || response.code() == 401 || response.code() == 403) {
-                        response.body()?.string()?.let { callback.onSuccess(it) }
+                    if (response.isSuccessful || response.code() == 423 || response.code() == 401 || response.code() == 403 ) {
+                        val responseBody = response.body()?.string()
+                        responseBody?.let { callback.onSuccess(it) }
                         hideLoader()
                     } else {
                         callback.onFailure(IOException("Unexpected response code: ${response.code()}"))
                         hideLoader()
                     }
                 }
+
             })
         } else {
             Log.e("PostFunction", "Invalid URL: $url")
         }
+
     }
 
 }
