@@ -71,6 +71,7 @@ namespace MobileAPI
                 };
             });
 
+
             // For Required email
             services.Configure<IdentityOptions>(opts => opts.SignIn.RequireConfirmedEmail = true);
 
