@@ -1,8 +1,6 @@
 package com.example.roadguard
 
 import android.content.Intent
-import android.os.Bundle
-import android.view.MotionEvent
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -15,12 +13,15 @@ open class BaseActivity : AppCompatActivity() {
     protected lateinit var slideUpArrow: ImageView
     private lateinit var slideUpMenu: LinearLayout
     private lateinit var settingsBtn: AppCompatButton
+    private lateinit var emergencyBtn: AppCompatButton
+    private lateinit var mainBtn: AppCompatButton
 
     protected fun initSlideUpMenu() {
         slideUpMenu = findViewById(R.id.slide_up_menu_container)
         slideUpArrow = findViewById(R.id.slide_up_arrow)
         settingsBtn = findViewById(R.id.settings_button)
-
+        emergencyBtn = findViewById(R.id.emergency_contacts_button)
+        mainBtn = findViewById(R.id.main_screen_button)
 
         bottomSheetBehavior = BottomSheetBehavior.from(slideUpMenu)
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
@@ -45,6 +46,14 @@ open class BaseActivity : AppCompatActivity() {
 
         settingsBtn.setOnClickListener {
             startActivity(SettingsActivity::class.java)
+        }
+
+        emergencyBtn.setOnClickListener {
+            startActivity(EmergencyContactsActivity::class.java)
+        }
+
+        mainBtn.setOnClickListener {
+            startActivity(HomeActivity::class.java)
         }
     }
 

@@ -8,6 +8,7 @@
     android:background="@color/primary_color"
     android:padding="20dp"
     >
+
     <TextView
         android:id="@+id/tv_started_title"
         android:layout_width="match_parent"
@@ -47,7 +48,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_login"
         android:layout_width="match_parent"
@@ -80,11 +80,5 @@
         app:layout_constraintTop_toBottomOf="@+id/btn_register"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
-
-
-
-
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

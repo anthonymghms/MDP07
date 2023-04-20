@@ -1,21 +1,26 @@
 package com.example.roadguard
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.core.app.ActivityCompat.recreate
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SwitchPreferenceCompat
+import com.example.roadguard.client.HTTPRequest
+import com.example.roadguard.client.ResponseCallback
+import com.example.roadguard.databinding.ActivitySettingsBinding
 
-class SettingsActivity : BaseActivity() {
+class SettingsActivity : BaseActivity(), ResponseCallback {
+
+    private lateinit var binding: ActivitySettingsBinding
+    private var client: HTTPRequest = HTTPRequest()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_settings)
-
+        binding = ActivitySettingsBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         initSlideUpMenu()
         setOutsideTouchListener(R.id.settings_activity)
+        getSettings()
 
         supportFragmentManager
             .beginTransaction()
@@ -50,5 +55,21 @@ class SettingsActivity : BaseActivity() {
         }
 
 
+    }
+
+    fun setSettings(){
+
+    }
+
+    fun getSettings(){
+
+    }
+
+    override fun onSuccess(response: String) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onFailure(error: Throwable) {
+        TODO("Not yet implemented")
     }
 }

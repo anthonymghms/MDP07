@@ -57,6 +57,8 @@ class OtpActivity : AppCompatActivity(), ResponseCallback {
                     for (editText in otpEditTexts) {
                         otp.append(editText?.text.toString())
                     }
+                    Log.d("OTP", "Sent OTP: $otp")
+                    Log.d("Username", "Received username: $username")
                     val jsonBody = "{\"username\":\"$username\",\"otp\":\"$otp\"}"
                     client.post(this@OtpActivity,"https://roadguard.azurewebsites.net/api/auth/login-2fa",jsonBody,this@OtpActivity)
                 }

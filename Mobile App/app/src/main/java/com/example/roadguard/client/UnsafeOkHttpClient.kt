@@ -26,7 +26,7 @@ class HTTPRequest : AppCompatActivity() {
     private var progressBarContainer: FrameLayout? = null
 
 
-    fun showLoader(context: Context) {
+    private fun showLoader(context: Context) {
         Handler(Looper.getMainLooper()).postDelayed({
             if (progressBarContainer == null) {
                 progressBarContainer = LayoutInflater.from(context)
@@ -49,18 +49,15 @@ class HTTPRequest : AppCompatActivity() {
     private fun unSafeOkHttpClient() : OkHttpClient.Builder {
         val okHttpClient = OkHttpClient.Builder()
         try {
-            // Create a trust manager that does not validate certificate chains
             val trustAllCerts:  Array<TrustManager> = arrayOf(object : X509TrustManager {
                 override fun checkClientTrusted(chain: Array<out X509Certificate>?, authType: String?){}
                 override fun checkServerTrusted(chain: Array<out X509Certificate>?, authType: String?) {}
                 override fun getAcceptedIssuers(): Array<X509Certificate>  = arrayOf()
             })
 
-            // Install the all-trusting trust manager
             val  sslContext = SSLContext.getInstance("SSL")
             sslContext.init(null, trustAllCerts, SecureRandom())
 
-            // Create an ssl socket factory with our all-trusting manager
             val sslSocketFactory = sslContext.socketFactory
             if (trustAllCerts.isNotEmpty() &&  trustAllCerts.first() is X509TrustManager) {
                 okHttpClient.sslSocketFactory(sslSocketFactory, trustAllCerts.first() as X509TrustManager)
@@ -100,6 +97,8 @@ class HTTPRequest : AppCompatActivity() {
                 }
 
                 override fun onResponse(call: Call, response: Response) {
+                    Log.d("PostResponse", "Response Code: ${response.code()}")
+                    Log.d("PostResponse", "Response Body: ${response.body()?.string()}")
                     if (response.isSuccessful || response.code() == 423 || response.code() == 401 || response.code() == 403) {
                         response.body()?.string()?.let { callback.onSuccess(it) }
                         hideLoader()

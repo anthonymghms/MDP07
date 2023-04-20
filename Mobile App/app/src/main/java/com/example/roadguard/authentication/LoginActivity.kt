@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.TextView
-import android.widget.Toast
 import com.example.roadguard.*
 import com.example.roadguard.client.HTTPRequest
 import com.example.roadguard.client.ResponseCallback

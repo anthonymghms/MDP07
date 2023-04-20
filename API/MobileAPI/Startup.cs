@@ -21,7 +21,6 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.Reflection;
 using Microsoft.OpenApi.Models;
-using MobileAPI.Auth;
 
 namespace MobileAPI
 {
@@ -84,7 +83,6 @@ namespace MobileAPI
 
             services.AddDistributedMemoryCache(); // Register the distributed cache implementation
             services.AddDataProtection(); // Register the data protection services
-            services.AddTransient<IUserTwoFactorTokenProvider<AppUser>, CustomEmailTokenProvider>();
 
             services.AddLogging();
 

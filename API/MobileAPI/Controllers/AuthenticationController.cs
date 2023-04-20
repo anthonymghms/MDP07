@@ -216,6 +216,7 @@ namespace User.Management.API.Controllers
                 }
                 if (user.TwoFactorEnabled)
                 {
+                    Console.WriteLine("enabled");
                     await _signInManager.SignOutAsync();
                     await _signInManager.PasswordSignInAsync(user, request.Password, false, true);
                     var token = await _userManager.GenerateTwoFactorTokenAsync(user, TokenOptions.DefaultEmailProvider);
@@ -224,7 +225,7 @@ namespace User.Management.API.Controllers
                     _emailService.SendEmail(message);
 
                     return StatusCode(StatusCodes.Status200OK,
-                     new Response { Status = "Success", Message = /*$"We have sent an OTP to your Email {user.Email}"*/message.Content });
+                     new Response { Status = "Success", Message = $"We have sent an OTP to your Email {user.Email}" });
                 }
                 user.AccessFailedCount = 0;
                 var authClaims = new List<Claim>
@@ -280,15 +281,17 @@ namespace User.Management.API.Controllers
                        new Response { Status = "Not Found", Message = "There is no such user" });
                 }
                 var signIn = await _signInManager.TwoFactorSignInAsync(TokenOptions.DefaultEmailProvider, request.otp, true, true);
+                
                 if (signIn.Succeeded)
                 {
+                    Console.WriteLine("inside");
                     if (user != null)
                     {
                         var authClaims = new List<Claim>
-                    {
-                        new Claim(ClaimTypes.Name, user.UserName),
-                        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                    };
+                        {
+                            new Claim(ClaimTypes.Name, user.UserName),
+                            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                        };
                         var userRoles = await _userManager.GetRolesAsync(user);
                         foreach (var role in userRoles)
                         {
@@ -296,6 +299,8 @@ namespace User.Management.API.Controllers
                         }
 
                         var jwtToken = GetToken(authClaims);
+
+                        Console.WriteLine(jwtToken);
 
                         return Ok(new
                         {
