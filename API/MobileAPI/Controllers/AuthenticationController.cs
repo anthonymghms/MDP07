@@ -81,10 +81,9 @@ namespace User.Management.API.Controllers
                 SecurityStamp = Guid.NewGuid().ToString(),
                 UserName = request.Username,
                 PhoneNumber = request.PhoneNumber,
-                TwoFactorEnabled = true,
+                TwoFactorEnabled = false,
                 CreationDate = DateTime.Now,
                 LastModifiedDate = DateTime.Now,
-                EmailConfirmed = true
             };
             if (await _roleManager.RoleExistsAsync(role))
             {
