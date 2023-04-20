@@ -102,7 +102,7 @@ namespace User.Management.API.Controllers
                     var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     var confirmationLink = Url.Action(nameof(ConfirmEmail), "Authentication", new { token, email = user.Email }, Request.Scheme);
                     var message = new Message(new string[] { user.Email! }, "Confirmation email link", confirmationLink!);
-                    //_emailService.SendEmail(message);
+                    _emailService.SendEmail(message);
                 }
                 catch (Exception e)
                 {
