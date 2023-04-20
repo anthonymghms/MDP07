@@ -46,6 +46,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="@tools:sample/date/day_of_week" />
+
         <EditText
             android:id="@+id/et_otp_2"
             android:layout_width="40dp"
@@ -60,6 +61,7 @@
             android:layout_marginRight="10dp"
             app:layout_constraintStart_toEndOf="@+id/et_otp_1"
             />
+
         <EditText
             android:id="@+id/et_otp_3"
             android:layout_width="40dp"
@@ -73,8 +75,8 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             app:layout_constraintStart_toEndOf="@+id/et_otp_2"
-
             />
+
         <EditText
             android:id="@+id/et_otp_4"
             android:layout_width="40dp"
@@ -89,6 +91,7 @@
             android:layout_marginRight="10dp"
             app:layout_constraintStart_toEndOf="@+id/et_otp_3"
             />
+
         <EditText
             android:id="@+id/et_otp_5"
             android:layout_width="40dp"
@@ -103,6 +106,7 @@
             android:layout_marginRight="10dp"
             app:layout_constraintStart_toEndOf="@+id/et_otp_4"
             />
+
         <EditText
             android:id="@+id/et_otp_6"
             android:layout_width="40dp"
@@ -117,6 +121,7 @@
             android:layout_marginRight="10dp"
             app:layout_constraintStart_toEndOf="@+id/et_otp_5"
             />
+
     </LinearLayout>
 
     <TextView
@@ -143,4 +148,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_otp_error" />
+
   </androidx.constraintlayout.widget.ConstraintLayout>

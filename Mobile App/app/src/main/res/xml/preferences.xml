@@ -3,6 +3,7 @@
     <Preference
         app:title="Account &amp; Security"
         app:layout="@layout/divider_preference" />
+
     <SwitchPreferenceCompat
         app:key="use_otp_login"
         app:title="Use OTP for Login" />
@@ -10,6 +11,7 @@
     <Preference
         app:title="Display"
         app:layout="@layout/divider_preference" />
+
     <SwitchPreferenceCompat
         app:key="dark_mode"
         app:title="Dark Mode" />
@@ -17,17 +19,20 @@
     <Preference
         app:title="Drowsiness Detection"
         app:layout="@layout/divider_preference" />
+
     <SeekBarPreference
         app:key="sensitivity"
         app:title="Sensitivity"
         max="100"
         app:defaultValue="50" />
+
     <ListPreference
         app:key="alert_type"
         app:title="Alert Type"
         app:entries="@array/alert_type_names"
         app:entryValues="@array/alert_type_values"
         app:defaultValue="visual_and_auditory" />
+
     <SeekBarPreference
         app:key="alert_volume"
         app:title="Alert Volume"
@@ -37,6 +42,7 @@
     <Preference
         app:title="Emergency Contact"
         app:layout="@layout/divider_preference" />
+
     <EditTextPreference
         app:key="emergency_contact"
         app:title="Add/Edit Emergency Contact"
@@ -45,9 +51,9 @@
     <Preference
         app:title="GPS &amp; Location"
         app:layout="@layout/divider_preference" />
+
     <SwitchPreferenceCompat
         app:key="location_sharing"
         app:title="Location Sharing" />
-
 
 </androidx.preference.PreferenceScreen>

@@ -6,7 +6,6 @@
     android:id="@+id/home_activity"
     tools:context=".HomeActivity">
 
-    <!-- Drowsiness Alert View -->
     <LinearLayout
         android:id="@+id/drowsiness_alert_view"
         android:layout_width="match_parent"
@@ -39,7 +38,6 @@
 
     </LinearLayout>
 
-    <!-- Live Car Parameters Container -->
     <LinearLayout
         android:id="@+id/live_data_container"
         android:layout_width="match_parent"
@@ -52,8 +50,6 @@
         app:layout_constraintHeight_percent="0.4"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/drowsiness_alert_view">
-
-        <!-- Add gauges or other visual elements for live car parameters here -->
 
     </LinearLayout>
 

@@ -17,7 +17,6 @@
         android:name="com.google.android.gms.maps.SupportMapFragment"
         >
 
-
     </androidx.fragment.app.FragmentContainerView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

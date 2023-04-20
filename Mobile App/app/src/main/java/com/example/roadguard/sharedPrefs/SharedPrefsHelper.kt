@@ -2,7 +2,6 @@ package com.example.roadguard.sharedPrefs
 
 import android.content.Context
 
-
 object SharedPrefsHelper {
     private const val PREFRENCES_NAME = "RoadGuardPrefs"
     private const val TOKEN_KEY = "AuthToken"
