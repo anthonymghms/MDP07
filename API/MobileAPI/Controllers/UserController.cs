@@ -18,18 +18,18 @@ namespace MobileAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "User")]
     public class UserController : ControllerBase
     {
         private readonly UserManager<AppUser> _userManager;
-        private readonly DrowsinessDetectionContext _context;
-        public UserController(UserManager<AppUser> userManager, DrowsinessDetectionContext context)
+        private readonly DrowsinessDetectionContext _dbContext;
+        public UserController(UserManager<AppUser> userManager, DrowsinessDetectionContext dbContext)
         {
             _userManager = userManager;
-            _context = context;
+            _dbContext = dbContext;
         }
 
         [HttpPost("EnableTwoFactorAuth")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "User")]
         public async Task<IActionResult> EnableTwoFactorAuth(bool enableTwoFactorAuth)
         {
             try
@@ -49,7 +49,6 @@ namespace MobileAPI.Controllers
         }
 
         [HttpPost("UpdateSettings")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "User")]
         public async Task<IActionResult> UpdateSettings([FromBody] UserSettingsRequest request)
         {
             try
@@ -61,17 +60,17 @@ namespace MobileAPI.Controllers
                 {
                     UserId = user.Id,
                     User = user,
-                    AlertType = request.AlertType,
-                    AlertVolume = request.AlertVolume,
-                    LocationSharing = request.LocationSharing,
-                    DarkMode = request.DarkMode,
-                    NotificationsEnabled = request.NotificationsEnabled,
-                    TwoFactorAuthEnabled = request.TwoFactorAuthEnabled,
-                    Username = request.Username,
-                    FirstName = request.FirstName,
-                    LastName = request.LastName,
-                    PhoneNumber = request.PhoneNumber,
-                    Email = request.Email
+                    AlertType = request?.AlertType ?? user.UserConfig.AlertType,
+                    AlertVolume = request?.AlertVolume ?? user.UserConfig.AlertVolume,
+                    LocationSharing = request?.LocationSharing ?? user.UserConfig.LocationSharing,
+                    DarkMode = request?.DarkMode ?? user.UserConfig.DarkMode,
+                    NotificationsEnabled = request?.NotificationsEnabled ?? user.UserConfig.NotificationsEnabled,
+                    TwoFactorAuthEnabled = request?.TwoFactorAuthEnabled ?? user.UserConfig.TwoFactorAuthEnabled,
+                    Username = request?.Username ?? user.UserConfig.Username,
+                    FirstName = request?.FirstName ?? user.UserConfig.FirstName,
+                    LastName = request?.LastName ?? user.UserConfig.LastName,
+                    PhoneNumber = request?.PhoneNumber ?? user.UserConfig.PhoneNumber,
+                    Email = request?.Email ?? user.UserConfig.Email
                 };
                 return StatusCode(StatusCodes.Status200OK, new Response { Status = "Success", Message = "Settings updated successfully" });
             }
@@ -80,36 +79,21 @@ namespace MobileAPI.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = ex.Message });
             }
         }
-        //[HttpPost("AddEmergencyContact/{Id}")]
-        //public IActionResult AddEmergencyContact([FromRoute] Guid Id, [FromBody] EmergencyContactRequest request)
-        //{
-        //    try
-        //    {
-        //        var user = _dbContext.Users.FirstOrDefault(x => x.UserId == Id);
-        //        var emergencyContactId = Guid.NewGuid();
-        //        user.EmergencyContacts.Add(new UserEmergencyContact
-        //        {
-        //            UserId = Id,
-        //            User = user,
-        //            EmergencyContactId = emergencyContactId,
-        //            EmergencyContact = new EmergencyContact
-        //            {
-        //                EmergencyContactId = emergencyContactId,
-        //                EmergencyContactUserId = request.EmergencyContactUserId,
-        //                CreationDate = DateTime.Now,
-        //                LastModifiedDate = DateTime.Now,
-        //                IsDeleted = false,
-        //                IsDisabled = false
-        //            }
-        //        });
-        //        _dbContext.Entry(user).State = EntityState.Modified;
-        //        _dbContext.SaveChanges();
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        return StatusCode(500, new JsonResult(new { Success = false, message = e.Message }));
-        //    }
-        //    return Ok(new JsonResult(new { Success = true, Message = "Emergency Contact Added Successfully" }));
-        //}
+        [HttpGet("GetSettings")]
+        public async Task<IActionResult> GetUserSettings()
+        {
+            try
+            {
+                var username = HttpContext.User.Identity.Name;
+                var user = await _userManager.FindByNameAsync(username);
+                if(user == null) return StatusCode(StatusCodes.Status404NotFound, new Response { Status = "Error", Message = "User not found" });
+                var settings = _dbContext.UserConfigs.FirstOrDefaultAsync(x => x.UserId == user.Id);
+                return StatusCode(StatusCodes.Status200OK, new JsonResult(new { Status = "Success", Message = "Settings retrieved successfully", Data = user.UserConfig }));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = ex.Message });
+            }
+        }
     }
 }
