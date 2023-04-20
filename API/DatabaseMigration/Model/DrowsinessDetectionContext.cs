@@ -13,7 +13,9 @@ namespace DatabaseMigration
         public DrowsinessDetectionContext(DbContextOptions options) : base(options) { }
 
         //public DbSet<User> Users { get; set; }
-        //public DbSet<EmergencyContact> EmergencyContacts { get; set; }
+        public DbSet<EmergencyContact> EmergencyContact { get; set; }
+        public DbSet<UserConfig> UserConfigs { get; set; }
+        public DbSet<UserAlert> UserAlerts { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

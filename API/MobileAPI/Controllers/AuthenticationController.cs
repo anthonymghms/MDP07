@@ -102,7 +102,7 @@ namespace User.Management.API.Controllers
                     var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     var confirmationLink = Url.Action(nameof(ConfirmEmail), "Authentication", new { token, email = user.Email }, Request.Scheme);
                     var message = new Message(new string[] { user.Email! }, "Confirmation email link", confirmationLink!);
-                    //_emailService.SendEmail(message);
+                    _emailService.SendEmail(message);
                 }
                 catch (Exception e)
                 {
@@ -223,7 +223,7 @@ namespace User.Management.API.Controllers
                     _emailService.SendEmail(message);
 
                     return StatusCode(StatusCodes.Status200OK,
-                     new Response { Status = "Success", Message = /*$"We have sent an OTP to your Email {user.Email}"*/message.Content });
+                     new Response { Status = "Success", Message = $"We have sent an OTP to your Email {user.Email}" });
                 }
                 user.AccessFailedCount = 0;
                 var authClaims = new List<Claim>
