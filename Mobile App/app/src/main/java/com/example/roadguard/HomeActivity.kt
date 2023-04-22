@@ -136,16 +136,7 @@ class HomeActivity : BaseActivity(),ResponseCallback {
     }
 
     override fun onSuccess(response: String) {
-        if (response.isNotEmpty()) {
-            try {
-                val responseJson = JSONObject(response)
-                println(responseJson)
-            } catch (e: JSONException) {
-                e.printStackTrace()
-            }
-        } else {
-            Log.d("Error", "Empty response received")
-        }
+        println(JSONObject(response))
     }
 
 
