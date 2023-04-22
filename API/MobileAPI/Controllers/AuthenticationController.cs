@@ -17,6 +17,7 @@ using ServiceLayer.EmailService;
 using ServiceLayer.Authentication;
 using DatabaseMigration.Model;
 using Microsoft.AspNetCore.Cors;
+using DatabaseMigration;
 
 namespace User.Management.API.Controllers
 
@@ -32,6 +33,7 @@ namespace User.Management.API.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly DrowsinessDetectionContext _context;
         private readonly IEmailService _emailService;
         private readonly IConfiguration _configuration;
 
@@ -41,13 +43,15 @@ namespace User.Management.API.Controllers
 
         public AuthenticationController(UserManager<AppUser> userManager,
             RoleManager<IdentityRole> roleManager, IEmailService emailService,
-            SignInManager<AppUser> signInManager, IConfiguration configuration)
+            SignInManager<AppUser> signInManager, IConfiguration configuration,
+            DrowsinessDetectionContext context)
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _signInManager = signInManager;
             _emailService = emailService;
             _configuration = configuration;
+            _context = context;
         }
         
         #endregion
@@ -85,11 +89,30 @@ namespace User.Management.API.Controllers
                 CreationDate = DateTime.Now,
                 LastModifiedDate = DateTime.Now,
             };
+
+            UserConfig settings = user.UserConfig = new UserConfig
+            {
+                AlertType = "Visual",
+                AlertVolume = 0,
+                TwoFactorAuthEnabled = false,
+                DarkMode = true,
+                FirstName = request.FirstName,
+                LastName = request.LastName,
+                Email = request.Email,
+                NotificationsEnabled = false,
+                PhoneNumber = request.PhoneNumber,
+                Id = Guid.NewGuid(),
+                User = user,
+                UserId = user.Id,
+                Username = request.Username,
+                LocationSharing = true
+            };
             if (await _roleManager.RoleExistsAsync(role))
             {
                 try
                 {
                     var result = await _userManager.CreateAsync(user, request.Password);
+                    _context.UserConfig.Add(settings);
                     if (!result.Succeeded)
                     {
                         return StatusCode(StatusCodes.Status500InternalServerError,

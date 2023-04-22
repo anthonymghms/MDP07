@@ -25,6 +25,7 @@ class HTTPRequest : AppCompatActivity() {
     private val privateClient: OkHttpClient = unSafeOkHttpClient().build()
     private var progressBarContainer: FrameLayout? = null
 
+    val clientLink = "https://roadguard.azurewebsites.net/api/"
 
     private fun showLoader(context: Context) {
         Handler(Looper.getMainLooper()).postDelayed({
@@ -70,7 +71,7 @@ class HTTPRequest : AppCompatActivity() {
         }
     }
 
-    fun get(context: Context, url: String, queryParams: Map<String, String>? = null, callback: ResponseCallback) {
+    fun get(context: Context, url: String, queryParams: Map<String, String>? = null, callback: ResponseCallback, token: String? = null) {
 
         showLoader(context)
 
@@ -85,10 +86,13 @@ class HTTPRequest : AppCompatActivity() {
                 }
             }
 
-            val request = Request.Builder()
+            val requestBuilder = Request.Builder()
                 .addHeader("X-Api-Key", "4EBD8459736F407D9697AED213DBDAF6")
                 .url(httpUrlBuilder.build())
-                .build()
+
+            token?.let { requestBuilder.addHeader("Authorization", "Bearer $it") }
+
+            val request = requestBuilder.build()
 
             privateClient.newCall(request).enqueue(object : Callback {
                 override fun onFailure(call: Call, e: IOException) {
@@ -97,16 +101,22 @@ class HTTPRequest : AppCompatActivity() {
                 }
 
                 override fun onResponse(call: Call, response: Response) {
-                    Log.d("PostResponse", "Response Code: ${response.code()}")
-                    Log.d("PostResponse", "Response Body: ${response.body()?.string()}")
-                    if (response.isSuccessful || response.code() == 423 || response.code() == 401 || response.code() == 403) {
-                        response.body()?.string()?.let { callback.onSuccess(it) }
-                        hideLoader()
-                    } else {
-                        callback.onFailure(IOException("Unexpected response code: ${response.code()}"))
-                        hideLoader()
+                    response.body()?.let { responseBody ->
+                        val responseString = responseBody.string()
+                        Log.d("PostResponse", "Response Code: ${response.code()}")
+                        Log.d("PostResponse", "Response Body: $responseString")
+
+                        if (response.isSuccessful || response.code() == 423 || response.code() == 401 || response.code() == 403) {
+                            callback.onSuccess(responseString)
+                            hideLoader()
+                        } else {
+                            callback.onFailure(IOException("Unexpected response code: ${response.code()}"))
+                            hideLoader()
+                        }
                     }
-                }            })
+                }
+
+            })
         } else {
             Log.e("GetFunction", "Invalid URL: $url")
             hideLoader()
@@ -114,7 +124,7 @@ class HTTPRequest : AppCompatActivity() {
     }
 
 
-    fun post(context: Context,url: String, jsonBody: String, callback: ResponseCallback, queryParams: Map<String, String>? = null) {
+    fun post(context: Context,url: String, jsonBody: String, callback: ResponseCallback, queryParams: Map<String, String>? = null, token: String? = null) {
 
         showLoader(context)
 
@@ -133,15 +143,17 @@ class HTTPRequest : AppCompatActivity() {
                 }
             }
 
-            val request = Request.Builder()
+            val requestBuilder = Request.Builder()
                 .addHeader("X-Api-Key", "4EBD8459736F407D9697AED213DBDAF6")
                 .addHeader("Content-Type", "application/json")
                 .url(httpUrlBuilder.build())
                 .post(body)
-                .build()
+
+            token?.let { requestBuilder.addHeader("Authorization", "Bearer $it") }
+
+            val request = requestBuilder.build()
 
             val client = OkHttpClient()
-            Log.d("PostFunction", "URL: ${httpUrlBuilder.build()}")
 
             client.newCall(request).enqueue(object : Callback {
                 override fun onFailure(call: Call, e: IOException) {

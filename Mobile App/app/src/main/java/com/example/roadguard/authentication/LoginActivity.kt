@@ -38,7 +38,7 @@ class LoginActivity : AppCompatActivity(), ResponseCallback {
             val username = binding.etEmail.text.toString().trim()
             val password = binding.etPassword.text.toString().trim()
             val jsonLoginRequest = "{\"username\":\"$username\",\"password\":\"$password\"}"
-            client.post(this,"https://roadguard.azurewebsites.net/api/auth/login",jsonLoginRequest, this)
+            client.post(this,"${client.clientLink}auth/login",jsonLoginRequest, this)
         }
 
 
@@ -113,7 +113,7 @@ class LoginActivity : AppCompatActivity(), ResponseCallback {
     private fun confirmEmail(uri: Uri) {
         val token = uri.getQueryParameter("token")
         val email = uri.getQueryParameter("email")
-        val url = "https://roadguard.azurewebsites.net/api/auth/ConfirmEmail"
+        val url = "${client.clientLink}auth/ConfirmEmail"
         val queryParams = mutableMapOf<String, String>()
         token?.let { queryParams["token"] = it }
         email?.let { queryParams["email"] = it }
