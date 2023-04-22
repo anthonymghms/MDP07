@@ -21,6 +21,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.Reflection;
 using Microsoft.OpenApi.Models;
+using ServiceLayer.PythonService;
 
 namespace MobileAPI
 {
@@ -86,6 +87,8 @@ namespace MobileAPI
 
             services.AddLogging();
 
+            services.AddScoped<IPythonService, PythonService>();
+            services.AddSignalR();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -116,6 +119,7 @@ namespace MobileAPI
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHub<DetectionHub>("/detectionHub");
             });
 
 

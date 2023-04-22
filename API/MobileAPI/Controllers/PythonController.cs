@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ServiceLayer.PythonService;
 using ServiceLayer.Authentication;
+using Microsoft.AspNetCore.SignalR;
 
 namespace MobileAPI.Controllers
 {
@@ -14,29 +15,20 @@ namespace MobileAPI.Controllers
     [ApiKeyAuthFilter]
     public class PythonController : ControllerBase
     {
-        private PythonService _pythonService;
+        private IPythonService _pythonService;
+        private readonly IHubContext<DetectionHub> _hubContext;
 
-        public PythonController(PythonService pythonService)
+        public PythonController(IPythonService pythonService, IHubContext<DetectionHub> hubContext)
         {
             _pythonService = pythonService;
+            _hubContext = hubContext;
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Post()
+        [HttpPost("StartDetection")]
+        public async Task<IActionResult> StartDetection()
         {
-            string scriptPath = "path/to/python/script.py";
-            var task = _pythonService.ExecuteAsync(scriptPath);
-            task.Wait();
-
-            if (task.Status == TaskStatus.RanToCompletion)
-            {
-                string output = task.Result;
-                return Ok(output);
-            }
-            else
-            {
-                return StatusCode(500);
-            }
+            await _pythonService.StartExecutionAsync();
+            return Ok("Started detecting");
         }
     }
 }
