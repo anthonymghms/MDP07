@@ -30,5 +30,19 @@ namespace MobileAPI.Controllers
             await _pythonService.StartExecutionAsync();
             return Ok("Started detecting");
         }
+
+        [HttpPost("SendMessage")]
+        public async Task<IActionResult> SendMessage(string message)
+        {
+            try
+            {
+                await _pythonService.SendMessage(message);
+                return Ok("Message sent");
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

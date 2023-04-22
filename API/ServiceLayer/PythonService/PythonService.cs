@@ -55,5 +55,10 @@ namespace ServiceLayer.PythonService
                 // Handle exception
             }
         }
+
+        public async Task SendMessage(string message)
+        {
+            await _hubContext.Clients.All.SendAsync("DetectionResult", message);
+        }
     }
 }

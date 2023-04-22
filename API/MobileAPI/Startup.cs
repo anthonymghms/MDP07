@@ -43,7 +43,18 @@ namespace MobileAPI
 
             //For Db
             var connectionString = Configuration.GetConnectionString("DefaultConnection");
-            services.AddDbContext<DrowsinessDetectionContext>(options=>options.UseSqlServer(connectionString));
+            services.AddDbContext<DrowsinessDetectionContext>(options =>
+            {
+                options.UseSqlServer(Configuration.GetConnectionString(connectionString),
+                sqlServerOptionsAction: sqlOptions =>
+                {
+                    sqlOptions.EnableRetryOnFailure(
+                        maxRetryCount: 5,
+                        maxRetryDelay: TimeSpan.FromSeconds(30),
+                        errorNumbersToAdd: null);
+                });
+            });
+
             services.AddScoped<DrowsinessDetectionContext>();
 
             // For identity
