@@ -9,5 +9,6 @@ namespace ServiceLayer.PythonService
     public interface IPythonService
     {
         Task StartExecutionAsync();
+        Task SendMessage(string message);
     }
 }
