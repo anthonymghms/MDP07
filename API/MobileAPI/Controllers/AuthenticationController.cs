@@ -88,12 +88,14 @@ namespace User.Management.API.Controllers
                 TwoFactorEnabled = false,
                 CreationDate = DateTime.Now,
                 LastModifiedDate = DateTime.Now,
+                Birthday = request.Birthday,
+                LoginCount = 0,
             };
 
             UserConfig settings = user.UserConfig = new UserConfig
             {
                 AlertType = "Visual",
-                AlertVolume = 0,
+                AlertVolume = 100,
                 TwoFactorAuthEnabled = false,
                 DarkMode = true,
                 FirstName = request.FirstName,
@@ -250,6 +252,7 @@ namespace User.Management.API.Controllers
                      new Response { Status = "Success", Message = $"We have sent an OTP to your Email {user.Email}" });
                 }
                 user.AccessFailedCount = 0;
+                user.LoginCount += 1;
                 var authClaims = new List<Claim>
                 {
                     new Claim(ClaimTypes.Name, user.UserName),
@@ -269,6 +272,7 @@ namespace User.Management.API.Controllers
                 return Ok(new
                 {
                     token = new JwtSecurityTokenHandler().WriteToken(jwtToken),
+                    loginCount = user.LoginCount,
                     expiration = jwtToken.ValidTo
                 });
                 //returning the token...
