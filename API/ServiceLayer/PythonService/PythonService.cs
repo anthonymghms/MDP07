@@ -9,7 +9,7 @@ namespace ServiceLayer.PythonService
 {
     public class PythonService : IPythonService
     {
-        private readonly string _scriptPath = @"C:\Users\emman\OneDrive\Desktop\MDP\MDP07\API\ServiceLayer\PythonService\DrowsinessDetection\DetectionService.py";
+        private readonly string _scriptPath = @"C:\Users\antho\Desktop\MDP07\API\ServiceLayer\PythonService\DrowsinessDetection\DetectionService.py";
         private readonly IHubContext<DetectionHub> _hubContext;
         public PythonService(IHubContext<DetectionHub> hubContext)
         {

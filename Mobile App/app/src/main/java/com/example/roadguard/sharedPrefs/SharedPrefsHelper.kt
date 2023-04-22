@@ -21,4 +21,35 @@ object SharedPrefsHelper {
         sharedPreferences.edit().remove(TOKEN_KEY).apply()
     }
 
+    fun saveNotificationSettings(context: Context, enabled: Boolean){
+        val sharedPreferences = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE)
+        sharedPreferences.edit().putBoolean("notificationsEnabled", enabled).apply()
+    }
+
+
+    fun getNotificationSettings(context: Context): Boolean{
+        val sharedPreferences = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE)
+        return sharedPreferences.getBoolean("notificationsEnabled", true)
+    }
+
+    fun saveLocationSharing(context: Context, enabled: Boolean){
+        val sharedPreferences = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE)
+        sharedPreferences.edit().putBoolean("locationSharing", enabled).apply()
+    }
+
+    fun getLocationSharing(context: Context): Boolean{
+        val sharedPreferences = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE)
+        return sharedPreferences.getBoolean("locationSharing", true)
+    }
+
+    fun saveLoginCount(context: Context, count: Int){
+        val sharedPreferences = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE)
+        sharedPreferences.edit().putInt("loginCount", count).apply()
+    }
+
+    fun getLoginCount(context: Context): Int{
+        val sharedPreferences = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE)
+        return sharedPreferences.getInt("loginCount", 0)
+    }
+
 }
