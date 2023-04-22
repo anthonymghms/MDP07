@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.SignalR;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
@@ -6,32 +7,53 @@ using System.Threading.Tasks;
 
 namespace ServiceLayer.PythonService
 {
-    public class PythonService
+    public class PythonService : IPythonService
     {
-        public async Task<string> ExecuteAsync(string scriptPath)
+        private readonly string _scriptPath = @"C:\Users\emman\OneDrive\Desktop\MDP\MDP07\API\ServiceLayer\PythonService\DrowsinessDetection\DetectionService.py";
+        private readonly IHubContext<DetectionHub> _hubContext;
+        public PythonService(IHubContext<DetectionHub> hubContext)
+        {
+            _hubContext = hubContext;
+        }
+
+        public async Task StartExecutionAsync()
+        {
+            await Task.Run(() => ExecuteAsync(_scriptPath));
+        }
+
+        private async Task ExecuteAsync(string scriptPath)
         {
             string output = "";
             try
             {
-                ProcessStartInfo start = new ProcessStartInfo();
-                start.FileName = "python.exe";
-                start.Arguments = scriptPath;
-                start.UseShellExecute = false;
-                start.RedirectStandardOutput = true;
-                using (Process process = Process.Start(start))
+                ProcessStartInfo startInfo = new ProcessStartInfo();
+                startInfo.FileName = "python";
+                startInfo.Arguments = scriptPath;
+                startInfo.RedirectStandardOutput = true;
+
+                Process process = new Process();
+                process.StartInfo = startInfo;
+                process.EnableRaisingEvents = true;
+                process.OutputDataReceived += async (sender, args) =>
                 {
-                    using (System.IO.StreamReader reader = process.StandardOutput)
+                    if (args.Data != null)
                     {
-                        output = await reader.ReadToEndAsync();
+                        output += args.Data + "\n";
                     }
-                }
+                };
+
+                process.Exited += async (sender, args) =>
+                {
+                    await _hubContext.Clients.All.SendAsync("DetectionResult", output);
+                };
+
+                process.Start();
+                process.BeginOutputReadLine();
             }
             catch (Exception ex)
             {
                 // Handle exception
             }
-
-            return output;
         }
     }
 }

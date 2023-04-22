@@ -57,22 +57,17 @@ namespace MobileAPI.Controllers
                 var user = await _userManager.FindByNameAsync(username);
                 if(user == null) return StatusCode(StatusCodes.Status404NotFound, new Response { Status = "Error", Message = "User not found" });
                 var userSettings = await _dbContext.UserConfig.FirstOrDefaultAsync(x => x.UserId == user.Id);
-                userSettings = new UserConfig
-                {
-                    UserId = user.Id,
-                    User = user,
-                    AlertType = request?.AlertType ?? user.UserConfig.AlertType,
-                    AlertVolume = request?.AlertVolume ?? user.UserConfig.AlertVolume,
-                    LocationSharing = request?.LocationSharing ?? user.UserConfig.LocationSharing,
-                    DarkMode = request?.DarkMode ?? user.UserConfig.DarkMode,
-                    NotificationsEnabled = request?.NotificationsEnabled ?? user.UserConfig.NotificationsEnabled,
-                    TwoFactorAuthEnabled = request?.TwoFactorAuthEnabled ?? user.UserConfig.TwoFactorAuthEnabled,
-                    Username = request?.Username ?? user.UserConfig.Username,
-                    FirstName = request?.FirstName ?? user.UserConfig.FirstName,
-                    LastName = request?.LastName ?? user.UserConfig.LastName,
-                    PhoneNumber = request?.PhoneNumber ?? user.UserConfig.PhoneNumber,
-                    Email = request?.Email ?? user.UserConfig.Email
-                };
+                userSettings.AlertType = request?.AlertType ?? userSettings.AlertType;
+                userSettings.AlertVolume = request?.AlertVolume ?? userSettings.AlertVolume;
+                userSettings.LocationSharing = request?.LocationSharing ?? userSettings.LocationSharing;
+                userSettings.DarkMode = request?.DarkMode ?? userSettings.DarkMode;
+                userSettings.NotificationsEnabled = request?.NotificationsEnabled ?? userSettings.NotificationsEnabled;
+                userSettings.TwoFactorAuthEnabled = request?.TwoFactorAuthEnabled ?? userSettings.TwoFactorAuthEnabled;
+                userSettings.Username = request?.Username ?? userSettings.Username;
+                userSettings.FirstName = request?.FirstName ?? userSettings.FirstName;
+                userSettings.LastName = request?.LastName ?? userSettings.LastName;
+                userSettings.PhoneNumber = request?.PhoneNumber ?? userSettings.PhoneNumber;
+                userSettings.Email = request?.Email ?? user.Email;
                 _dbContext.UserConfig.Update(userSettings);
                 await _dbContext.SaveChangesAsync();
                 return StatusCode(StatusCodes.Status200OK, new Response { Status = "Success", Message = "Settings updated successfully" });
