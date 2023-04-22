@@ -1,6 +1,7 @@
 package com.example.roadguard
 
 import android.content.Context
+import android.util.Log
 import com.example.roadguard.client.HTTPRequest
 import com.example.roadguard.client.ResponseCallback
 import com.example.roadguard.sharedPrefs.SharedPrefsHelper
@@ -8,9 +9,9 @@ import org.json.JSONObject
 
 class UserSettingsManager(private val context: Context) {
 
-    fun updateNotificationSettingOnServer(enabled: Boolean, responseCallback: ResponseCallback) {
+    fun updatePromptSettingOnServer(responseCallback: ResponseCallback) {
         val settingsJson = JSONObject()
-        settingsJson.put("notificationsEnabled", enabled)
+        settingsJson.put("notificationsEnabled", SharedPrefsHelper.getNotificationSettings(context))
 
         val token = SharedPrefsHelper.getToken(context).toString()
         val client = HTTPRequest()

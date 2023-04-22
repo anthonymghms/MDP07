@@ -1,6 +1,7 @@
 package com.example.roadguard
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.AppCompatButton
@@ -70,6 +71,7 @@ class SettingsActivity : BaseActivity() {
         }
 
         private fun setSwitchPreference(key: String, value: Boolean) {
+            Log.d("SettingsFragment", "Setting SwitchPreference: Key: $key, Value: $value")
             val preference = findPreference<SwitchPreferenceCompat>(key)
             preference?.isChecked = value
         }
@@ -93,6 +95,7 @@ class SettingsActivity : BaseActivity() {
 
             settingsJson.keys().forEach { key ->
                 if (key in expectedKeys) {
+                    Log.d("SettingsFragment", "Applying Key: $key, Value: ${settingsJson.get(key)}")
                     when (key) {
                         "twoFactorAuthEnabled" -> setSwitchPreference("two_factor_auth_enabled", settingsJson.getBoolean(key))
                         "darkMode" -> setSwitchPreference("dark_mode", settingsJson.getBoolean(key))
@@ -178,11 +181,13 @@ class SettingsActivity : BaseActivity() {
 
         override fun onSuccess(response: String) {
             val responseObject = JSONObject(response)
+            Log.d("SettingsFragment", "Response: $responseObject")
 
             when {
-                responseObject.keys().next() == "content-type" -> {
+                responseObject.keys().next() == "contentType" -> {
                     val dataObject = responseObject.getJSONObject("value").getJSONObject("data")
                     val settingsJson = dataObject.getJSONObject("result")
+                    Log.d("SettingsFragment", "Settings JSON: $settingsJson")
                     requireActivity().runOnUiThread {
                         applySettings(settingsJson)
                     }
@@ -193,6 +198,7 @@ class SettingsActivity : BaseActivity() {
                 }
             }
         }
+
 
 
         override fun onFailure(error: Throwable) {

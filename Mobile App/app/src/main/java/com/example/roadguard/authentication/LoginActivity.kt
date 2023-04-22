@@ -52,10 +52,11 @@ class LoginActivity : AppCompatActivity(), ResponseCallback {
         Log.d("LoginActivity", jsonObject.toString())
         jsonObject.keys().forEach {
             when (it) {
+                "loginCount" -> {
+                    val loginCount = jsonObject.getInt(it)
+                    SharedPrefsHelper.saveLoginCount(this, loginCount)
+                }
                 "token" -> {
-                    runOnUiThread {
-                        tvError.visibility = android.view.View.GONE
-                    }
                     val token = jsonObject.getString(it)
                     SharedPrefsHelper.saveToken(this, token)
                     val intent = Intent(this, HomeActivity::class.java)
