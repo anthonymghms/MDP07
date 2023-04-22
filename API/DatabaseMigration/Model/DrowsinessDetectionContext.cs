@@ -40,7 +40,11 @@ namespace DatabaseMigration
                 .WithMany()
                 .HasForeignKey(e => e.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
-
+            builder.Entity<AlertMessage>()
+                .HasOne(e => e.User)
+                .WithMany(d => d.AlertMessages)
+                .HasForeignKey(e => e.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
             base.OnModelCreating(builder);
             this.SeedRoles(builder);
         }

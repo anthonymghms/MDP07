@@ -4,6 +4,7 @@ using DatabaseMigration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DatabaseMigration.Migrations
 {
     [DbContext(typeof(DrowsinessDetectionContext))]
-    partial class DrowsinessDetectionContextModelSnapshot : ModelSnapshot
+    [Migration("20230422131521_LoginCountForUsers")]
+    partial class LoginCountForUsers
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,28 +23,6 @@ namespace DatabaseMigration.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
-
-            modelBuilder.Entity("DatabaseMigration.Model.AlertMessage", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("MessageDateTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("MessageText")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("AlertMessage");
-                });
 
             modelBuilder.Entity("DatabaseMigration.Model.AppUser", b =>
                 {
@@ -267,14 +247,14 @@ namespace DatabaseMigration.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "21dfc65e-5410-41c0-8c23-df5997303ec2",
+                            Id = "6019f971-fadf-4686-8369-c09ccf393867",
                             ConcurrencyStamp = "1",
                             Name = "Admin",
                             NormalizedName = "Admin"
                         },
                         new
                         {
-                            Id = "7d839146-6000-42ef-95d9-49a0b0b2f36d",
+                            Id = "93dd0613-6df3-4501-bfdd-08d4ebe79e5d",
                             ConcurrencyStamp = "2",
                             Name = "User",
                             NormalizedName = "User"
@@ -387,16 +367,6 @@ namespace DatabaseMigration.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("DatabaseMigration.Model.AlertMessage", b =>
-                {
-                    b.HasOne("DatabaseMigration.Model.AppUser", "User")
-                        .WithMany("AlertMessages")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("DatabaseMigration.Model.EmergencyContact", b =>
                 {
                     b.HasOne("DatabaseMigration.Model.AppUser", "User")
@@ -476,11 +446,6 @@ namespace DatabaseMigration.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("DatabaseMigration.Model.AppUser", b =>
-                {
-                    b.Navigation("AlertMessages");
                 });
 #pragma warning restore 612, 618
         }
