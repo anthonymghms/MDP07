@@ -393,7 +393,7 @@ namespace User.Management.API.Controllers
             }
         }
 
-        [HttpPost("Test")]
+        [HttpGet("Test")]
         public string Test()
         {
             return "Success";
