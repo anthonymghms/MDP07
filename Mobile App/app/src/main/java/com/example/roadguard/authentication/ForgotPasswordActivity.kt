@@ -48,7 +48,7 @@ class ForgotPasswordActivity : AppCompatActivity(), ResponseCallback {
     private fun resetPassword(uri: Uri){
         val token = uri.getQueryParameter("token")
         val email = uri.getQueryParameter("email")
-        val url = "https://roadguard.azurewebsites.net/api/auth/resetpassword"
+        val url = "${client.clientLink}auth/resetpassword"
         val queryParams = mutableMapOf<String, String>()
         token?.let { queryParams["token"] = it }
         email?.let { queryParams["email"] = it }

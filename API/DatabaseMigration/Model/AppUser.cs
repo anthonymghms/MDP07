@@ -12,6 +12,7 @@ namespace DatabaseMigration.Model
         {
             EmergencyContacts = new HashSet<EmergencyContact>();
             UserAlerts = new HashSet<UserAlert>();
+            UserConfig = new UserConfig();
         }
         public string FirstName { get; set; }
         public string LastName { get; set; }

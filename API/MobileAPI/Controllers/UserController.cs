@@ -56,7 +56,8 @@ namespace MobileAPI.Controllers
                 var username = HttpContext.User.Identity.Name;
                 var user = await _userManager.FindByNameAsync(username);
                 if(user == null) return StatusCode(StatusCodes.Status404NotFound, new Response { Status = "Error", Message = "User not found" });
-                user.UserConfig = new UserConfig
+                var userSettings = await _dbContext.UserConfig.FirstOrDefaultAsync(x => x.UserId == user.Id);
+                userSettings = new UserConfig
                 {
                     UserId = user.Id,
                     User = user,
@@ -72,6 +73,8 @@ namespace MobileAPI.Controllers
                     PhoneNumber = request?.PhoneNumber ?? user.UserConfig.PhoneNumber,
                     Email = request?.Email ?? user.UserConfig.Email
                 };
+                _dbContext.UserConfig.Update(userSettings);
+                await _dbContext.SaveChangesAsync();
                 return StatusCode(StatusCodes.Status200OK, new Response { Status = "Success", Message = "Settings updated successfully" });
             }
             catch (Exception ex)
@@ -87,8 +90,8 @@ namespace MobileAPI.Controllers
                 var username = HttpContext.User.Identity.Name;
                 var user = await _userManager.FindByNameAsync(username);
                 if(user == null) return StatusCode(StatusCodes.Status404NotFound, new Response { Status = "Error", Message = "User not found" });
-                var settings = _dbContext.UserConfigs.FirstOrDefaultAsync(x => x.UserId == user.Id);
-                return StatusCode(StatusCodes.Status200OK, new JsonResult(new { Status = "Success", Message = "Settings retrieved successfully", Data = user.UserConfig }));
+                var settings = _dbContext.UserConfig.FirstOrDefaultAsync(x => x.UserId == user.Id);
+                return StatusCode(StatusCodes.Status200OK, new JsonResult(new { Status = "Success", Message = "Settings retrieved successfully", Data = settings }));
             }
             catch (Exception ex)
             {
