@@ -42,4 +42,5 @@
     <string name="btn_submit">Submit</string>
     <string name="btn_resend_otp">Resend OTP</string>
     <string name="tv_otp_error" />
+    <string name="btn_save_settings">SAVE</string>
 </resources>

@@ -1,59 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.preference.PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
-    <Preference
-        app:title="Account &amp; Security"
-        app:layout="@layout/divider_preference" />
+    <PreferenceCategory
+        app:title="Account &amp; Security">
+        <EditTextPreference
+            app:key="username"
+            app:title="Username" />
 
-    <SwitchPreferenceCompat
-        app:key="use_otp_login"
-        app:title="Use OTP for Login" />
+        <EditTextPreference
+            app:key="email"
+            app:title="Email" />
 
-    <Preference
-        app:title="Display"
-        app:layout="@layout/divider_preference" />
+        <EditTextPreference
+            app:key="phone_number"
+            app:title="Phone Number" />
 
-    <SwitchPreferenceCompat
-        app:key="dark_mode"
-        app:title="Dark Mode" />
+        <EditTextPreference
+            app:key="first_name"
+            app:title="First Name" />
 
-    <Preference
-        app:title="Drowsiness Detection"
-        app:layout="@layout/divider_preference" />
+        <EditTextPreference
+            app:key="last_name"
+            app:title="Last Name" />
 
-    <SeekBarPreference
-        app:key="sensitivity"
-        app:title="Sensitivity"
-        max="100"
-        app:defaultValue="50" />
+        <SwitchPreferenceCompat
+            app:key="two_factor_auth_enabled"
+            app:title="Two Factor Authentication" />
+    </PreferenceCategory>
 
-    <ListPreference
-        app:key="alert_type"
-        app:title="Alert Type"
-        app:entries="@array/alert_type_names"
-        app:entryValues="@array/alert_type_values"
-        app:defaultValue="visual_and_auditory" />
+    <PreferenceCategory
+        app:title="Display">
+        <SwitchPreferenceCompat
+            app:key="dark_mode"
+            app:title="Dark Mode" />
+    </PreferenceCategory>
 
-    <SeekBarPreference
-        app:key="alert_volume"
-        app:title="Alert Volume"
-        max="100"
-        app:defaultValue="70" />
+    <PreferenceCategory
+        app:title="Notifications">
+        <SwitchPreferenceCompat
+            app:key="notifications_enabled"
+            app:title="Notifications Enabled" />
+    </PreferenceCategory>
 
-    <Preference
-        app:title="Emergency Contact"
-        app:layout="@layout/divider_preference" />
+    <PreferenceCategory
+        app:title="Drowsiness Detection">
+        <ListPreference
+            app:key="alert_type"
+            app:title="Alert Type"
+            app:entries="@array/alert_type_names"
+            app:entryValues="@array/alert_type_values"
+            app:defaultValue="visual_and_auditory" />
 
-    <EditTextPreference
-        app:key="emergency_contact"
-        app:title="Add/Edit Emergency Contact"
-        app:useSimpleSummaryProvider="true" />
+        <SeekBarPreference
+            app:key="alert_volume"
+            app:title="Alert Volume"
+            max="100"
+            app:defaultValue="70" />
+    </PreferenceCategory>
 
-    <Preference
-        app:title="GPS &amp; Location"
-        app:layout="@layout/divider_preference" />
-
-    <SwitchPreferenceCompat
-        app:key="location_sharing"
-        app:title="Location Sharing" />
-
+    <PreferenceCategory
+        app:title="GPS &amp; Location">
+        <SwitchPreferenceCompat
+            app:key="location_sharing"
+            app:title="Location Sharing" />
+    </PreferenceCategory>
 </androidx.preference.PreferenceScreen>

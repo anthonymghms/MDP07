@@ -32,7 +32,7 @@ class EmailVerificationActivity : AppCompatActivity(), ResponseCallback {
         emailParagraph.text = verifyEmail
 
         binding.btnResend.setOnClickListener {
-            client.get(this,"https://roadguard.azurewebsites.net/api/auth/sendconfirmationemail", mapOf("username" to username) ,this)
+            client.get(this,"${client.clientLink}auth/sendconfirmationemail", mapOf("username" to username) ,this)
         }
 
 

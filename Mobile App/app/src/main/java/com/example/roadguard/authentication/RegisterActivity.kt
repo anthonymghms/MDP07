@@ -50,7 +50,7 @@ class RegisterActivity : AppCompatActivity(), ResponseCallback {
                 }
                 else -> {
                     val jsonRegisterRequest = "{\"FirstName\":\"$firstName\",\"LastName\":\"$lastName\",\"Username\":\"$username\",\"Password\":\"$password\",\"PhoneNumber\":\"$phoneNumber\",\"Email\":\"$emailAddress\"}"
-                    client.post(this,"https://roadguard.azurewebsites.net/api/auth/register", jsonRegisterRequest, this, mapOf("role" to "User"))
+                    client.post(this,"${client.clientLink}auth/register", jsonRegisterRequest, this, mapOf("role" to "User"))
                 }
             }
         }
