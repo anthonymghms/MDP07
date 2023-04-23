@@ -11,18 +11,23 @@ import com.example.roadguard.client.ResponseCallback
 import com.example.roadguard.databinding.ActivityHomeBinding
 import com.example.roadguard.sharedPrefs.SharedPrefsHelper
 import org.json.JSONObject
-import org.json.JSONException
 import com.microsoft.signalr.HubConnectionBuilder
-
+import android.graphics.Color
+import android.widget.LinearLayout
+import android.widget.Chronometer
+import com.microsoft.signalr.HubConnection
 
 class HomeActivity : BaseActivity(),ResponseCallback {
 
     private lateinit var binding: ActivityHomeBinding
+
+    private val client = HTTPRequest()
     private fun userHasChosenTwoFactorAuth(): Boolean = true
     private var twoFactorAuthDialog: AlertDialog? = null
     private var notificationDialog: AlertDialog? = null
     private var locationDialog: AlertDialog? = null
-    val hubConnection = HubConnectionBuilder.create("https://roadguard.azurewebsites.net/detectionHub").build()
+    private val hubConnection: HubConnection = HubConnectionBuilder.create("${client.clientAddress}detectionHub").build()
+    private lateinit var timer: Chronometer
 
     private fun createNotificationChannel() {
         val name: CharSequence = "RoadguardChannel"
@@ -74,9 +79,14 @@ class HomeActivity : BaseActivity(),ResponseCallback {
         locationDialog?.show()
     }
 
+
     private fun startScript(){
-        val client = HTTPRequest()
-        client.post(this, "${client.clientLink}/python/startdetection","",this,null)
+        val token = SharedPrefsHelper.getToken(this)
+        client.get(this, "${client.clientLink}python/startdetection",null,this,token)
+    }
+    private fun updateDrowsinessAlertViewBackground(color: Int) {
+        val drowsinessAlertView = findViewById<LinearLayout>(R.id.drowsiness_alert_view)
+        drowsinessAlertView.setBackgroundColor(color)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -88,9 +98,24 @@ class HomeActivity : BaseActivity(),ResponseCallback {
             startScript()
         }
 
+        timer = findViewById(R.id.drowsiness_timer)
+
         hubConnection.on("DetectionResult", { message ->
             Log.d("DetectionResult", message)
+            println(message)
+            if (message.trim() == "Asleep") {
+                runOnUiThread {
+                    timer.stop()
+                    timer.setTextColor(Color.RED)
+                    updateDrowsinessAlertViewBackground(Color.RED)
+                    binding.timerTextView.text = "Asleep"
+                }
+            }
         }, String::class.java)
+
+
+
+
         hubConnection.start().blockingAwait()
 
         initSlideUpMenu()
@@ -136,7 +161,16 @@ class HomeActivity : BaseActivity(),ResponseCallback {
     }
 
     override fun onSuccess(response: String) {
-        println(JSONObject(response))
+        val jsonResponse = JSONObject(response)
+        println(jsonResponse)
+        if (jsonResponse.getString("message") == "Started detecting"){
+            runOnUiThread {
+                timer.start()
+                updateDrowsinessAlertViewBackground(Color.GREEN)
+                binding.timerTextView.text = "Awake"
+            }
+        }
+
     }
 
 

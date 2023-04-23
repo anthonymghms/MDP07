@@ -2,7 +2,9 @@ package com.example.roadguard
 
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.AppCompatButton
 import androidx.preference.*
@@ -33,6 +35,22 @@ class SettingsActivity : BaseActivity() {
 
     class SettingsFragment : PreferenceFragmentCompat(), Preference.OnPreferenceChangeListener,
         ResponseCallback {
+
+        private lateinit var saveButton: AppCompatButton
+        override fun onCreateView(
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?
+        ): View {
+            val view = super.onCreateView(inflater, container, savedInstanceState)
+            val activityBinding = ActivitySettingsBinding.bind(requireActivity().findViewById(R.id.settings_activity))
+            saveButton = activityBinding.saveButton
+            saveButton.setOnClickListener {
+                saveSettings()
+            }
+            return view
+        }
+
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             setPreferencesFromResource(R.xml.preferences, rootKey)
 
@@ -90,7 +108,7 @@ class SettingsActivity : BaseActivity() {
             val expectedKeys = setOf(
                 "username", "email", "phoneNumber", "firstName", "lastName",
                 "locationSharing", "darkMode", "notificationsEnabled",
-                "twoFactorAuthEnabled", "alertVolume", "alertType"
+                "twoFactorAuthEnabled", "alertVolume", "alertType", "alertLevel","ipCamAddress"
             )
 
             settingsJson.keys().forEach { key ->
@@ -101,8 +119,13 @@ class SettingsActivity : BaseActivity() {
                         "darkMode" -> setSwitchPreference("dark_mode", settingsJson.getBoolean(key))
                         "notificationsEnabled" -> setSwitchPreference("notifications_enabled", settingsJson.getBoolean(key))
                         "alertType" -> setListPreference("alert_type", settingsJson.getString(key))
+                        "alertLevel" -> setListPreference("alert_level",settingsJson.getString(key))
                         "alertVolume" -> setSeekBarPreference("alert_volume", settingsJson.getInt(key))
                         "locationSharing" -> setSwitchPreference("location_sharing", settingsJson.getBoolean(key))
+                        "ipCamAddress" -> {
+                            val preference = findPreference<EditTextPreference>(key)
+                            preference?.text = if (settingsJson.isNull(key)) "" else settingsJson.getString(key)
+                        }
                         else -> {
                             val preference = findPreference<EditTextPreference>(key)
                             preference?.text = if (settingsJson.isNull(key)) "" else settingsJson.getString(key)
@@ -112,14 +135,15 @@ class SettingsActivity : BaseActivity() {
             }
         }
 
-        private fun saveSettings() {
-            val keys = listOf("username", "email", "phone_number", "first_name", "last_name")
+        fun saveSettings() {
+            val keys = listOf("username", "email", "phone_number", "first_name", "last_name","ipCamAddress")
             val jsonKeys = listOf(
                 "twoFactorAuthEnabled",
                 "darkMode",
                 "notificationsEnabled",
                 "alertType",
                 "alertVolume",
+                "alertLevel",
                 "locationSharing"
             )
 
@@ -137,6 +161,7 @@ class SettingsActivity : BaseActivity() {
                         "darkMode" -> getSwitchPreference("dark_mode")
                         "notificationsEnabled" -> getSwitchPreference("notifications_enabled")
                         "alertType" -> getListPreference("alert_type")
+                        "alertLevel" -> getListPreference("alert_level")
                         "alertVolume" -> getSeekBarPreference("alert_volume")
                         "locationSharing" -> getSwitchPreference("location_sharing")
                         else -> JSONObject.NULL
@@ -210,10 +235,6 @@ class SettingsActivity : BaseActivity() {
             loadSettings()
         }
 
-        override fun onPause() {
-            super.onPause()
-            saveSettings()
-        }
     }
 }
 

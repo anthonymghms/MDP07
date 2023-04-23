@@ -25,8 +25,5 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this, RegisterActivity::class.java))
         }
 
-        binding.btnHome.setOnClickListener{
-            startActivity(Intent(this, HomeActivity::class.java))
-        }
     }
 }

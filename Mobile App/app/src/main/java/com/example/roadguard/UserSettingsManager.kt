@@ -1,7 +1,6 @@
 package com.example.roadguard
 
 import android.content.Context
-import android.util.Log
 import com.example.roadguard.client.HTTPRequest
 import com.example.roadguard.client.ResponseCallback
 import com.example.roadguard.sharedPrefs.SharedPrefsHelper

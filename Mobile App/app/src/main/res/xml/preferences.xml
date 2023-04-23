@@ -50,6 +50,13 @@
             app:entryValues="@array/alert_type_values"
             app:defaultValue="visual_and_auditory" />
 
+        <ListPreference
+            app:key="alert_level"
+            app:title="Alert Level"
+            app:entries="@array/alert_level_names"
+            app:entryValues="@array/alert_level_values"
+            />
+
         <SeekBarPreference
             app:key="alert_volume"
             app:title="Alert Volume"
@@ -62,5 +69,11 @@
         <SwitchPreferenceCompat
             app:key="location_sharing"
             app:title="Location Sharing" />
+    </PreferenceCategory>
+    <PreferenceCategory
+        app:title="Camera Settings">
+        <EditTextPreference
+            app:key="ipCamAddress"
+            app:title="Camera IP Address" />
     </PreferenceCategory>
 </androidx.preference.PreferenceScreen>

@@ -36,6 +36,23 @@
             android:textSize="24sp"
             android:textStyle="bold" />
 
+        <Chronometer
+            android:id="@+id/drowsiness_timer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            android:layout_marginTop="8dp"
+            />
+
+        <TextView
+            android:id="@+id/timerTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginTop="8dp" />
+
     </LinearLayout>
 
     <LinearLayout
@@ -56,16 +73,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Start"
-            style="@style/ButtonAdaptive"
-            />
+            style="@style/ButtonAdaptive" />
+
     </LinearLayout>
 
     <include
         layout="@layout/slide_up_menu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        />
+        android:layout_gravity="bottom" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
