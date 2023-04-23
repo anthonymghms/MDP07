@@ -45,7 +45,7 @@ namespace MobileAPI
             var connectionString = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<DrowsinessDetectionContext>(options =>
             {
-                options.UseSqlServer(Configuration.GetConnectionString(connectionString),
+                options.UseSqlServer(connectionString,
                 sqlServerOptionsAction: sqlOptions =>
                 {
                     sqlOptions.EnableRetryOnFailure(
