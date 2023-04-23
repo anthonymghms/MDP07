@@ -100,6 +100,8 @@ namespace MobileAPI
 
             services.AddScoped<IPythonService, PythonService>();
             services.AddSignalR();
+
+            services.AddSingleton<UserConnectionManager>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
