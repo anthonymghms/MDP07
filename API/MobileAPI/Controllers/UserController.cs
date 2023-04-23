@@ -68,6 +68,9 @@ namespace MobileAPI.Controllers
                 userSettings.LastName = request?.LastName ?? userSettings.LastName;
                 userSettings.PhoneNumber = request?.PhoneNumber ?? userSettings.PhoneNumber;
                 userSettings.Email = request?.Email ?? user.Email;
+                userSettings.AlertLevel = request?.AlertLevel ?? userSettings.AlertLevel;
+                userSettings.IpCamAddress = request?.IpCamAddress ?? userSettings.IpCamAddress;
+
                 _dbContext.UserConfig.Update(userSettings);
                 await _dbContext.SaveChangesAsync();
                 return StatusCode(StatusCodes.Status200OK, new Response { Status = "Success", Message = "Settings updated successfully" });

@@ -4,6 +4,7 @@ using System.Text;
 
 namespace Common
 {
+    #nullable enable
     public class Response
     {
         public string? Status { get; set; }

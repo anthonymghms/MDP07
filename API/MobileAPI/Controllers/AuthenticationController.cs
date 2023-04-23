@@ -88,7 +88,7 @@ namespace User.Management.API.Controllers
                 TwoFactorEnabled = false,
                 CreationDate = DateTime.Now,
                 LastModifiedDate = DateTime.Now,
-                Birthday = request.Birthday,
+                Birthday = DateTime.Parse(request.Birthday),
                 LoginCount = 0,
             };
 
@@ -107,14 +107,15 @@ namespace User.Management.API.Controllers
                 User = user,
                 UserId = user.Id,
                 Username = request.Username,
-                LocationSharing = true
+                LocationSharing = true,
+                AlertLevel = "Moderate"
             };
             if (await _roleManager.RoleExistsAsync(role))
             {
                 try
                 {
                     var result = await _userManager.CreateAsync(user, request.Password);
-                    _context.UserConfig.Add(settings);
+                    var _ = await _context.UserConfig.AddAsync(settings);
                     if (!result.Succeeded)
                     {
                         return StatusCode(StatusCodes.Status500InternalServerError,
