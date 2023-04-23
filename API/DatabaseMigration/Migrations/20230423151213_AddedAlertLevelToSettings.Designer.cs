@@ -4,6 +4,7 @@ using DatabaseMigration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DatabaseMigration.Migrations
 {
     [DbContext(typeof(DrowsinessDetectionContext))]
-    partial class DrowsinessDetectionContextModelSnapshot : ModelSnapshot
+    [Migration("20230423151213_AddedAlertLevelToSettings")]
+    partial class AddedAlertLevelToSettings
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -213,9 +215,6 @@ namespace DatabaseMigration.Migrations
                     b.Property<string>("FirstName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("IpCamAddress")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("LastName")
                         .HasColumnType("nvarchar(max)");
 
@@ -273,14 +272,14 @@ namespace DatabaseMigration.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "c4d2e3d7-bf2b-4a8e-b8ac-33e32a9c98b2",
+                            Id = "969e2786-f441-423f-8418-bd0dcb074557",
                             ConcurrencyStamp = "1",
                             Name = "Admin",
                             NormalizedName = "Admin"
                         },
                         new
                         {
-                            Id = "25f28476-b9b3-4313-824f-3916239bf069",
+                            Id = "ab7e99a7-c0b3-4f8c-8f3b-51cac8eea44e",
                             ConcurrencyStamp = "2",
                             Name = "User",
                             NormalizedName = "User"

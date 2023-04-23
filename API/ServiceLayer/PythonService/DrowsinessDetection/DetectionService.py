@@ -1,5 +1,4 @@
 import sys
-
 import cv2
 import mediapipe as mp
 import numpy as np
@@ -86,12 +85,12 @@ state_tracker = {
     "face_direction": "",
 }
 thresholds = {
-    "EAR_threshold": 0.18,
-    "wait_time": 1.0,
+    "EAR_threshold": float(sys.argv[2]),
+    "wait_time": float(sys.argv[3]),
 }
 
 face_mesh = get_mediapipe_app()
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture(sys.argv[1])
 alarm_started = False
 while cap.isOpened():
     success, image = cap.read()

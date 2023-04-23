@@ -21,7 +21,8 @@ namespace DatabaseMigration.Model
         public bool TwoFactorAuthEnabled { get; set; }
         public float AlertVolume { get; set; }
         public string AlertType { get; set; }
-
+        public string AlertLevel { get; set; }
+        public string IpCamAddress { get; set; }
         public virtual AppUser User { get; set; }
     }
 }

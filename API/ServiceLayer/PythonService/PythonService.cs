@@ -9,26 +9,26 @@ namespace ServiceLayer.PythonService
 {
     public class PythonService : IPythonService
     {
-        private readonly string _scriptPath = @"C:\Users\antho\Desktop\MDP07\API\ServiceLayer\PythonService\DrowsinessDetection\DetectionService.py";
+        private readonly string _scriptPath = @"C:\Users\emman\OneDrive\Desktop\MDP\MDP07\API\ServiceLayer\PythonService\DrowsinessDetection\DetectionService.py";
         private readonly IHubContext<DetectionHub> _hubContext;
         public PythonService(IHubContext<DetectionHub> hubContext)
         {
             _hubContext = hubContext;
         }
 
-        public async Task StartExecutionAsync()
+        public async Task StartExecutionAsync(string IpCamAddress, string EarThreshold, string WaitTime)
         {
-            await Task.Run(() => ExecuteAsync(_scriptPath));
+            await Task.Run(() => ExecuteAsync(_scriptPath, IpCamAddress, EarThreshold, WaitTime));
         }
 
-        private async Task ExecuteAsync(string scriptPath)
+        private async Task ExecuteAsync(string scriptPath, string IpCamAddress, string EarThreshold, string WaitTime)
         {
             string output = "";
             try
             {
                 ProcessStartInfo startInfo = new ProcessStartInfo();
                 startInfo.FileName = "python";
-                startInfo.Arguments = scriptPath;
+                startInfo.Arguments = $"{scriptPath} {IpCamAddress} {EarThreshold} {WaitTime}";
                 startInfo.RedirectStandardOutput = true;
 
                 Process process = new Process();
@@ -50,7 +50,7 @@ namespace ServiceLayer.PythonService
                 process.Start();
                 process.BeginOutputReadLine();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // Handle exception
             }
