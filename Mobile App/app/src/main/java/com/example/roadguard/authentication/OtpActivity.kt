@@ -55,11 +55,11 @@ class OtpActivity : AppCompatActivity(), ResponseCallback {
                 if (index == otpEditTexts.size - 1 && count == 1) {
                     val otp = StringBuilder()
                     for (editText in otpEditTexts) {
-                        otp.append(editText?.text.toString())
+                        otp.append(editText?.text.toString().trim())
                     }
                     Log.d("OTP", "Sent OTP: $otp")
                     Log.d("Username", "Received username: $username")
-                    val jsonBody = "{\"username\":\"$username\",\"otp\":\"$otp\"}"
+                    val jsonBody = "{\"username\":\"$username\",\"otp\":\"${otp}\"}"
                     client.post(this@OtpActivity,"${client.clientLink}auth/login-2fa",jsonBody,this@OtpActivity)
                 }
             }

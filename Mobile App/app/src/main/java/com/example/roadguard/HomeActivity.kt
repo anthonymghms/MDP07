@@ -26,7 +26,7 @@ class HomeActivity : BaseActivity(),ResponseCallback {
     private var twoFactorAuthDialog: AlertDialog? = null
     private var notificationDialog: AlertDialog? = null
     private var locationDialog: AlertDialog? = null
-    private val hubConnection: HubConnection = HubConnectionBuilder.create("${client.clientAddress}detectionHub").build()
+    private lateinit var hubConnection: HubConnection
     private lateinit var timer: Chronometer
 
     private fun createNotificationChannel() {
@@ -99,6 +99,10 @@ class HomeActivity : BaseActivity(),ResponseCallback {
         }
 
         timer = findViewById(R.id.drowsiness_timer)
+
+        hubConnection =  HubConnectionBuilder.create("${client.clientAddress}detectionHub")
+            .withHeader("Authorization", "Bearer ${SharedPrefsHelper.getToken(this)}")
+            .build()
 
         hubConnection.on("DetectionResult", { message ->
             Log.d("DetectionResult", message)
