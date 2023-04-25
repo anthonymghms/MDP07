@@ -11,8 +11,6 @@
   "profiles": {
     "IIS Express": {
       "commandName": "IISExpress",
-      "launchBrowser": false,
-      "launchUrl": "",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
@@ -20,11 +18,10 @@
     },
     "MobileAPI": {
       "commandName": "Project",
-      "launchBrowser": false,
+      "applicationUrl": "http://192.168.1.111:5000",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
-      },
-      "applicationUrl": "http://192.168.1.111:5000"
+      }
     }
   }
 }
