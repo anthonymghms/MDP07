@@ -26,14 +26,14 @@ class HTTPRequest : AppCompatActivity() {
     private val privateClient: OkHttpClient = unSafeOkHttpClient().build()
     private var progressBarContainer: FrameLayout? = null
 
-    val clientLink = "http://192.168.0.7:5000/api/"
-    val clientAddress = "http://192.168.0.7:5000/"
+    val clientLink = "http://192.168.1.12:5000/api/"
+    val clientAddress = "http://192.168.1.12:5000/"
 
     private fun showLoader(context: Context) {
         if (progressBarContainer == null) {
             progressBarContainer = LayoutInflater.from(context)
                 .inflate(R.layout.progress_bar_layout, (context as Activity).findViewById(android.R.id.content), false) as FrameLayout
-            (context as Activity).addContentView(progressBarContainer, FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT))
+            context.addContentView(progressBarContainer, FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT))
         }
         runOnUiThread {
             Log.d("Loader", "Showing loader")

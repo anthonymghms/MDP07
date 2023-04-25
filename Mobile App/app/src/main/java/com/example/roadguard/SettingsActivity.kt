@@ -1,5 +1,7 @@
 package com.example.roadguard
 
+import DataStoreHelper
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -7,11 +9,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.AppCompatButton
+import androidx.lifecycle.lifecycleScope
 import androidx.preference.*
 import com.example.roadguard.client.HTTPRequest
 import com.example.roadguard.client.ResponseCallback
 import com.example.roadguard.databinding.ActivitySettingsBinding
-import com.example.roadguard.sharedPrefs.SharedPrefsHelper
+import com.example.roadguard.main.MainActivity
+import kotlinx.coroutines.launch
 import org.json.JSONObject
 
 class SettingsActivity : BaseActivity() {
@@ -23,8 +27,8 @@ class SettingsActivity : BaseActivity() {
         binding = ActivitySettingsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        initSlideUpMenu()
-        setOutsideTouchListener(R.id.settings_activity)
+
+        initNavBar()
 
         supportFragmentManager
             .beginTransaction()
@@ -56,36 +60,50 @@ class SettingsActivity : BaseActivity() {
 
             val darkModePreference: SwitchPreferenceCompat? = findPreference("dark_mode")
             darkModePreference?.onPreferenceChangeListener = this
+
+            val logoutPreference: Preference? = findPreference("logout")
+            logoutPreference?.onPreferenceClickListener = Preference.OnPreferenceClickListener {
+                performLogout()
+                true
+            }
         }
 
-        override fun onPreferenceChange(preference: Preference, newValue: Any?): Boolean {
-            if (preference.key == "dark_mode") {
-                if (newValue is Boolean) {
-                    setAppDarkMode(newValue)
-                }
+        private fun performLogout() {
+            lifecycleScope.launch {
+                DataStoreHelper.clearToken(requireContext())
+                DataStoreHelper.saveKeepMeLoggedIn(requireContext(), false)
             }
+            val intent = Intent(requireActivity(), MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+            startActivity(intent)
+            requireActivity().finish()
+        }
+
+
+        override fun onPreferenceChange(preference: Preference, newValue: Any?): Boolean {
             return true
         }
 
         private fun setAppDarkMode(isDarkModeEnabled: Boolean) {
-            if (isDarkModeEnabled) {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-            } else {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-            }
-            activity?.recreate()
+            val mode = if (isDarkModeEnabled) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO
+            AppCompatDelegate.setDefaultNightMode(mode)
         }
+
         private fun loadSettings() {
-            val token = SharedPrefsHelper.getToken(requireContext()).toString()
+
             val client = HTTPRequest()
 
-            client.get(
-                requireContext(),
-                "${client.clientLink}user/getsettings",
-                null,
-                this,
-                token
-            )
+            lifecycleScope.launch {
+                DataStoreHelper.getToken(requireContext()).collect {token ->
+                    client.get(
+                        requireContext(),
+                        "${client.clientLink}user/getsettings",
+                        null,
+                        this@SettingsFragment,
+                        token
+                    )
+                }
+            }
         }
 
         private fun setSwitchPreference(key: String, value: Boolean) {
@@ -116,7 +134,10 @@ class SettingsActivity : BaseActivity() {
                     Log.d("SettingsFragment", "Applying Key: $key, Value: ${settingsJson.get(key)}")
                     when (key) {
                         "twoFactorAuthEnabled" -> setSwitchPreference("two_factor_auth_enabled", settingsJson.getBoolean(key))
-                        "darkMode" -> setSwitchPreference("dark_mode", settingsJson.getBoolean(key))
+                        "darkMode" -> {
+                            Log.d("SettingsFragment", "Applying dark mode value: ${settingsJson.getBoolean("darkMode")}")
+                            setSwitchPreference("dark_mode", settingsJson.getBoolean(key))
+                        }
                         "notificationsEnabled" -> setSwitchPreference("notifications_enabled", settingsJson.getBoolean(key))
                         "alertType" -> setListPreference("alert_type", settingsJson.getString(key))
                         "alertLevel" -> setListPreference("alert_level",settingsJson.getString(key))
@@ -169,18 +190,30 @@ class SettingsActivity : BaseActivity() {
                 )
             }
 
-             val token = SharedPrefsHelper.getToken(requireContext()).toString()
+            Log.d("SettingsFragment", "Sending dark mode value: ${settingsJson.getBoolean("darkMode")}")
+
+
+            val isDarkMode = settingsJson.getBoolean("darkMode")
+            setAppDarkMode(isDarkMode)
+            lifecycleScope.launch {
+                val appTheme = if (isDarkMode) "dark" else "light"
+                DataStoreHelper.saveAppTheme(requireContext(), appTheme)
+            }
+
              val client = HTTPRequest()
 
-            client.post(
-                requireContext(),
-                "${client.clientLink}user/updatesettings",
-                settingsJson.toString(),
-                this,
-                null,
-                token
-            )
-
+            lifecycleScope.launch{
+                DataStoreHelper.getToken(requireContext()).collect {token ->
+                    client.post(
+                        requireContext(),
+                        "${client.clientLink}user/updatesettings",
+                        settingsJson.toString(),
+                        this@SettingsFragment,
+                        null,
+                        token
+                    )
+                }
+            }
         }
 
         private fun getSwitchPreference(key: String): Boolean {
@@ -205,6 +238,11 @@ class SettingsActivity : BaseActivity() {
         }
 
         override fun onSuccess(response: String) {
+            if (response.isNullOrEmpty()) {
+                Log.e("SettingsFragment", "Empty response received")
+                return
+            }
+
             val responseObject = JSONObject(response)
             Log.d("SettingsFragment", "Response: $responseObject")
 
@@ -213,6 +251,7 @@ class SettingsActivity : BaseActivity() {
                     val dataObject = responseObject.getJSONObject("value").getJSONObject("data")
                     val settingsJson = dataObject.getJSONObject("result")
                     Log.d("SettingsFragment", "Settings JSON: $settingsJson")
+                    Log.d("SettingsFragment", "Received dark mode value: ${settingsJson.getBoolean("darkMode")}")
                     requireActivity().runOnUiThread {
                         applySettings(settingsJson)
                     }

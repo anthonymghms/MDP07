@@ -25,16 +25,20 @@
         android:theme="@style/AppTheme"
         tools:targetApi="31">
         <activity
+            android:name=".MyRoadguardsActivity"
+            android:exported="false" />
+        <activity
             android:name=".SplashActivity"
             android:exported="true"
-            android:theme="@style/SplashScreenTheme" >
+            android:theme="@style/SplashScreenTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-            android:name=".EmergencyContactsActivity"
+            android:name=".RoadguardeesActivity"
             android:exported="false" />
         <activity
             android:name=".authentication.ForgotPasswordActivity"
@@ -94,8 +98,7 @@
         </activity>
         <activity
             android:name=".main.MainActivity"
-            android:exported="true">
-        </activity>
+            android:exported="true"></activity>
     </application>
 
 </manifest>

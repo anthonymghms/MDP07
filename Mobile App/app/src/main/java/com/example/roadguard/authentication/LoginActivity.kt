@@ -1,5 +1,6 @@
 package com.example.roadguard.authentication
 
+import DataStoreHelper
 import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
@@ -9,9 +10,11 @@ import android.widget.TextView
 import com.example.roadguard.*
 import com.example.roadguard.client.HTTPRequest
 import com.example.roadguard.client.ResponseCallback
-import com.example.roadguard.sharedPrefs.SharedPrefsHelper
 import com.example.roadguard.databinding.ActivityLoginBinding
 import org.json.JSONObject
+import android.widget.CheckBox
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
 
 class LoginActivity : AppCompatActivity(), ResponseCallback {
 
@@ -19,6 +22,7 @@ class LoginActivity : AppCompatActivity(), ResponseCallback {
     private val client: HTTPRequest = HTTPRequest()
     private lateinit var tvError: TextView
     private var uri: Uri? = null
+    private lateinit var cbKeepMeLoggedIn: CheckBox
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,6 +35,8 @@ class LoginActivity : AppCompatActivity(), ResponseCallback {
 
         tvError = binding.tvEmailError
         tvError.visibility = android.view.View.GONE
+
+        cbKeepMeLoggedIn = binding.cbKeepMeLoggedIn
 
         binding.btnLogin.setOnClickListener {
             performLogin()
@@ -59,11 +65,16 @@ class LoginActivity : AppCompatActivity(), ResponseCallback {
             when (it) {
                 "loginCount" -> {
                     val loginCount = jsonObject.getInt(it)
-                    SharedPrefsHelper.saveLoginCount(this, loginCount)
+                    lifecycleScope.launch{
+                        DataStoreHelper.saveLoginCount(this@LoginActivity, loginCount)
+                    }
                 }
                 "token" -> {
                     val token = jsonObject.getString(it)
-                    SharedPrefsHelper.saveToken(this, token)
+                    lifecycleScope.launch{
+                        DataStoreHelper.saveToken(this@LoginActivity, token)
+                        DataStoreHelper.saveKeepMeLoggedIn(this@LoginActivity, cbKeepMeLoggedIn.isChecked)
+                    }
                     val intent = Intent(this, HomeActivity::class.java)
                     startActivity(intent)
                 }

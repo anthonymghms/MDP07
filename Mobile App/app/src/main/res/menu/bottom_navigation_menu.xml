@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/home"
+        android:icon="@drawable/baseline_home_24"
+        android:title="@string/menu_home"/>
+
+    <item
+        android:id="@+id/settings"
+        android:icon="@drawable/baseline_settings_24"
+        android:title="@string/menu_settings"/>
+
+    <item
+        android:id="@+id/roadguards"
+        android:icon="@drawable/baseline_shield_24"
+        android:title="@string/menu_roadguards"/>
+
+    <item
+        android:id="@+id/roadguardees"
+        android:icon="@drawable/baseline_groups_24"
+        android:title="@string/menu_roadguardees"/>
+</menu>

@@ -1,5 +1,6 @@
 package com.example.roadguard.authentication
 
+import DataStoreHelper
 import android.content.Intent
 import android.text.Editable
 import android.text.TextWatcher
@@ -8,11 +9,12 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.EditText
 import android.widget.TextView
+import androidx.lifecycle.lifecycleScope
 import com.example.roadguard.HomeActivity
 import com.example.roadguard.R
 import com.example.roadguard.client.HTTPRequest
 import com.example.roadguard.client.ResponseCallback
-import com.example.roadguard.sharedPrefs.SharedPrefsHelper
+import kotlinx.coroutines.launch
 import org.json.JSONObject
 
 class OtpActivity : AppCompatActivity(), ResponseCallback {
@@ -59,7 +61,10 @@ class OtpActivity : AppCompatActivity(), ResponseCallback {
                     }
                     Log.d("OTP", "Sent OTP: $otp")
                     Log.d("Username", "Received username: $username")
-                    val jsonBody = "{\"username\":\"$username\",\"otp\":\"${otp}\"}"
+                    val jsonObject = JSONObject()
+                    jsonObject.put("username", username.trim())
+                    jsonObject.put("otp", otp.toString().trim())
+                    val jsonBody = jsonObject.toString()
                     client.post(this@OtpActivity,"${client.clientLink}auth/login-2fa",jsonBody,this@OtpActivity)
                 }
             }
@@ -76,7 +81,9 @@ class OtpActivity : AppCompatActivity(), ResponseCallback {
             when (it) {
                 "token" -> {
                     val token = jsonObject.getString(it)
-                    SharedPrefsHelper.saveToken(this, token)
+                    lifecycleScope.launch {
+                        DataStoreHelper.saveToken(this@OtpActivity,token)
+                    }
                     val intent = Intent(this, HomeActivity::class.java)
                     startActivity(intent)
                 }

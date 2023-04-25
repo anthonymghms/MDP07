@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.preference.PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+<androidx.preference.PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_gravity="left"
+    >
     <PreferenceCategory
         app:title="Account &amp; Security">
         <EditTextPreference
@@ -75,5 +78,11 @@
         <EditTextPreference
             app:key="ipCamAddress"
             app:title="Camera IP Address" />
+    </PreferenceCategory>
+    <PreferenceCategory
+        app:title="Logout">
+        <Preference
+            app:key="logout"
+            app:title="Log out" />
     </PreferenceCategory>
 </androidx.preference.PreferenceScreen>
