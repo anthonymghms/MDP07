@@ -1,5 +1,6 @@
 package com.example.roadguard.authentication
 
+import DataStoreHelper
 import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
@@ -9,42 +10,52 @@ import android.widget.TextView
 import com.example.roadguard.*
 import com.example.roadguard.client.HTTPRequest
 import com.example.roadguard.client.ResponseCallback
-import com.example.roadguard.sharedPrefs.SharedPrefsHelper
 import com.example.roadguard.databinding.ActivityLoginBinding
 import org.json.JSONObject
+import android.widget.CheckBox
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
 
 class LoginActivity : AppCompatActivity(), ResponseCallback {
 
     private lateinit var binding: ActivityLoginBinding
-    private var client: HTTPRequest = HTTPRequest()
+    private val client: HTTPRequest = HTTPRequest()
     private lateinit var tvError: TextView
     private var uri: Uri? = null
+    private lateinit var cbKeepMeLoggedIn: CheckBox
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        uri = intent.data;
+        uri = intent.data
 
-        if (uri!=null) {
-            confirmEmail(uri!!)
-        }
+        uri?.let { confirmEmail(it) }
 
-        tvError = findViewById(R.id.tv_email_error)
+        tvError = binding.tvEmailError
         tvError.visibility = android.view.View.GONE
 
-        binding.btnLogin.setOnClickListener {
-            val username = binding.etEmail.text.toString().trim()
-            val password = binding.etPassword.text.toString().trim()
-            val jsonLoginRequest = "{\"username\":\"$username\",\"password\":\"$password\"}"
-            client.post(this,"${client.clientLink}auth/login",jsonLoginRequest, this)
-        }
+        cbKeepMeLoggedIn = binding.cbKeepMeLoggedIn
 
+        binding.btnLogin.setOnClickListener {
+            performLogin()
+        }
 
         binding.tvHaventAccount.setOnClickListener {
-            startActivity(Intent(this, RegisterActivity::class.java))
+            navigateToRegisterActivity()
         }
+    }
+
+    private fun performLogin() {
+        val username = binding.etEmail.text.toString().trim()
+        val password = binding.etPassword.text.toString().trim()
+        val jsonLoginRequest = "{\"username\":\"$username\",\"password\":\"$password\"}"
+        client.post(this,"${client.clientLink}auth/login",jsonLoginRequest, this)
+    }
+
+    private fun navigateToRegisterActivity() {
+        startActivity(Intent(this, RegisterActivity::class.java))
     }
 
     override fun onSuccess(response: String) {
@@ -54,11 +65,16 @@ class LoginActivity : AppCompatActivity(), ResponseCallback {
             when (it) {
                 "loginCount" -> {
                     val loginCount = jsonObject.getInt(it)
-                    SharedPrefsHelper.saveLoginCount(this, loginCount)
+                    lifecycleScope.launch{
+                        DataStoreHelper.saveLoginCount(this@LoginActivity, loginCount)
+                    }
                 }
                 "token" -> {
                     val token = jsonObject.getString(it)
-                    SharedPrefsHelper.saveToken(this, token)
+                    lifecycleScope.launch{
+                        DataStoreHelper.saveToken(this@LoginActivity, token)
+                        DataStoreHelper.saveKeepMeLoggedIn(this@LoginActivity, cbKeepMeLoggedIn.isChecked)
+                    }
                     val intent = Intent(this, HomeActivity::class.java)
                     startActivity(intent)
                 }

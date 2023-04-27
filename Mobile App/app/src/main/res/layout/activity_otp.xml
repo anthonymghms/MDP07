@@ -45,7 +45,7 @@
             android:maxLength="1"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="@tools:sample/date/day_of_week" />
+            android:text="@tools:sample/date/day_of_week" />
 
         <EditText
             android:id="@+id/et_otp_2"

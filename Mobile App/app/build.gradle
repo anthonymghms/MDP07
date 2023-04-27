@@ -57,4 +57,5 @@ dependencies {
     implementation "com.google.android.gms:play-services-maps:18.1.0"
     implementation 'com.squareup.okhttp3:okhttp:3.10.0'
     implementation 'com.microsoft.signalr:signalr:5.0.10'
+    implementation "androidx.datastore:datastore-preferences:1.0.0"
 }
