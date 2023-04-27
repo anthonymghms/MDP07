@@ -302,43 +302,60 @@ namespace User.Management.API.Controllers
             try
             {
                 var user = await _userManager.FindByNameAsync(request.username);
+                Console.WriteLine($"User object: {user}");
+                Console.WriteLine($"Request username: {request.username}");
+                Console.WriteLine($"Request OTP: {request.otp}");
                 if (user == null)
                 {
                     return StatusCode(StatusCodes.Status404NotFound,
                        new Response { Status = "Not Found", Message = "There is no such user" });
                 }
-                var signIn = await _signInManager.TwoFactorSignInAsync(TokenOptions.DefaultEmailProvider, request.otp, true, true);
-                
-                if (signIn.Succeeded)
+                if (user != null && user.TwoFactorEnabled)
                 {
-                    Console.WriteLine("inside");
-                    if (user != null)
+                    var signIn = await _signInManager.TwoFactorSignInAsync(TokenOptions.DefaultEmailProvider, request.otp, true, true);
+                    Console.WriteLine($"SignIn suceeded: {signIn.Succeeded}");
+                    Console.WriteLine($"SignIn is not allowed: {signIn.IsNotAllowed}");
+                    Console.WriteLine($"SignIn is locked out: {signIn.IsLockedOut}");
+                    Console.WriteLine($"SignIn reuires two factor: {signIn.RequiresTwoFactor}");
+
+
+                    if (signIn.Succeeded)
                     {
-                        var authClaims = new List<Claim>
+                        Console.WriteLine("inside");
+                        if (user != null)
+                        {
+                            var authClaims = new List<Claim>
                         {
                             new Claim(ClaimTypes.Name, user.UserName),
                             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                         };
-                        var userRoles = await _userManager.GetRolesAsync(user);
-                        foreach (var role in userRoles)
-                        {
-                            authClaims.Add(new Claim(ClaimTypes.Role, role));
+                            var userRoles = await _userManager.GetRolesAsync(user);
+                            foreach (var role in userRoles)
+                            {
+                                authClaims.Add(new Claim(ClaimTypes.Role, role));
+                            }
+
+                            var jwtToken = GetToken(authClaims);
+
+                            Console.WriteLine(jwtToken);
+
+                            return Ok(new
+                            {
+                                token = new JwtSecurityTokenHandler().WriteToken(jwtToken),
+                                expiration = jwtToken.ValidTo
+                            });
                         }
-
-                        var jwtToken = GetToken(authClaims);
-
-                        Console.WriteLine(jwtToken);
-
-                        return Ok(new
-                        {
-                            token = new JwtSecurityTokenHandler().WriteToken(jwtToken),
-                            expiration = jwtToken.ValidTo
-                        });
                     }
+                    return StatusCode(StatusCodes.Status401Unauthorized,
+                    new Response { Status = "Error", Message = $"Invalid Code, you sent user:{request.username} and code:{request.otp}" });
                 }
-                return StatusCode(StatusCodes.Status401Unauthorized,
-                new Response { Status = "Error", Message = $"Invalid Code, you sent user:{request.username} and code:{request.otp}" });
-            } 
+                else
+                {
+                    return StatusCode(StatusCodes.Status401Unauthorized,
+                        new Response { Status = "Error", Message = "User null or two factor not enabled" });
+
+                }
+            }
             catch (Exception e)
             {
                 return StatusCode(StatusCodes.Status401Unauthorized,
