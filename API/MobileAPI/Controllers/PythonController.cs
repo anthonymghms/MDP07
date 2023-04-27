@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Identity;
 using DatabaseMigration.Model;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using ServiceLayer.HubService;
 
 namespace MobileAPI.Controllers
 {
@@ -23,15 +24,18 @@ namespace MobileAPI.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly IHubContext<DetectionHub> _hubContext;
         private readonly DrowsinessDetectionContext _context;
+        private readonly INotificationService _notificationService;
         public PythonController(IPythonService pythonService, IHubContext<DetectionHub> hubContext,
-            DrowsinessDetectionContext context, UserManager<AppUser> userManager)
+            DrowsinessDetectionContext context, UserManager<AppUser> userManager,
+            INotificationService notificationService)
         {
             _pythonService = pythonService;
             _hubContext = hubContext;
             _context = context;
             _userManager = userManager;
+            _notificationService = notificationService;
         }
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "User")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpGet("StartDetection")]
         public async Task<IActionResult> StartDetection()
         {
@@ -56,22 +60,8 @@ namespace MobileAPI.Controllers
                 earThreshold = "0.21";
                 waitTime = "0.8";
             }
-            await _pythonService.StartExecutionAsync(ipCamAddress, earThreshold, waitTime);
+            await _pythonService.StartExecutionAsync(ipCamAddress, earThreshold, waitTime, user.Id);
             return Ok(new Response{Status = "Success", Message = "Started detecting" });
-        }
-
-        [HttpPost("SendMessage")]
-        public async Task<IActionResult> SendMessage(string message)
-        {
-            try
-            {
-                await _pythonService.SendMessage(message);
-                return Ok("Message sent");
-            }
-            catch(Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
         }
     }
 }

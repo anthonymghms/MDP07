@@ -1,4 +1,5 @@
-﻿using DatabaseMigration;
+﻿using Common;
+using DatabaseMigration;
 using DatabaseMigration.Model;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -18,6 +19,7 @@ namespace MobileAPI.Controllers
 {
     [EnableCors("AllowAll")]
     [Route("api/[controller]")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [ApiController]
     public class EmergencyContactController : ControllerBase
     {
@@ -29,14 +31,17 @@ namespace MobileAPI.Controllers
             _dbContext = dbContext;
         }
 
-        [HttpPost("Add/{Id}")]
-        public async Task<IActionResult> AddEmergencyContact([FromRoute] Guid Id)
+        [HttpPost("Add")]
+        public async Task<IActionResult> AddEmergencyContact(string ecUsername)
         {
             try
             {
                 var username = HttpContext.User.Identity.Name;
                 var user = await _userManager.FindByNameAsync(username);
-                var emergencyContact = _dbContext.Users.FirstOrDefault(x => x.Id == Id.ToString());
+                var emergencyContact = await _dbContext.Users.FirstOrDefaultAsync(x => x.UserName == ecUsername);
+                var isAlreadyEmergencyContact = await _dbContext.EmergencyContact.FirstOrDefaultAsync(x => x.EmergencyContactUserId == Guid.Parse(emergencyContact.Id) && x.UserId == user.Id);
+                if (isAlreadyEmergencyContact != null) return StatusCode(409, new JsonResult(new { Success = false, message = "User is already an emergency contact" }));
+                
                 var emergencyContactId = Guid.NewGuid();
                 _dbContext.EmergencyContact.Add(new EmergencyContact
                 {
@@ -57,16 +62,18 @@ namespace MobileAPI.Controllers
             }
             return Ok(new JsonResult(new { Success = true, Message = "Emergency Contact Added Successfully" }));
         }
-        [HttpPost("Remove/{Id}")]
-        public async Task<IActionResult> RemoveEmergencyContact([FromRoute] Guid Id)
+        [HttpPost("Remove")]
+        public async Task<IActionResult> RemoveEmergencyContact(string ecUsername)
         {
             try
             {
                 var username = HttpContext.User.Identity.Name;
                 var user = await _userManager.FindByNameAsync(username);
-                var emergencyContact = _dbContext.Users.FirstOrDefault(x => x.Id == Id.ToString());
-                var emergencyContactId = Guid.NewGuid();
-                var emergencyContactToRemove = _dbContext.EmergencyContact.FirstOrDefault(x => x.EmergencyContactUserId == Id && x.UserId == user.Id);
+
+                var emergencyContact = _dbContext.Users.FirstOrDefault(x => x.UserName == ecUsername);
+                var emergencyContactId = _dbContext.EmergencyContact.FirstOrDefault(x => x.EmergencyContactUserId == Guid.Parse(emergencyContact.Id) && x.UserId == user.Id).Id;
+
+                var emergencyContactToRemove = _dbContext.EmergencyContact.FirstOrDefault(x => x.Id == emergencyContactId);
                 _dbContext.EmergencyContact.Remove(emergencyContactToRemove);
                 _dbContext.SaveChanges();
             }
@@ -77,7 +84,6 @@ namespace MobileAPI.Controllers
             return Ok(new JsonResult(new { Success = true, Message = "Emergency Contact Removed Successfully" }));
         }
         [HttpGet("GetUsers")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> GetUsers()
         {
             try
@@ -90,20 +96,33 @@ namespace MobileAPI.Controllers
                 return StatusCode(500, new JsonResult(new { Success = false, message = e.Message }));
             }
         }
-        [HttpGet("GetMyEmergencyContacts")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<IActionResult> GetMyEmergencyContacts()
+        [HttpGet("GetUser")]
+        public async Task<IActionResult> GetUser(string search)
+        {
+            try
+            {
+                var user = await _dbContext.Users.FirstOrDefaultAsync(x => x.UserName == search || x.PhoneNumber == search);
+                if (user == null) return NotFound(new Response { Status = "Not Found", Message = $"User with username or phone number {search} was not found" });
+                return Ok(new JsonResult(new { Success = true, Message = "User Retrieved Successfully", Data = new { user.FirstName, user.LastName, user.UserName, user.PhoneNumber }}));
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, new JsonResult(new { Success = false, message = e.Message }));
+            }
+        }
+        [HttpGet("GetRoadGuards")]
+        public async Task<IActionResult> GetRoadGuards()
         {
             try
             {
                 var username = HttpContext.User.Identity.Name;
                 var user = await _userManager.FindByNameAsync(username);
                 var emergencyContacts = _dbContext.EmergencyContact.Where(x => x.UserId == user.Id).ToList();
-                var emergencyContactUsers = new List<AppUser>();
+                var emergencyContactUsers = new List<object>();
                 foreach (var emergencyContact in emergencyContacts)
                 {
                     var emergencyContactUser = _dbContext.Users.FirstOrDefault(x => x.Id == emergencyContact.EmergencyContactUserId.ToString());
-                    emergencyContactUsers.Add(emergencyContactUser);
+                    emergencyContactUsers.Add(new {emergencyContactUser.UserName, emergencyContactUser.FirstName, emergencyContactUser.LastName, emergencyContactUser.PhoneNumber });
                 }
                 return Ok(new JsonResult(new { Success = true, Message = "Emergency Contacts Retrieved Successfully", Data = emergencyContactUsers }));
             }
@@ -112,9 +131,8 @@ namespace MobileAPI.Controllers
                 return StatusCode(500, new JsonResult(new { Success = false, message = e.Message }));
             }
         }
-        [HttpGet("GetUsersWhereIAmEmergencyContact")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<IActionResult> GetUsersWhereIAmEmergencyContact()
+        [HttpGet("GetRoadGuardees")]
+        public async Task<IActionResult> GetRoadGuardees()
         {
             try
             {

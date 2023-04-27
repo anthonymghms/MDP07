@@ -10,8 +10,10 @@ namespace DatabaseMigration.Model
     {
         public Guid Id { get; set; }
         public string UserId { get; set; }
+        public string ToUserId { get; set; }
         public string MessageText { get; set; }
         public DateTime MessageDateTime { get; set; }
+        public bool IsRead { get; set; }
         public virtual AppUser User { get; set; }
     }
 }

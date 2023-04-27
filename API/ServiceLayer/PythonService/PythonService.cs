@@ -1,4 +1,8 @@
-﻿using Microsoft.AspNetCore.SignalR;
+﻿using DatabaseMigration;
+using DatabaseMigration.Model;
+using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore;
+using ServiceLayer.HubService;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -10,18 +14,18 @@ namespace ServiceLayer.PythonService
     public class PythonService : IPythonService
     {
         private readonly string _scriptPath = @"C:\Users\emman\OneDrive\Desktop\MDP\MDP07\API\ServiceLayer\PythonService\DrowsinessDetection\DetectionService.py";
-        private readonly IHubContext<DetectionHub> _hubContext;
-        public PythonService(IHubContext<DetectionHub> hubContext)
+        private readonly INotificationService _notificationService;
+        public PythonService(INotificationService notificationService)
         {
-            _hubContext = hubContext;
+            _notificationService = notificationService;
         }
 
-        public async Task StartExecutionAsync(string IpCamAddress, string EarThreshold, string WaitTime)
+        public async Task StartExecutionAsync(string IpCamAddress, string EarThreshold, string WaitTime, string userId)
         {
-            await Task.Run(() => ExecuteAsync(_scriptPath, IpCamAddress, EarThreshold, WaitTime));
+            await Task.Run(() => ExecuteAsync(_scriptPath, IpCamAddress, EarThreshold, WaitTime, userId));
         }
 
-        private async Task ExecuteAsync(string scriptPath, string IpCamAddress, string EarThreshold, string WaitTime)
+        private async Task ExecuteAsync(string scriptPath, string IpCamAddress, string EarThreshold, string WaitTime, string userId)
         {
             string output = "";
             try
@@ -44,7 +48,8 @@ namespace ServiceLayer.PythonService
 
                 process.Exited += async (sender, args) =>
                 {
-                    await _hubContext.Clients.All.SendAsync("DetectionResult", output);
+                    //await _notificationService.SendDetectionResult(userId, output);
+                    await _notificationService.SendMessageToEmergencyContacts(userId, output);
                 };
 
                 process.Start();
@@ -54,11 +59,6 @@ namespace ServiceLayer.PythonService
             {
                 // Handle exception
             }
-        }
-
-        public async Task SendMessage(string message)
-        {
-            await _hubContext.Clients.All.SendAsync("DetectionResult", message);
         }
     }
 }

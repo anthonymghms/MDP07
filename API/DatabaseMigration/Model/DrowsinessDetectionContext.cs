@@ -16,6 +16,8 @@ namespace DatabaseMigration
         public DbSet<EmergencyContact> EmergencyContact { get; set; }
         public DbSet<UserConfig> UserConfig { get; set; }
         public DbSet<UserAlert> UserAlert { get; set; }
+        public DbSet<Log> Logs { get; set; }
+        public DbSet<AlertMessage> AlertMessage { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
