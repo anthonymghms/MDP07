@@ -1,0 +1,23 @@
+﻿{
+  "userInformation": {
+    "name": "Mario Francis",
+    "age": 21,
+    "gender": "Male"
+  },
+  "drivingSessionInformation": {
+    "startTime": "2023-04-10 10:00:00",
+    "endTime": "2023-04-10 12:00:00",
+    "duration": "2 hours",
+    "distance": "50 miles",
+    "averageSpeed": "25 mph"
+  },
+  "alerts": [
+    "Eye closure detected for more than 2 seconds",
+    "Head nodding detected",
+    "Yawning detected"
+  ],
+  "comments": [
+    "The driver reported feeling drowsy at the end of the driving session.",
+    "Recommendation: Take a break every 2 hours of driving."
+  ]
+}
