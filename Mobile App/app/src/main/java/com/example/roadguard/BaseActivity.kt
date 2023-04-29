@@ -6,69 +6,34 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 
 open class BaseActivity : AppCompatActivity() {
-    private lateinit var bottomSheetBehavior: BottomSheetBehavior<LinearLayout>
-    protected lateinit var slideUpArrow: ImageView
-    private lateinit var slideUpMenu: LinearLayout
-    private lateinit var settingsBtn: AppCompatButton
-    private lateinit var emergencyBtn: AppCompatButton
-    private lateinit var mainBtn: AppCompatButton
 
-    protected fun initSlideUpMenu() {
-        slideUpMenu = findViewById(R.id.slide_up_menu_container)
-        slideUpArrow = findViewById(R.id.slide_up_arrow)
-        settingsBtn = findViewById(R.id.settings_button)
-        emergencyBtn = findViewById(R.id.emergency_contacts_button)
-        mainBtn = findViewById(R.id.main_screen_button)
-
-        bottomSheetBehavior = BottomSheetBehavior.from(slideUpMenu)
-        bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-        bottomSheetBehavior.peekHeight = 0
-
-        slideUpArrow.setOnClickListener {
-            if (bottomSheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED) {
-                bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
-            } else {
-                bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-            }
-        }
-
-        bottomSheetBehavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
-            override fun onStateChanged(bottomSheet: View, newState: Int) {
-            }
-
-            override fun onSlide(bottomSheet: View, slideOffset: Float) {
-                slideUpArrow.rotation = slideOffset * 180
-            }
-        })
-
-        settingsBtn.setOnClickListener {
-            startActivity(SettingsActivity::class.java)
-        }
-
-        emergencyBtn.setOnClickListener {
-            startActivity(EmergencyContactsActivity::class.java)
-        }
-
-        mainBtn.setOnClickListener {
-            startActivity(HomeActivity::class.java)
-        }
-    }
-
-    protected fun setOutsideTouchListener(containerId: Int) {
-        val mainContainer = findViewById<View>(containerId)
-        mainContainer.setOnTouchListener { v, event ->
-            if (bottomSheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED) {
-                val isOutsideTouch =
-                    event?.y?.let { it < slideUpMenu.top || it > slideUpMenu.bottom } ?: false
-                if (isOutsideTouch) {
-                    bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-                    v?.performClick()
+    protected fun initNavBar() {
+        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNav)
+        bottomNavigationView.setOnNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.home -> {
+                    startActivity(HomeActivity::class.java)
+                    true
                 }
+                R.id.roadguardees -> {
+                    startActivity(RoadguardeesActivity::class.java)
+                    true
+                }
+                R.id.settings -> {
+                    startActivity(SettingsActivity::class.java)
+                    true
+                }
+                R.id.roadguards -> {
+                    startActivity(MyRoadguardsActivity::class.java)
+                    true
+                }
+                else -> false
             }
-            true
+
         }
     }
 

@@ -43,4 +43,12 @@
     <string name="btn_resend_otp">Resend OTP</string>
     <string name="tv_otp_error" />
     <string name="btn_save_settings">SAVE</string>
+    <string name="title_my_emergency_contacts">My RoadGuards</string>
+    <string name="add_contact">Add RoadGuard</string>
+    <string name="et_searchEC">Enter RoadGuard name or phone number</string>
+    <string name="roadguardees_title">RoadGuardees</string>
+    <string name="menu_roadguardees">Roadguardees</string>
+    <string name="menu_roadguards">Roadguards</string>
+    <string name="menu_home">Home</string>
+    <string name="menu_settings">Settings</string>
 </resources>

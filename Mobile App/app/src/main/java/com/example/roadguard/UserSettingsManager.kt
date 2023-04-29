@@ -1,28 +1,38 @@
 package com.example.roadguard
 
+import DataStoreHelper
 import android.content.Context
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.example.roadguard.client.HTTPRequest
 import com.example.roadguard.client.ResponseCallback
-import com.example.roadguard.sharedPrefs.SharedPrefsHelper
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import org.json.JSONObject
 
-class UserSettingsManager(private val context: Context) {
+class UserSettingsManager(private val context: Context): AppCompatActivity() {
 
     fun updatePromptSettingOnServer(responseCallback: ResponseCallback) {
         val settingsJson = JSONObject()
-        settingsJson.put("notificationsEnabled", SharedPrefsHelper.getNotificationSettings(context))
-
-        val token = SharedPrefsHelper.getToken(context).toString()
         val client = HTTPRequest()
 
-        client.post(
-            context,
-            "${client.clientLink}user/updatesettings",
-            settingsJson.toString(),
-            responseCallback,
-            null,
-            token
-        )
+        lifecycleScope.launch {
+            DataStoreHelper.getNotificationSettings(context).collect{notificationSettings ->
+                settingsJson.put("notificationsEnabled", notificationSettings)
+            }
+
+            DataStoreHelper.getToken(context).collect{token ->
+                client.post(
+                    context,
+                    "${client.clientLink}user/updatesettings",
+                    settingsJson.toString(),
+                    responseCallback,
+                    null,
+                    token
+                )
+            }
+        }
+
     }
 
 }

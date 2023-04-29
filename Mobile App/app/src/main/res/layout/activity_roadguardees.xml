@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:id="@+id/emergency_contacts_activity"
-    tools:context=".EmergencyContactsActivity">
+    tools:context=".RoadguardeesActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -16,11 +16,12 @@
             android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
             android:layout_marginTop="32dp"
-            android:text="Emergency Contacts"
+            android:gravity="center_horizontal"
+            android:text="@string/roadguardees_title"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             android:textColor="@color/primary_color"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -36,27 +37,15 @@
             app:layout_constraintTop_toBottomOf="@+id/title">
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/add_contact_button"
+                android:id="@+id/btn_my_emergency_contacts"
                 style="@style/ButtonAdaptive"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:text="Add"
+                android:text="@string/title_my_emergency_contacts"
                 app:cornerRadius="8dp"
-                app:layout_constraintEnd_toStartOf="@+id/edit_contact_button"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/edit_contact_button"
-                style="@style/ButtonAdaptive"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:text="Edit"
-                app:cornerRadius="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/add_contact_button"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -75,9 +64,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <include
-        layout="@layout/slide_up_menu"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom" />
+        layout="@layout/bottom_navigation"
+        />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

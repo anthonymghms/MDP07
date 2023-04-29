@@ -6,8 +6,13 @@
         <item name="colorOnPrimary">@color/white</item>
         <item name="colorSecondary">@color/orange</item>
         <item name="colorSecondaryVariant">@color/yellow</item>
-        <item name="colorOnSecondary">@color/black</item>
+        <item name="colorOnSecondary">@color/primary_color</item>
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+    </style>
+
+    <style name="MyFloatingActionButton" parent="@style/Widget.MaterialComponents.FloatingActionButton">
+        <item name="backgroundTint">@color/orange</item>
+        <item name="tint">@color/primary_color</item>
     </style>
 
     <style name="ButtonWhite">
@@ -76,5 +81,12 @@
         <item name="android:textColor">@color/grey</item>
         <item name="android:textStyle">normal</item>
     </style>
+
+    <style name="SplashScreenTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:statusBarColor">@color/primary_color</item>
+    </style>
+
 
 </resources>

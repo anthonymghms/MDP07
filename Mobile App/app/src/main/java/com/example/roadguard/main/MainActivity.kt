@@ -18,12 +18,20 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.btnLogin.setOnClickListener{
-            startActivity(Intent(this, LoginActivity::class.java))
+            navigateToLoginActivity()
         }
 
         binding.btnRegister.setOnClickListener{
-            startActivity(Intent(this, RegisterActivity::class.java))
+            navigateToRegisterActivity()
         }
 
+    }
+
+    private fun navigateToLoginActivity() {
+        startActivity(Intent(this, LoginActivity::class.java))
+    }
+
+    private fun navigateToRegisterActivity() {
+        startActivity(Intent(this, RegisterActivity::class.java))
     }
 }

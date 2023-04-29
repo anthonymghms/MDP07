@@ -1,5 +1,6 @@
 package com.example.roadguard
 
+import DataStoreHelper
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.os.Bundle
@@ -9,13 +10,17 @@ import androidx.appcompat.widget.AppCompatButton
 import com.example.roadguard.client.HTTPRequest
 import com.example.roadguard.client.ResponseCallback
 import com.example.roadguard.databinding.ActivityHomeBinding
-import com.example.roadguard.sharedPrefs.SharedPrefsHelper
 import org.json.JSONObject
 import com.microsoft.signalr.HubConnectionBuilder
 import android.graphics.Color
+import android.os.Handler
+import android.os.Looper
 import android.widget.LinearLayout
 import android.widget.Chronometer
+import androidx.lifecycle.lifecycleScope
 import com.microsoft.signalr.HubConnection
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 class HomeActivity : BaseActivity(),ResponseCallback {
 
@@ -26,8 +31,9 @@ class HomeActivity : BaseActivity(),ResponseCallback {
     private var twoFactorAuthDialog: AlertDialog? = null
     private var notificationDialog: AlertDialog? = null
     private var locationDialog: AlertDialog? = null
-    private val hubConnection: HubConnection = HubConnectionBuilder.create("${client.clientAddress}detectionHub").build()
+    private lateinit var hubConnection: HubConnection
     private lateinit var timer: Chronometer
+    private lateinit var token: String
 
     private fun createNotificationChannel() {
         val name: CharSequence = "RoadguardChannel"
@@ -47,12 +53,16 @@ class HomeActivity : BaseActivity(),ResponseCallback {
             .setTitle("Notifications")
             .setMessage("Would you like to enable notifications?")
             .setPositiveButton("Allow") {_, _ ->
-                SharedPrefsHelper.saveNotificationSettings(this, true)
+                lifecycleScope.launch {
+                    DataStoreHelper.saveNotificationSettings(this@HomeActivity, true)
+                }
                 val userSettingsManager = UserSettingsManager(this)
                 userSettingsManager.updatePromptSettingOnServer(this)
             }
             .setNegativeButton("No, thank you") {_, _ ->
-                SharedPrefsHelper.saveNotificationSettings(this, false)
+                lifecycleScope.launch{
+                    DataStoreHelper.saveNotificationSettings(this@HomeActivity, false)
+                }
                 val userSettingsManager = UserSettingsManager(this)
                 userSettingsManager.updatePromptSettingOnServer(this)
             }
@@ -65,12 +75,16 @@ class HomeActivity : BaseActivity(),ResponseCallback {
             .setTitle("Location")
             .setMessage("Would you like to enable location?")
             .setPositiveButton("Allow") {_, _ ->
-                SharedPrefsHelper.saveLocationSharing(this, true)
+                lifecycleScope.launch {
+                    DataStoreHelper.saveLocationSharing(this@HomeActivity, true)
+                }
                 val userSettingsManager = UserSettingsManager(this)
                 userSettingsManager.updatePromptSettingOnServer(this)
             }
             .setNegativeButton("No, thank you") {_, _ ->
-                SharedPrefsHelper.saveLocationSharing(this, false)
+                lifecycleScope.launch{
+                    DataStoreHelper.saveLocationSharing(this@HomeActivity, false)
+                }
                 val userSettingsManager = UserSettingsManager(this)
                 userSettingsManager.updatePromptSettingOnServer(this)
             }
@@ -81,24 +95,24 @@ class HomeActivity : BaseActivity(),ResponseCallback {
 
 
     private fun startScript(){
-        val token = SharedPrefsHelper.getToken(this)
-        client.get(this, "${client.clientLink}python/startdetection",null,this,token)
+        lifecycleScope.launch{
+            DataStoreHelper.getToken(this@HomeActivity).collect{token ->
+                client.get(this@HomeActivity, "${client.clientLink}python/startdetection",null,this@HomeActivity,token)
+            }
+        }
     }
     private fun updateDrowsinessAlertViewBackground(color: Int) {
         val drowsinessAlertView = findViewById<LinearLayout>(R.id.drowsiness_alert_view)
         drowsinessAlertView.setBackgroundColor(color)
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityHomeBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+    private fun startHubConnection() {
+        hubConnection = HubConnectionBuilder.create("${client.clientAddress}detectionHub")
+            .withHeader("Authorization", "Bearer $token")
+            .build()
 
-        findViewById<AppCompatButton>(R.id.start_button).setOnClickListener {
-            startScript()
-        }
 
-        timer = findViewById(R.id.drowsiness_timer)
+        hubConnection.keepAliveInterval = 600000
 
         hubConnection.on("DetectionResult", { message ->
             Log.d("DetectionResult", message)
@@ -115,14 +129,55 @@ class HomeActivity : BaseActivity(),ResponseCallback {
 
 
 
+        hubConnection.onClosed { error ->
+            Log.e("HubConnection", "Connection closed. Error: ${error?.message}")
+            reconnectHub()
+        }
 
         hubConnection.start().blockingAwait()
 
-        initSlideUpMenu()
-        setOutsideTouchListener(R.id.home_activity)
-        if(SharedPrefsHelper.getLoginCount(this) == 0) {
-            promptLocation()
-            promptNotifications()
+        Log.d("HubConnection",hubConnection.connectionState.toString())
+    }
+
+    private fun reconnectHub() {
+        val handler = Handler(Looper.getMainLooper())
+        handler.postDelayed({
+            Log.d("HubConnection", "Attempting to reconnect...")
+            startHubConnection()
+        }, 5000)
+    }
+
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityHomeBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        findViewById<AppCompatButton>(R.id.start_button).setOnClickListener {
+            startScript()
+        }
+
+        timer = findViewById(R.id.drowsiness_timer)
+
+        lifecycleScope.launch {
+            DataStoreHelper.getToken(this@HomeActivity).collect{
+                if (it != null) {
+                    token = it
+                }
+            }
+        }
+
+        startHubConnection()
+
+        initNavBar()
+
+        lifecycleScope.launch {
+            DataStoreHelper.getLoginCount(this@HomeActivity).collect{loginCount ->
+                if (loginCount == 0) {
+                    promptLocation()
+                    promptNotifications()
+                }
+            }
         }
         if (!userHasChosenTwoFactorAuth()) {
             showTwoFactorAuthDialog()
