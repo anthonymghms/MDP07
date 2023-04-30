@@ -18,6 +18,7 @@ namespace MobileAPI.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [ApiKeyAuthFilter]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "User")]
     public class PythonController : ControllerBase
     {
         private readonly IPythonService _pythonService;
@@ -35,7 +36,6 @@ namespace MobileAPI.Controllers
             _userManager = userManager;
             _notificationService = notificationService;
         }
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpGet("StartDetection")]
         public async Task<IActionResult> StartDetection()
         {
@@ -43,6 +43,7 @@ namespace MobileAPI.Controllers
             var user = await _userManager.FindByNameAsync(username);
             var userSettings = await _context.UserConfig.FirstOrDefaultAsync(x => x.UserId == user.Id);
             var ipCamAddress = userSettings.IpCamAddress;
+            var ipEspAddress = userSettings.IpEspAddress;
             var earThreshold = "";
             var waitTime = "";
             if(userSettings?.AlertLevel == "Low")
@@ -60,7 +61,7 @@ namespace MobileAPI.Controllers
                 earThreshold = "0.21";
                 waitTime = "0.8";
             }
-            await _pythonService.StartExecutionAsync(ipCamAddress, earThreshold, waitTime, user.Id);
+            await _pythonService.StartExecutionAsync(ipCamAddress, earThreshold, waitTime, user.Id, ipEspAddress);
             return Ok(new Response{Status = "Success", Message = "Started detecting" });
         }
     }

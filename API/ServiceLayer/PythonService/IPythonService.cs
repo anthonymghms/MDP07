@@ -8,7 +8,7 @@ namespace ServiceLayer.PythonService
 {
     public interface IPythonService
     {
-        Task StartExecutionAsync(string IpCamAddress, string EarThreshold, string WaitTime, string userId);
-        Task StopDetection();
+        Task StartExecutionAsync(string IpCamAddress, string EarThreshold, string WaitTime, string userId, string ipEspAddress);
+        Task StopDetection(string ipEspAddress);
     }
 }

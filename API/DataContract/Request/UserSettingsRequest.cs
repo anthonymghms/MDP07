@@ -20,6 +20,7 @@ namespace DataContract.Request
         public float AlertVolume { get; set; }
         public string AlertType { get; set; }
         public string IpCamAddress { get; set; }
+        public string IpEspAddress { get; set; }
         public string AlertLevel { get; set; }
     }
 }

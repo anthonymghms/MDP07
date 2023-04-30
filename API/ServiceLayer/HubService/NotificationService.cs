@@ -55,7 +55,7 @@ namespace ServiceLayer.HubService
             //    AlertDateTime = DateTime.Now,
             //});
             //await _context.SaveChangesAsync();
-            //await _hubContext.Clients.All.SendAsync("DetectionResult", result);
+            await _hubContext.Clients.All.SendAsync("DetectionResult", result);
             string connectionId = _userConnectionManager.GetConnectionId(userId);
             if (!string.IsNullOrEmpty(connectionId))
             {

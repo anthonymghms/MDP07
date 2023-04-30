@@ -23,6 +23,7 @@ namespace DatabaseMigration.Model
         public string AlertType { get; set; }
         public string AlertLevel { get; set; }
         public string IpCamAddress { get; set; }
+        public string IpEspAddress { get; set; }
         public virtual AppUser User { get; set; }
     }
 }

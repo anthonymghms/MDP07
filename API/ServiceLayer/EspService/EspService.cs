@@ -8,12 +8,19 @@ namespace ServiceLayer.EspService
     public class EspService : IEspService
     {
         public EspService() { }
-        public async Task Vibrate(bool start)
+        public async Task Vibrate(string ipEspAddress, bool start)
         {
-            HttpClient client = new HttpClient();
-            client.BaseAddress = new Uri("http://192.168.0.10");
-            var content = new FormUrlEncodedContent(new[] {new KeyValuePair<string, string>("message", start ? "start" : "stop")});
-            HttpResponseMessage _ = await client.PostAsync("",content);
+            try
+            {
+                HttpClient client = new HttpClient();
+                client.BaseAddress = new Uri(ipEspAddress);
+                var content = new FormUrlEncodedContent(new[] { new KeyValuePair<string, string>("message", start ? "start" : "stop") });
+                HttpResponseMessage _ = await client.PostAsync("", content);
+            }
+            catch (Exception ex)
+            {
+
+            }
         }
     }
 }

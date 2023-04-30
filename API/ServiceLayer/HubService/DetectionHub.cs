@@ -36,5 +36,4 @@ namespace ServiceLayer.HubService
         }
 
     }
-
 }

@@ -23,17 +23,17 @@ namespace ServiceLayer.PythonService
             _espService = espService;
         }
 
-        public async Task StartExecutionAsync(string IpCamAddress, string EarThreshold, string WaitTime, string userId)
+        public async Task StartExecutionAsync(string IpCamAddress, string EarThreshold, string WaitTime, string userId, string ipEspAddress)
         {
-            await Task.Run(() => ExecuteAsync(_scriptPath, IpCamAddress, EarThreshold, WaitTime, userId));
+            await Task.Run(() => ExecuteAsync(_scriptPath, IpCamAddress, EarThreshold, WaitTime, userId, ipEspAddress));
         }
 
-        public async Task StopDetection()
+        public async Task StopDetection(string ipEspAddress)
         {
-            await _espService.Vibrate(false);
+            await _espService.Vibrate(ipEspAddress, false);
         }
 
-        private async Task ExecuteAsync(string scriptPath, string IpCamAddress, string EarThreshold, string WaitTime, string userId)
+        private async Task ExecuteAsync(string scriptPath, string IpCamAddress, string EarThreshold, string WaitTime, string userId, string ipEspAddress)
         {
             string output = "";
             try
@@ -57,8 +57,7 @@ namespace ServiceLayer.PythonService
                 process.Exited += async (sender, args) =>
                 {
                     await _notificationService.SendDetectionResult(userId, output);
-                    await _espService.Vibrate(true);
-                    //await _notificationService.SendMessageToEmergencyContacts(userId, output);
+                    await _espService.Vibrate(ipEspAddress, true);
                 };
 
                 process.Start();
