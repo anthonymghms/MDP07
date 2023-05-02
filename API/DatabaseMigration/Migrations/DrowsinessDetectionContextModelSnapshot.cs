@@ -185,7 +185,12 @@ namespace DatabaseMigration.Migrations
                     b.Property<string>("OperationResult")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Logs");
                 });
@@ -302,14 +307,14 @@ namespace DatabaseMigration.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "af80ebc3-264f-4ca5-a116-f399c6716641",
+                            Id = "826e1181-6f14-4738-ad0f-4260bb4f0378",
                             ConcurrencyStamp = "1",
                             Name = "Admin",
                             NormalizedName = "Admin"
                         },
                         new
                         {
-                            Id = "3172442b-76e6-43a9-b444-1ae5e8923140",
+                            Id = "260b8634-8592-4ebc-9e5c-04d588b154fb",
                             ConcurrencyStamp = "2",
                             Name = "User",
                             NormalizedName = "User"
@@ -433,6 +438,16 @@ namespace DatabaseMigration.Migrations
                 });
 
             modelBuilder.Entity("DatabaseMigration.Model.EmergencyContact", b =>
+                {
+                    b.HasOne("DatabaseMigration.Model.AppUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("DatabaseMigration.Model.Log", b =>
                 {
                     b.HasOne("DatabaseMigration.Model.AppUser", "User")
                         .WithMany()

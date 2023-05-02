@@ -28,6 +28,13 @@ namespace DatabaseMigration
                 .WithMany()
                 .HasForeignKey(e => e.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
+            builder.Entity<Log>()
+                .HasKey(ec => ec.Id);
+            builder.Entity<Log>()
+                .HasOne(e => e.User)
+                .WithMany()
+                .HasForeignKey(e => e.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
             builder.Entity<UserConfig>()
                 .HasKey(ec => ec.Id);
             builder.Entity<UserConfig>()

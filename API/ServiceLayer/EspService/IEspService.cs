@@ -4,6 +4,7 @@ namespace ServiceLayer.EspService
 {
     public interface IEspService
     {
-        Task Vibrate(string ipEspAddress, bool start);
+        Task Vibrate(string ipEspAddress);
+        Task StopVibrate(string ipEspAddress);
     }
 }

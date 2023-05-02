@@ -1,0 +1,65 @@
+﻿h1 {
+    text-align: center;
+    color: #26497B;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 25px;
+}
+
+form {
+    max-width: 600px;
+    margin: 0 auto;
+    border: 2px solid #26497B;
+    padding: 20px;
+    border-radius: 20px;
+    background-color: #ffffff;
+}
+
+.back-manager-icon {
+    display: inline-flex;
+    padding: 10px;
+}
+
+.backtomanage {
+    text-decoration: none;
+    margin-left: 6px;
+    color: #26497B;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 17px;
+    color: #26497B;
+}
+
+input[type="text"],
+input[type="date"],
+input[type="email"],
+input[type="tel"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    box-sizing: border-box;
+    border: 2px solid #26497B;
+    border-radius: 25px;
+    font-size: 16px;
+}
+
+button[type="submit"] {
+    background-color: #ffffff;
+    color: #26497B;
+    padding: 12px 20px;
+    border: 1px solid #26497B;
+    border-radius: 20px;
+    cursor: pointer;
+    float: right;
+}
+
+    button[type="submit"]:hover {
+        background-color: #26497B;
+        color: white;
+    }
+
+input:required:invalid {
+    border-color: red;
+}

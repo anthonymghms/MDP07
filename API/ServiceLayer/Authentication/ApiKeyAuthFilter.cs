@@ -27,4 +27,8 @@ namespace ServiceLayer.Authentication
             }
         }
     }
+
+    public class ApiKeyMiddleware
+    {
+    }
 }

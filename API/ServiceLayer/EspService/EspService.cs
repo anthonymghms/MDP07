@@ -8,13 +8,13 @@ namespace ServiceLayer.EspService
     public class EspService : IEspService
     {
         public EspService() { }
-        public async Task Vibrate(string ipEspAddress, bool start)
+        public async Task Vibrate(string ipEspAddress)
         {
             try
             {
                 HttpClient client = new HttpClient();
                 client.BaseAddress = new Uri(ipEspAddress);
-                var content = new FormUrlEncodedContent(new[] { new KeyValuePair<string, string>("message", start ? "start" : "stop") });
+                var content = new FormUrlEncodedContent(new[] { new KeyValuePair<string, string>("message", "start") });
                 HttpResponseMessage _ = await client.PostAsync("", content);
             }
             catch (Exception ex)
@@ -22,5 +22,21 @@ namespace ServiceLayer.EspService
 
             }
         }
+        public async Task StopVibrate(string ipEspAddress)
+        {
+            try
+            {
+                HttpClient client = new HttpClient();
+                client.BaseAddress = new Uri(ipEspAddress);
+                var content = new FormUrlEncodedContent(new[] { new KeyValuePair<string, string>("message", "stop") });
+                HttpResponseMessage _ = await client.PostAsync("", content);
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+        // stop vibrate method
+
     }
 }

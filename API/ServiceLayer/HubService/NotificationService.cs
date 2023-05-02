@@ -56,11 +56,11 @@ namespace ServiceLayer.HubService
             //});
             //await _context.SaveChangesAsync();
             await _hubContext.Clients.All.SendAsync("DetectionResult", result);
-            string connectionId = _userConnectionManager.GetConnectionId(userId);
-            if (!string.IsNullOrEmpty(connectionId))
-            {
-                await _hubContext.Clients.Client(connectionId).SendAsync("DetectionResult", result);
-            }
+            //string connectionId = _userConnectionManager.GetConnectionId(userId);
+            //if (!string.IsNullOrEmpty(connectionId))
+            //{
+            //    await _hubContext.Clients.Client(connectionId).SendAsync("DetectionResult", result);
+            //}
         }
     }
 }
