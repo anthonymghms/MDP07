@@ -39,13 +39,13 @@ namespace ServiceLayer.HubService
                 string connectionId = _userConnectionManager.GetConnectionId(contact.UserId);
                 if (!string.IsNullOrEmpty(connectionId))
                 {
-                    await _hubContext.Clients.Client(connectionId).SendAsync("DetectionResult", message);
+                    await _hubContext.Clients.Client(connectionId).SendAsync("Notification", message);
                 }
             }
         }
 
         public async Task SendDetectionResult(string userId, string result)
-        { 
+        {
             //await _context.UserAlert.AddAsync(new UserAlert
             //{
             //    Id = Guid.NewGuid(),
@@ -55,11 +55,12 @@ namespace ServiceLayer.HubService
             //    AlertDateTime = DateTime.Now,
             //});
             //await _context.SaveChangesAsync();
-            string connectionId = _userConnectionManager.GetConnectionId(userId);
-            if (!string.IsNullOrEmpty(connectionId))
-            {
-                await _hubContext.Clients.Client(connectionId).SendAsync("DetectionResult", result);
-            }
+            await _hubContext.Clients.All.SendAsync("DetectionResult", result);
+            //string connectionId = _userConnectionManager.GetConnectionId(userId);
+            //if (!string.IsNullOrEmpty(connectionId))
+            //{
+            //    await _hubContext.Clients.Client(connectionId).SendAsync("DetectionResult", result);
+            //}
         }
     }
 }

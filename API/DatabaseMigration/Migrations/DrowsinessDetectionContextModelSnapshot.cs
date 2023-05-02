@@ -185,7 +185,12 @@ namespace DatabaseMigration.Migrations
                     b.Property<string>("OperationResult")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Logs");
                 });
@@ -240,6 +245,9 @@ namespace DatabaseMigration.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("IpCamAddress")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("IpEspAddress")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastName")
@@ -299,14 +307,14 @@ namespace DatabaseMigration.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "55757225-655a-45ff-9016-98cebde5781f",
+                            Id = "826e1181-6f14-4738-ad0f-4260bb4f0378",
                             ConcurrencyStamp = "1",
                             Name = "Admin",
                             NormalizedName = "Admin"
                         },
                         new
                         {
-                            Id = "90a28dec-63b8-4c42-95b0-192d326f70f0",
+                            Id = "260b8634-8592-4ebc-9e5c-04d588b154fb",
                             ConcurrencyStamp = "2",
                             Name = "User",
                             NormalizedName = "User"
@@ -430,6 +438,16 @@ namespace DatabaseMigration.Migrations
                 });
 
             modelBuilder.Entity("DatabaseMigration.Model.EmergencyContact", b =>
+                {
+                    b.HasOne("DatabaseMigration.Model.AppUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("DatabaseMigration.Model.Log", b =>
                 {
                     b.HasOne("DatabaseMigration.Model.AppUser", "User")
                         .WithMany()

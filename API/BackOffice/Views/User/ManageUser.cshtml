@@ -1,0 +1,90 @@
+﻿@page
+@{
+    Layout = "_Layout";
+   }
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>DataTable with JSON Data Source and Edit Button</title>
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <link rel="stylesheet" href="~/css/manageuser.css" asp-append-version="true" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css" />
+</head>
+
+
+<body>
+  
+    <table id="users-table" class="display" style="width:100%">
+        <thead>
+            <tr>
+                <th>Username</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Email</th>
+                <th>Phone Number</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+    </table>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var jsonData;
+            fetch("@Url.Action("GetUsers", "User")")
+                .then(response => response.json())
+                .then(data => {
+                    // Store the JSON data in a variable
+                    jsonData = data;
+                    console.log(jsonData);
+                    let x = new DataTable('#users-table', {
+                        data: jsonData,
+
+                        columns: [
+                            { data: "userName" },
+                            { data: "firstName" },
+                            { data: "lastName" },
+                            { data: "email" },
+                            { data: "phoneNumber" },
+                            {
+                                "render": function (data, type, row, meta) {
+                                    return `<a class="editbutton">Edit</a>`;
+                                }
+
+                            }
+                        ],
+                        language: {
+                            paginate: {
+                                previous: "<",
+                                next: ">"
+                            }
+                        }
+                    });
+                    $('#users-table').on('click', '.editbutton', function () {
+                        // get the data from the row associated with the clicked edit button
+                        let rowData = x.row($(this).closest('tr')).data();
+
+                        // make an ajax call to get the data needed for the edit view
+                        $.ajax({
+                            url: '/User/EditUser',
+                            type: 'POST',
+                            data: rowData.json(),
+                            success: function (data) {
+                                // redirect to the returned view, which should be the EditUser view
+                                window.location.href = data;
+                            },
+                            error: function (jqXHR, textStatus, errorThrown) {
+                                // error handling logic here
+                            }
+                        });
+                    });
+                })
+                .catch(error => console.error(error));
+            
+        });
+
+       </script>
+</body>
+
+</html>

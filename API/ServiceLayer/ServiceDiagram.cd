@@ -1,0 +1,84 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Comment CommentText="Services Interfaces and Implementations">
+    <Position X="0.5" Y="0.5" Height="0.333" Width="2.523" />
+  </Comment>
+  <Comment CommentText="Hub and UserConnectionManager">
+    <Position X="0.5" Y="5.25" Height="0.333" Width="2.145" />
+  </Comment>
+  <Class Name="ServiceLayer.EmailService.EmailService">
+    <Position X="0.5" Y="2.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAEAAAAACAgAAAAAAAAAAAAgAAAA=</HashCode>
+      <FileName>EmailService\EmailService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.294" />
+  </Class>
+  <Class Name="ServiceLayer.EspService.EspService">
+    <Position X="2.5" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAA=</HashCode>
+      <FileName>EspService\EspService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ServiceLayer.HubService.NotificationService" BaseTypeListCollapsed="true">
+    <Position X="4.25" Y="2.75" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAEAEAAABAAABAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>HubService\NotificationService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.148" />
+  </Class>
+  <Class Name="ServiceLayer.PythonService.PythonService">
+    <Position X="7.25" Y="2.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AgAAACAAEAAAAAAAAAAgAAAAAAAAAAAAIAAAAAAAAEA=</HashCode>
+      <FileName>PythonService\PythonService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ServiceLayer.HubService.DetectionHub">
+    <Position X="0.5" Y="5.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>EAAABAEAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>HubService\DetectionHub.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ServiceLayer.HubService.UserConnectionManager">
+    <Position X="2.75" Y="5.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAACBAAA=</HashCode>
+      <FileName>HubService\UserConnectionManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="ServiceLayer.EmailService.IEmailService">
+    <Position X="0.5" Y="1" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>EmailService\IEmailService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="ServiceLayer.EspService.IEspService">
+    <Position X="2.5" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAA=</HashCode>
+      <FileName>EspService\IEspService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="ServiceLayer.HubService.INotificationService">
+    <Position X="4.25" Y="1" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>HubService\INotificationService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="ServiceLayer.PythonService.IPythonService">
+    <Position X="7.25" Y="1" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAA=</HashCode>
+      <FileName>PythonService\IPythonService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

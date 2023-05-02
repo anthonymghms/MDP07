@@ -70,6 +70,7 @@ namespace MobileAPI.Controllers
                 userSettings.Email = request?.Email ?? user.Email;
                 userSettings.AlertLevel = request?.AlertLevel ?? userSettings.AlertLevel;
                 userSettings.IpCamAddress = request?.IpCamAddress ?? userSettings.IpCamAddress;
+                userSettings.IpEspAddress = request?.IpEspAddress ?? userSettings.IpEspAddress;
 
                 _dbContext.UserConfig.Update(userSettings);
                 await _dbContext.SaveChangesAsync();

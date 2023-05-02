@@ -23,6 +23,7 @@ using System.Reflection;
 using Microsoft.OpenApi.Models;
 using ServiceLayer.PythonService;
 using ServiceLayer.HubService;
+using ServiceLayer.EspService;
 
 namespace MobileAPI
 {
@@ -103,6 +104,7 @@ namespace MobileAPI
             services.AddSignalR();
             services.AddScoped<UserConnectionManager>();
             services.AddScoped<INotificationService, NotificationService>();
+            services.AddScoped<IEspService, EspService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

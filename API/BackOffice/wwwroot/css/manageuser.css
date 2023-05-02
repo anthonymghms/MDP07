@@ -1,0 +1,214 @@
+﻿#logo {
+    margin-left: 20px;
+    margin-top: 20px;
+}
+/* Style for search container */
+#search-container {
+    margin: 20px 0;
+}
+
+/* Style for search input */
+#search-input {
+    padding: 3px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 200px;
+    margin-right: 10px;
+}
+
+/* Style for search button */
+#search-btn {
+    padding: 5px 10px;
+    background-color: #26497B;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* Style for table */
+#users-table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-top: 70px;
+    border-radius: 10px !important;
+    background-color: rgb(255 255 255 / 52%);
+}
+
+    /* Style for table head */
+    #users-table th {
+        background-color: rgb(255 255 255 / 52%);
+        color: #26497B;
+        text-align: start;
+    }
+
+.dataTables_wrapper {
+    margin: 2px;
+    padding: 20px;
+    background-color: rgb(255 255 255 / 85%);
+    border-radius: 22px;
+    margin-top: 12px;
+}
+
+.back-icon a {
+    display: inline-flex;
+    white-space: break-spaces;
+    margin-left: 2%;
+    margin-top: 2%;
+    text-decoration: none;
+    color: #26497B;
+}
+
+    .back-icon a:hover {
+        font-size: large;
+    }
+
+.even {
+    color: #1f447b;
+    background-color: rgb(255 255 255 / 52%);
+}
+
+.odd {
+    color: #26497B;
+    background-color: rgb(255 255 255 / 52%);
+}
+
+.td:hover {
+    border-bottom: 1px solid #26497B !important;
+}
+
+
+.odd:hover {
+    border-bottom: 1px solid #26497B !important;
+}
+
+.even:hover {
+    border-bottom: 0.5px solid #26497B !important;
+}
+
+.dataTables_wrapper .dataTables_filter input {
+    border-radius: 15px !important;
+    width: 250px;
+    border-color: #26497B !important;
+    padding: 3px !important;
+}
+
+    .dataTables_wrapper .dataTables_filter input:focus {
+        outline-color: #26497B;
+    }
+
+.dataTables_wrapper .dataTables_length select {
+    border-color: #1f447b !important;
+    border-radius: 16px !important;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+    margin-top: 10px;
+}
+
+    .dataTables_wrapper .dataTables_paginate .paginate_button.current,
+    .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
+        color: #26497B !important;
+        background-color: aliceblue !important;
+    }
+
+.dataTables_wrapper .dataTables_length {
+    float: right !important;
+}
+
+.dataTables_wrapper .dataTables_filter {
+    float: left !important;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+    color: #26497B !important;
+    padding: 0px !important;
+}
+
+a.paginate_button.current {
+    border-radius: 15px !important;
+    color: #26497B !important;
+    border-color: #26497B !important;
+    background: white !important;
+}
+
+a.paginate_button:hover {
+    border-radius: 15px !important;
+    background: #26497B !important;
+    color: white !important;
+}
+
+a#users-table_previous.paginate_button:hover {
+    color: white !important;
+}
+
+a#users-table_previous.paginate_button.previous.disabled:hover {
+    color: #26497B !important;
+    background-color: white !important;
+}
+
+a#users-table_previous.paginate_button.previous.disabled {
+    color: #26497B !important;
+}
+
+a#users-table_next.paginate_button.next.disabled:hover {
+    color: #26497B !important;
+    background-color: white !important;
+}
+
+a#users-table_next.paginate_button.next.disabled {
+    color: #26497B !important;
+}
+
+.display {
+    border: 1px solid #26497b8b;
+    border-radius: 10px !important;
+}
+
+table.dataTable.no-footer {
+    border-color: #26497b8b !important;
+}
+
+table.dataTable thead th,
+table.dataTable thead td {
+    border-color: #26497b8b !important;
+    padding-left: 10px !important;
+}
+
+table.dataTable tbody th,
+table.dataTable tbody td {
+    background-color: rgb(255 255 255 / 60%) !important;
+
+}
+
+table.dataTable th,
+table.dataTable td {
+    border-bottom: 1pt solid #26497b8b;
+    border-top: 1pt solid #26497b8b;
+}
+
+table.dataTable {
+    border-radius: 10px !important;
+}
+
+    table.dataTable tbody th,
+    table.dataTable tbody td:hover {
+        border-bottom: 1px solid #26497B;
+        background-color: #26497b35 !important;
+    }
+
+.editbutton {
+    border: 1px solid #26497b73 !important;
+    border-radius: 10px !important;
+    background-color: #26497b9d !important;
+    color: white;
+    text-decoration: none;
+    padding: 3px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: small;
+}
+
+table.dataTable td:last-child:hover {
+    background-color: white !important;
+    border-bottom: 1pt solid #26497b8b !important;
+}
